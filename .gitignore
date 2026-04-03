@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Environment
+backend/.env
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node / Frontend
+node_modules/
+frontend/dist/
+frontend/node_modules/
+*.tsbuildinfo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Docker
+.docker/
+
+# Logs
+*.log
+logs/
+
+# Redis
+dump.rdb
+
+# Coverage / Testing
+htmlcov/
+.coverage
+.pytest_cache/
+.mypy_cache/
