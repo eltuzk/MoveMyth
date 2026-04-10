@@ -14,6 +14,7 @@ from routes.health import router as health_router
 from routes.session import router as session_router
 from routes.user import router as user_router
 from routes.story import router as story_router
+from routes.vision import router as vision_router
 from routes.ws_lio import router as ws_lio_router
 from routes.ws_vision import router as ws_vision_router
 
@@ -50,5 +51,6 @@ app.add_middleware(
 # --- Register Routers ---
 app.include_router(health_router)
 app.include_router(story_router, prefix="/api")
+app.include_router(vision_router, prefix="/api")
 app.include_router(ws_lio_router)
 app.include_router(ws_vision_router)
