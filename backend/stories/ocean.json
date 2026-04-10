@@ -1,0 +1,119 @@
+{
+  "story_id": "ocean",
+  "title": "Đại Dương Kỳ Diệu",
+  "theme": "ocean_adventure",
+  "character_name": "Lio",
+  "total_segments": 3,
+  "segments": [
+    {
+      "segment_index": 0,
+      "narrative_text": "Lio đưa {child_name} đến bờ biển lấp lánh dưới ánh mặt trời. Những con sóng nhẹ nhàng vỗ vào bờ cát trắng. Đột nhiên, một chú cá heo nhỏ nhô lên mặt nước, vẫy đuôi như muốn mời hai người bạn cùng xuống đại dương! Nhưng để đi cùng cá heo, cần phải thực hiện nghi lễ hòa mình cùng biển cả!",
+      "narration_tts": "Lio đưa bạn nhỏ đến bờ biển lấp lánh dưới ánh mặt trời. Những con sóng nhẹ nhàng vỗ vào bờ cát trắng. Đột nhiên, một chú cá heo nhỏ nhô lên mặt nước, vẫy đuôi như muốn mời hai người bạn cùng xuống đại dương! Nhưng để đi cùng cá heo, cần phải thực hiện nghi lễ hòa mình cùng biển cả!",
+      "challenge_options": [
+        {
+          "action": "jump",
+          "display_text": "Nhảy lên như cá heo đang nhảy sóng!",
+          "tts_text": "Hãy nhảy lên thật cao như chú cá heo đang nhảy qua sóng biển nhé! Cá heo đang chờ bạn đó!",
+          "difficulty": "normal",
+          "fallback_action": "raise_hands"
+        },
+        {
+          "action": "raise_hands",
+          "display_text": "Giơ tay lên chào cá heo!",
+          "tts_text": "Hãy giơ hai tay lên thật cao để chào đón chú cá heo xinh đẹp nhé!",
+          "difficulty": "easy",
+          "fallback_action": "raise_hands"
+        }
+      ],
+      "adapt_responses": {
+        "pass": {
+          "tts_text": "Ồ! Cá heo rất thích điều đó! Nó đang dẫn chúng ta xuống đại dương rồi!",
+          "display_text": "Cá heo dẫn đường! 🐬"
+        },
+        "retry": {
+          "tts_text": "Cá heo đang nhìn bạn kìa! Thêm một lần nữa thật mạnh nhé!",
+          "display_text": "Cố lên nào! 🐬"
+        },
+        "fail": {
+          "tts_text": "Không sao! Lio biết một cách khác để kết bạn với cá heo đó!",
+          "display_text": "Thử cách khác nhé! 🌊"
+        }
+      }
+    },
+    {
+      "segment_index": 1,
+      "narrative_text": "Cá heo đưa {child_name} và Lio xuống tận đáy đại dương. Mọi thứ ở đây thật lung linh — những rặng san hô đủ màu sắc tỏa sáng rực rỡ. Bỗng nhiên, một con bạch tuộc nhỏ chạy ra, ôm chặt lấy một viên ngọc sáng và nhìn hai người bạn với đôi mắt to. Viên ngọc đó là chìa khóa để mở cung điện san hô — và bạch tuộc sẽ trao cho người biết nhảy điệu của đại dương!",
+      "narration_tts": "Cá heo đưa hai người bạn xuống tận đáy đại dương. Mọi thứ ở đây thật lung linh — những rặng san hô đủ màu sắc tỏa sáng rực rỡ. Bỗng nhiên, một con bạch tuộc nhỏ chạy ra, ôm chặt lấy một viên ngọc sáng và nhìn hai người bạn với đôi mắt to. Viên ngọc đó là chìa khóa để mở cung điện san hô — và bạch tuộc sẽ trao cho người biết nhảy điệu của đại dương!",
+      "challenge_options": [
+        {
+          "action": "spin",
+          "display_text": "Xoay tròn như bạch tuộc đang múa!",
+          "tts_text": "Hãy xoay tròn một vòng thật đẹp như điệu múa của bạch tuộc trong đại dương nhé!",
+          "difficulty": "normal",
+          "fallback_action": "raise_hands"
+        },
+        {
+          "action": "raise_hands",
+          "display_text": "Giơ tay lên như xúc tu bạch tuộc!",
+          "tts_text": "Giơ cả hai tay lên cao và vẫy như những chiếc xúc tu dài của bạch tuộc nhé!",
+          "difficulty": "easy",
+          "fallback_action": "raise_hands"
+        }
+      ],
+      "adapt_responses": {
+        "pass": {
+          "tts_text": "Bạch tuộc rất vui! Nó liền trao viên ngọc sáng cho bạn! Cung điện san hô sắp mở rồi!",
+          "display_text": "Ngọc bạch tuộc trao tặng! 🐙"
+        },
+        "retry": {
+          "tts_text": "Bạch tuộc đang gật đầu kìa! Thêm một lần nữa thôi, sắp xong rồi!",
+          "display_text": "Thêm một lần nữa! 🐙"
+        },
+        "fail": {
+          "tts_text": "Không sao! Lio sẽ chỉ cho bạn một cách khác để bạch tuộc hiểu bạn!",
+          "display_text": "Lio giúp bạn nhé! ✨"
+        }
+      }
+    },
+    {
+      "segment_index": 2,
+      "narrative_text": "Viên ngọc sáng lên và dẫn {child_name} cùng Lio tới cánh cổng của Cung Điện San Hô vĩ đại! Hàng nghìn con cá nhỏ đủ màu sắc bơi vòng quanh như đang vỗ tay chào mừng. Cánh cổng khắc dòng chữ vàng: \"Chỉ người dũng cảm của biển khơi mới được bước vào!\" Đây là khoảnh khắc của bạn!",
+      "narration_tts": "Viên ngọc sáng lên và dẫn hai người bạn tới cánh cổng của Cung Điện San Hô vĩ đại! Hàng nghìn con cá nhỏ đủ màu sắc bơi vòng quanh như đang vỗ tay chào mừng. Cánh cổng khắc dòng chữ vàng — Chỉ người dũng cảm của biển khơi mới được bước vào! Đây là khoảnh khắc của bạn nhỏ!",
+      "challenge_options": [
+        {
+          "action": "jump",
+          "display_text": "Nhảy lên tung người — nghi lễ của chiến binh biển!",
+          "tts_text": "Hãy nhảy thật cao để thực hiện nghi lễ của chiến binh biển khơi và mở cánh cổng Cung Điện San Hô nhé!",
+          "difficulty": "normal",
+          "fallback_action": "raise_hands"
+        },
+        {
+          "action": "raise_hands",
+          "display_text": "Giơ hai tay lên — tuyên thệ chiến binh biển!",
+          "tts_text": "Giơ cả hai tay thật cao lên trời để tuyên thệ trở thành chiến binh của biển khơi nhé!",
+          "difficulty": "easy",
+          "fallback_action": "raise_hands"
+        }
+      ],
+      "adapt_responses": {
+        "pass": {
+          "tts_text": "Chúc mừng! Cánh cổng mở rồi! Bạn đã trở thành Chiến Binh của Đại Dương! Lio rất tự hào về bạn!",
+          "display_text": "Chiến Binh Đại Dương! 🏆"
+        },
+        "retry": {
+          "tts_text": "Cánh cổng đang rung chuyển rồi! Thêm một lần nữa thật mạnh là mở thôi!",
+          "display_text": "Gần thành công rồi! 🌊"
+        },
+        "fail": {
+          "tts_text": "Không sao! Lio biết một cách khác cũng rất dũng cảm để mở cổng đó!",
+          "display_text": "Thử cách khác nhé! ✨"
+        }
+      }
+    }
+  ],
+  "badge_map": {
+    "0": { "id": "dolphin_friend",  "label": "Bạn Của Cá Heo",       "emoji": "🐬" },
+    "1": { "id": "pearl_keeper",    "label": "Người Giữ Ngọc Biển",  "emoji": "🐙" },
+    "2": { "id": "ocean_warrior",   "label": "Chiến Binh Đại Dương", "emoji": "🏆" }
+  }
+}
