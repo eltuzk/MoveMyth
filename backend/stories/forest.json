@@ -1,0 +1,119 @@
+{
+  "story_id": "forest",
+  "title": "Khu Rừng Phép Thuật",
+  "theme": "forest_magic",
+  "character_name": "Lio",
+  "total_segments": 3,
+  "segments": [
+    {
+      "segment_index": 0,
+      "narrative_text": "Lio và {child_name} bước vào khu rừng phép thuật. Những cây cổ thụ cao vút tỏa bóng mát, và ánh sáng vàng lấp lánh giữa các tán lá. Phía trước là một cây cầu gỗ bắc qua suối nhỏ — nhưng cây cầu chỉ mở ra khi có đủ phép thuật!",
+      "narration_tts": "Lio và bạn nhỏ bước vào khu rừng phép thuật. Những cây cổ thụ cao vút tỏa bóng mát, và ánh sáng vàng lấp lánh giữa các tán lá. Phía trước là một cây cầu gỗ bắc qua suối nhỏ — nhưng cây cầu chỉ mở ra khi có đủ phép thuật!",
+      "challenge_options": [
+        {
+          "action": "jump",
+          "display_text": "Nhảy lên 3 lần để kích hoạt cây cầu phép thuật!",
+          "tts_text": "Để cây cầu mở ra, bạn phải nhảy lên 3 lần thật mạnh nhé!",
+          "difficulty": "normal",
+          "fallback_action": "raise_hands"
+        },
+        {
+          "action": "raise_hands",
+          "display_text": "Giơ hai tay lên cao để gọi phép thuật!",
+          "tts_text": "Hãy giơ hai tay lên thật cao để gọi phép thuật của rừng nhé!",
+          "difficulty": "easy",
+          "fallback_action": "raise_hands"
+        }
+      ],
+      "adapt_responses": {
+        "pass": {
+          "tts_text": "Tuyệt vời! Phép thuật của bạn đã mở cây cầu rồi! Chúng ta tiến vào rừng thôi!",
+          "display_text": "Cây cầu mở rồi! 🌉"
+        },
+        "retry": {
+          "tts_text": "Gần được rồi! Thêm một lần nữa là cây cầu sẽ mở thôi!",
+          "display_text": "Thử lại nào! 💪"
+        },
+        "fail": {
+          "tts_text": "Không sao! Lio có một phép thuật dễ hơn cho bạn thử nhé!",
+          "display_text": "Lio đổi phép thuật cho bạn! ✨"
+        }
+      }
+    },
+    {
+      "segment_index": 1,
+      "narrative_text": "Đi sâu vào rừng, {child_name} và Lio gặp một chú thỏ nhỏ bị mắc kẹt trong bụi gai. Chú thỏ run rẩy và sợ hãi. Để giải cứu chú thỏ, cần phải làm một vũ điệu phép thuật đặc biệt!",
+      "narration_tts": "Đi sâu vào rừng, hai người bạn gặp một chú thỏ nhỏ bị mắc kẹt trong bụi gai. Chú thỏ run rẩy và sợ hãi. Để giải cứu chú thỏ, cần phải làm một vũ điệu phép thuật đặc biệt!",
+      "challenge_options": [
+        {
+          "action": "spin",
+          "display_text": "Xoay tròn một vòng để giải cứu thỏ!",
+          "tts_text": "Hãy xoay tròn một vòng thật đẹp để vũ điệu phép thuật giải cứu chú thỏ nhé!",
+          "difficulty": "normal",
+          "fallback_action": "raise_hands"
+        },
+        {
+          "action": "raise_hands",
+          "display_text": "Giơ tay lên và vẫy vẫy để gọi phép thuật!",
+          "tts_text": "Giơ hai tay lên và vẫy thật mạnh để gọi phép thuật giải cứu thỏ nhé!",
+          "difficulty": "easy",
+          "fallback_action": "raise_hands"
+        }
+      ],
+      "adapt_responses": {
+        "pass": {
+          "tts_text": "Ồ tuyệt quá! Vũ điệu của bạn đã giải cứu chú thỏ rồi! Thỏ cảm ơn bạn rất nhiều!",
+          "display_text": "Thỏ được giải cứu! 🐰"
+        },
+        "retry": {
+          "tts_text": "Chú thỏ thấy bạn rồi! Thêm một lần nữa nhé!",
+          "display_text": "Thêm một lần nữa! 🐰"
+        },
+        "fail": {
+          "tts_text": "Không sao! Lio sẽ chỉ cho bạn một cách khác để giải cứu thỏ!",
+          "display_text": "Thử cách khác nhé! ✨"
+        }
+      }
+    },
+    {
+      "segment_index": 2,
+      "narrative_text": "Chú thỏ dẫn {child_name} và Lio đến một khoảng trống lung linh giữa rừng — đó là Vương Quốc Phép Thuật! Nhưng cánh cổng vàng chỉ mở ra khi người dũng cảm thực hiện nghi lễ chào mừng của rừng xanh!",
+      "narration_tts": "Chú thỏ dẫn hai người bạn đến một khoảng trống lung linh giữa rừng — đó là Vương Quốc Phép Thuật! Nhưng cánh cổng vàng chỉ mở ra khi người dũng cảm thực hiện nghi lễ chào mừng của rừng xanh!",
+      "challenge_options": [
+        {
+          "action": "jump",
+          "display_text": "Nhảy lên và giơ tay — nghi lễ chào Vương Quốc!",
+          "tts_text": "Hãy nhảy lên thật cao và giơ tay để thực hiện nghi lễ chào mừng Vương Quốc Phép Thuật nhé!",
+          "difficulty": "normal",
+          "fallback_action": "raise_hands"
+        },
+        {
+          "action": "raise_hands",
+          "display_text": "Giơ cả hai tay lên thật cao — chào Vương Quốc!",
+          "tts_text": "Giơ cả hai tay lên thật cao để chào đón Vương Quốc Phép Thuật nhé!",
+          "difficulty": "easy",
+          "fallback_action": "raise_hands"
+        }
+      ],
+      "adapt_responses": {
+        "pass": {
+          "tts_text": "Chúc mừng! Bạn đã hoàn thành hành trình và trở thành Anh Hùng của Khu Rừng Phép Thuật! Lio rất tự hào về bạn!",
+          "display_text": "Bạn là Anh Hùng Rừng Xanh! 🏆"
+        },
+        "retry": {
+          "tts_text": "Cổng đang hé mở rồi đó! Thêm một lần nữa thôi!",
+          "display_text": "Gần rồi! Cố lên! 🌟"
+        },
+        "fail": {
+          "tts_text": "Không sao! Lio tin bạn làm được cách này!",
+          "display_text": "Thử cách đơn giản hơn nhé! ✨"
+        }
+      }
+    }
+  ],
+  "badge_map": {
+    "0": { "id": "brave_start",  "label": "Dũng Cảm Bắt Đầu",    "emoji": "🌟" },
+    "1": { "id": "forest_hero",  "label": "Người Giải Cứu Rừng",  "emoji": "🐰" },
+    "2": { "id": "magic_master", "label": "Anh Hùng Phép Thuật",  "emoji": "🏆" }
+  }
+}
