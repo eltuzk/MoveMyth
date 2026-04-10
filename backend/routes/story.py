@@ -3,14 +3,17 @@ Story endpoints — MVP implementation.
 
 Routes:
   POST /api/story/start        → initialise session, return segment 0 + selected challenge
-  POST /api/generate-story     → legacy stub (Agent Mode, out of scope for MVP)
+  POST /api/story/tts          → text-to-speech audio bytes
+  POST /api/story/stt          → speech-to-text; saves child_name to session
+  POST /api/story/adapt        → adapt narrative based on verify result; state transition on pass
+  GET  /api/story/badge        → return latest badge earned by session
 """
 
 import json
 import uuid
 from pathlib import Path
 
-from fastapi import APIRouter, Response, UploadFile, File, Form
+from fastapi import APIRouter, Response, UploadFile, File, Form, Query
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
@@ -188,4 +191,189 @@ async def story_stt(
     return {
         "text": session.child_name,
         "saved_as_child_name": True
+    }
+
+
+# ---------------------------------------------------------------------------
+# POST /api/story/adapt
+# ---------------------------------------------------------------------------
+
+_VALID_VERIFY_RESULTS = {"pass", "retry", "fail"}
+
+
+class StoryAdaptRequest(BaseModel):
+    """Request body for POST /api/story/adapt."""
+    session_id: str
+    verify_result: str   # "pass" | "retry" | "fail"
+    segment_index: int
+
+
+@router.post("/story/adapt")
+async def story_adapt(request: StoryAdaptRequest):
+    """
+    Returns Lio's narrative response based on vision verify result.
+
+    Pure logic — no Gemini API call.
+
+    On 'pass':
+      - Appends badge to session.badges
+      - Increments current_segment and loop_count
+      - Returns next_segment_data + next_challenge if not the final segment
+
+    On 'retry':
+      - No state change
+      - Returns retry_challenge action
+
+    On 'fail':
+      - Sets session.current_challenge to easy challenge action
+      - Returns downgraded_challenge
+    """
+    # 1 — validate session
+    if request.session_id not in sessions:
+        return JSONResponse(
+            status_code=404,
+            content={
+                "error": "session_not_found",
+                "message": "Session ID does not exist or has expired",
+                "status_code": 404,
+            },
+        )
+
+    # 2 — validate verify_result
+    if request.verify_result not in _VALID_VERIFY_RESULTS:
+        return JSONResponse(
+            status_code=400,
+            content={
+                "error": "invalid_verify_result",
+                "message": f"verify_result must be one of: pass, retry, fail. Got: '{request.verify_result}'",
+                "status_code": 400,
+            },
+        )
+
+    session = sessions[request.session_id]
+
+    # 3 — load story JSON
+    story_path = _STORIES_DIR / f"{session.story_id}.json"
+    if not story_path.exists():
+        return JSONResponse(
+            status_code=404,
+            content={
+                "error": "story_not_found",
+                "message": f"Story '{session.story_id}' not found",
+                "status_code": 404,
+            },
+        )
+
+    with story_path.open(encoding="utf-8") as f:
+        story = json.load(f)
+
+    # 4 — fetch segment and adapt response text
+    segment = story["segments"][request.segment_index]
+    adapt = segment["adapt_responses"][request.verify_result]
+
+    # ---- Branch on verify_result ----
+
+    if request.verify_result == "pass":
+        # State transition (per AGENTS.md — only place this happens)
+        session.badges.append(story["badge_map"][str(request.segment_index)])
+        session.current_segment = request.segment_index + 1
+        session.loop_count += 1
+
+        is_last = request.segment_index >= story["total_segments"] - 1
+        next_segment_data = None
+        next_challenge = None
+
+        if not is_last:
+            next_seg = story["segments"][request.segment_index + 1]
+            child_name = session.child_name or ""
+            next_segment_data = {
+                "segment_index": next_seg["segment_index"],
+                "narrative_text": next_seg["narrative_text"].replace("{child_name}", child_name),
+                "narration_tts": next_seg["narration_tts"].replace("{child_name}", child_name),
+            }
+            next_challenge = select_challenge(next_seg, story["theme"])
+
+        return {
+            "tts_text": adapt["tts_text"],
+            "display_text": adapt["display_text"],
+            "next_action": "award_badge",
+            "next_segment_data": next_segment_data,
+            "next_challenge": next_challenge,
+            "downgraded_challenge": None,
+        }
+
+    elif request.verify_result == "retry":
+        return {
+            "tts_text": adapt["tts_text"],
+            "display_text": adapt["display_text"],
+            "next_action": "retry_challenge",
+            "next_segment_data": None,
+            "next_challenge": None,
+            "downgraded_challenge": None,
+        }
+
+    else:  # fail
+        # Find the easy challenge for downgrade
+        easy_challenge = next(
+            (c for c in segment["challenge_options"] if c.get("difficulty") == "easy"),
+            None,
+        )
+        if easy_challenge is None:
+            # Safety fallback: return the first option
+            easy_challenge = segment["challenge_options"][0]
+
+        session.current_challenge = easy_challenge["action"]
+
+        return {
+            "tts_text": adapt["tts_text"],
+            "display_text": adapt["display_text"],
+            "next_action": "downgrade_challenge",
+            "next_segment_data": None,
+            "next_challenge": None,
+            "downgraded_challenge": easy_challenge,
+        }
+
+
+# ---------------------------------------------------------------------------
+# GET /api/story/badge
+# ---------------------------------------------------------------------------
+
+@router.get("/story/badge")
+async def story_badge(session_id: str = Query(...)):
+    """
+    Returns the badge most recently earned by the session.
+
+    Must be called immediately after receiving next_action == "award_badge"
+    from /api/story/adapt, which has already appended the badge to session.badges.
+    """
+    if session_id not in sessions:
+        return JSONResponse(
+            status_code=404,
+            content={
+                "error": "session_not_found",
+                "message": "Session ID does not exist or has expired",
+                "status_code": 404,
+            },
+        )
+
+    session = sessions[session_id]
+
+    if not session.badges:
+        return JSONResponse(
+            status_code=400,
+            content={
+                "error": "no_badges",
+                "message": "No badges have been earned yet in this session",
+                "status_code": 400,
+            },
+        )
+
+    # adapt_narrative already incremented current_segment before this is called
+    latest_badge = session.badges[-1]
+    segment_completed = session.current_segment - 1
+
+    return {
+        "badge": latest_badge,
+        "segment_completed": segment_completed,
+        "total_badges": len(session.badges),
     }
