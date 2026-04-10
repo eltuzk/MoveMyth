@@ -2,6 +2,9 @@
 MoveMyth — FastAPI Application Entrypoint
 """
 
+from dotenv import load_dotenv
+load_dotenv()
+
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -46,8 +49,6 @@ app.add_middleware(
 
 # --- Register Routers ---
 app.include_router(health_router)
-app.include_router(session_router, prefix="/api")
-app.include_router(user_router, prefix="/api")
 app.include_router(story_router, prefix="/api")
 app.include_router(ws_lio_router)
 app.include_router(ws_vision_router)
