@@ -10,10 +10,12 @@ import json
 import uuid
 from pathlib import Path
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Response
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 from services.story import SessionState, sessions, select_challenge
+from services.tts import generate_speech
 
 router = APIRouter(tags=["story"])
 
@@ -92,3 +94,50 @@ async def story_start(request: StoryStartRequest):
             "fallback_action": selected_challenge["fallback_action"],
         },
     }
+
+
+# ---------------------------------------------------------------------------
+# POST /api/story/tts
+# ---------------------------------------------------------------------------
+
+class StoryTTSRequest(BaseModel):
+    """Request body for POST /api/story/tts."""
+    text: str
+    session_id: str
+
+
+@router.post("/story/tts")
+async def story_tts(request: StoryTTSRequest):
+    """
+    Converts text to speech audio. If child_name exists in session, it will be substituted automatically.
+    """
+    if request.session_id not in sessions:
+        return JSONResponse(
+            status_code=404,
+            content={
+                "error": "session_not_found",
+                "message": "Session ID does not exist or has expired",
+                "status_code": 404,
+            }
+        )
+
+    session = sessions[request.session_id]
+
+    # Replace child_name if present
+    text_to_speak = request.text
+    if session.child_name:
+        text_to_speak = text_to_speak.replace("{child_name}", session.child_name)
+
+    try:
+        audio_bytes = await generate_speech(text_to_speak)
+    except Exception as e:
+        return JSONResponse(
+            status_code=503,
+            content={
+                "error": "gemini_api_error",
+                "message": f"Gemini API error: {str(e)}",
+                "status_code": 503,
+            }
+        )
+
+    return Response(content=audio_bytes, media_type="audio/wav")
