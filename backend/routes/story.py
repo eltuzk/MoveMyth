@@ -10,12 +10,13 @@ import json
 import uuid
 from pathlib import Path
 
-from fastapi import APIRouter, Response
+from fastapi import APIRouter, Response, UploadFile, File, Form
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 from services.story import SessionState, sessions, select_challenge
 from services.tts import generate_speech
+from services.stt import transcribe_audio
 
 router = APIRouter(tags=["story"])
 
@@ -141,3 +142,50 @@ async def story_tts(request: StoryTTSRequest):
         )
 
     return Response(content=audio_bytes, media_type="audio/wav")
+
+# ---------------------------------------------------------------------------
+# POST /api/story/stt
+# ---------------------------------------------------------------------------
+
+@router.post("/story/stt")
+async def story_stt(
+    audio: UploadFile = File(...),
+    session_id: str = Form(...)
+):
+    """
+    Converts audio blob to text (used for capturing child's name).
+    Saves the transcribed name directly into session state.
+    """
+    if session_id not in sessions:
+        return JSONResponse(
+            status_code=404,
+            content={
+                "error": "session_not_found",
+                "message": "Session ID does not exist or has expired",
+                "status_code": 404,
+            }
+        )
+
+    session = sessions[session_id]
+
+    try:
+        audio_bytes = await audio.read()
+        transcribed_text = await transcribe_audio(audio_bytes, mime_type=audio.content_type or "audio/webm")
+        if not transcribed_text:
+            raise ValueError("Empty transcription")
+    except Exception as e:
+        return JSONResponse(
+            status_code=503,
+            content={
+                "error": "stt_failed",
+                "message": f"STT failed: {str(e)}",
+                "status_code": 503,
+            }
+        )
+
+    session.child_name = transcribed_text.strip()
+
+    return {
+        "text": session.child_name,
+        "saved_as_child_name": True
+    }
