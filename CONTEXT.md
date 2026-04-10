@@ -1,166 +1,189 @@
-# MoveMyth — Project Context
+# CONTEXT.md — MoveMyth MVP
+> Last updated: 2026-04-10
+> Scope: MVP One Complete Loop (Vòng 2 — GDGoC Hackathon Vietnam 2026)
+
+---
+
+## Project Overview
+
+**MoveMyth** is a movement-gated interactive storytelling platform for children aged 4–10.
+AI storyteller **Lio** tells a story, assigns physical challenges, verifies them via camera, and continues the story only when the child completes the action.
+
+**Repo org:** OmniaVincimus
+**MVP deadline:** 2026-04-17
+
+---
+
+## Team & Roles
+
+| Name | Role |
+|---|---|
+| Hoàng Khôi Nguyên | Frontend |
+| Phan Thế Hiển | Backend |
+| Lê Vũ Thiêm Hoàng | Fullstack |
+| Trần Lân | Frontend |
+
+---
 
 ## Tech Stack
 
-| Layer | Công nghệ | Version |
-|-------|-----------|---------|
-| Backend framework | FastAPI | 0.115.x |
-| Backend runtime | Python | 3.11+ |
-| AI Agent framework | Google ADK | 0.4.x |
-| AI Models | Google Gemini | gemini-2.5-flash / gemini-2.5-pro |
-| Realtime voice+vision | Gemini Live API | gemini-2.5-flash |
-| Frontend framework | React + TypeScript | 19 + 5.x |
-| Frontend build | Vite | 6.x |
-| Styling | Tailwind CSS | 4.x |
-| Realtime transport | WebSocket | native |
-| Session DB | Redis | 7.x |
-| Persistent DB | Google Firestore | — |
-| Cloud | Google Cloud Platform | — |
-| Container | Docker | — |
+### Backend
+- **Language:** Python 3.11
+- **Framework:** FastAPI
+- **AI:** Google Gemini API (single API key covers all: TTS, STT, Vision)
+  - TTS: `gemini-2.5-flash` or `gemini-2.5-pro`
+  - STT: Gemini Speech-to-Text
+  - Vision: `gemini-2.5-flash` (vision capability)
+- **Session storage:** In-memory Python dict (no database for MVP)
+  - Key: `session_id` (UUID string, generated at `/api/story/start`)
+  - Stored in module-level dict: `sessions: dict[str, SessionState]`
+- **Agent framework:** Google ADK (available but minimal usage in MVP)
+- **Environment variables:** `GEMINI_API_KEY`, `GOOGLE_CLOUD_PROJECT` (GCP project ID, not an API key)
+
+### Frontend
+- **Framework:** React 19 + TypeScript
+- **Build tool:** Vite
+- **Styling:** Tailwind CSS v3
+- **Key browser APIs:** `getUserMedia` (camera + mic), `MediaRecorder` (audio recording), `Audio` (TTS playback)
+
+### Infrastructure (MVP — local only)
+- Backend runs on `http://localhost:8000`
+- Frontend runs on `http://localhost:5173`
+- No cloud deployment for MVP
+- No WebSockets (use regular HTTP polling/fetch)
+- No authentication
 
 ---
 
-## Environment Variables
+## Project Structure
 
-Tất cả secrets đặt trong `backend/.env` — KHÔNG hardcode bất kỳ key nào vào code.
-
-```env
-GEMINI_API_KEY=           # Google AI Studio key
-GOOGLE_CLOUD_PROJECT=     # GCP project ID (movemyth-dev)
-REDIS_URL=redis://localhost:6379
+```
+/
+├── AGENTS.md           # Agent logic, tools, adapt_narrative spec
+├── CONTEXT.md          # This file
+├── STORY_SCHEMA.md     # Story JSON format spec
+├── backend/
+│   ├── main.py         # FastAPI app entry point
+│   ├── routers/
+│   │   ├── story.py    # /api/story/* endpoints
+│   │   └── vision.py   # /api/vision/* endpoints
+│   ├── services/
+│   │   ├── tts.py      # Gemini TTS wrapper
+│   │   ├── stt.py      # Gemini STT wrapper
+│   │   └── vision.py   # Gemini Vision wrapper
+│   ├── models/
+│   │   └── session.py  # SessionState dataclass
+│   ├── stories/
+│   │   ├── forest.json # Pre-generated story (forest theme)
+│   │   └── ocean.json  # Pre-generated story (ocean theme)
+│   └── requirements.txt
+└── frontend/
+    ├── src/
+    │   ├── App.tsx
+    │   ├── pages/
+    │   │   └── MagicMirror.tsx   # Single main screen
+    │   ├── components/
+    │   │   ├── CameraFeed.tsx
+    │   │   ├── StoryDisplay.tsx
+    │   │   ├── ChallengeCard.tsx
+    │   │   ├── BadgePopup.tsx
+    │   │   └── MicButton.tsx
+    │   ├── hooks/
+    │   │   ├── useCamera.ts
+    │   │   └── useAudio.ts
+    │   └── api/
+    │       └── client.ts         # API calls to backend
+    └── package.json
 ```
 
-Đọc trong Python:
+---
+
+## MVP Core Loop (One Complete Loop)
+
+```
+1. Magic Sign check (camera → /api/vision/verify, context: magic_sign_check → pass/fail only)
+2. Lio greets + asks name (POST /api/story/tts)
+3. Child says name (mic → POST /api/story/stt → backend saves child_name to session)
+4. Lio narrates story segment (POST /api/story/tts with narration_tts text)
+5. Lio assigns challenge (POST /api/story/tts with selected_challenge.tts_text)
+6. Child performs action → presses "Xong rồi!" → camera captures photo
+7. POST /api/vision/verify (context: challenge_verify) → pass / retry / fail
+8. POST /api/story/adapt → tts_text + next_action + next_segment_data (if pass)
+9. POST /api/story/tts (Lio speaks adapt response)
+10. If next_action == "award_badge":
+    → GET /api/story/badge → show badge popup
+    → use next_segment_data + next_challenge from adapt response to continue loop
+11. Loop repeats for segments 1 and 2 (no extra API call needed to fetch them)
+```
+
+---
+
+## API Endpoints (MVP only)
+
+| Method | Path | Description |
+|---|---|---|
+| POST | `/api/story/start` | Start session, return segment 0 + one selected challenge (not array) |
+| POST | `/api/story/stt` | Audio → text; also saves name to session state |
+| POST | `/api/story/tts` | Text → audio bytes; substitutes `{child_name}` from session |
+| POST | `/api/vision/verify` | Image → pass/fail (magic_sign) or pass/retry/fail (challenge) |
+| POST | `/api/story/adapt` | Narrative response + next segment data when pass |
+| GET | `/api/story/badge` | Return latest badge (already saved by adapt) |
+| GET | `/health` | Health check |
+
+Full request/response schemas are defined per endpoint in `routers/story.py` and `routers/vision.py`.
+
+---
+
+## Session State Schema
+
 ```python
-from dotenv import load_dotenv
-import os
-load_dotenv()
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+@dataclass
+class SessionState:
+    session_id: str
+    child_name: str = ""
+    story_id: str = ""          # "forest" or "ocean"
+    current_segment: int = 0    # 0..2 = active segment index, 3 = all segments finished
+    current_challenge: str = "" # active challenge action
+    badges: list[dict] = field(default_factory=list)  # list of badge objects {id, label, emoji}
+    loop_count: int = 0         # number of completed challenge loops
 ```
 
 ---
 
-## Naming Conventions
+## In-Scope Features (build these)
 
-### Python (Backend)
-- Files: `snake_case.py`
-- Classes: `PascalCase`
-- Functions / variables: `snake_case`
-- Constants: `UPPER_SNAKE_CASE`
-- ADK agents: tên lowercase, không dấu cách (VD: `"lio"`, `"guardian_of_balance"`)
+- Magic Sign verification via camera
+- TTS audio playback (Lio speaks)
+- STT for child's name input
+- Story segment display + narration
+- Vision verify: pass / retry / fail with challenge downgrade
+- adapt_narrative: 3 response variants
+- Badge popup on pass
+- Loop runs 3 times without crashing
 
-### TypeScript (Frontend)
-- Components: `PascalCase` trong folder cùng tên (`MagicMirror/index.tsx`)
-- Hooks: `useCamelCase.ts`
-- Context: `PascalCaseContext.tsx`
-- Variables / functions: `camelCase`
-- Types / Interfaces: `PascalCase`, prefix `I` không bắt buộc
+## Out-of-Scope (do NOT generate code for these)
 
-### Git branches
-```
-main              # stable, chỉ merge khi tested
-feat/lio-agent    # Lê Vũ Thiêm Hoàng
-feat/vision       # Phan Thế Hiển
-feat/pipeline     # Phan Thế Hiển
-feat/frontend     # Hoàng Khôi Nguyên + Trần Lân
-```
-
----
-
-## Project Rules — ĐỌC TRƯỚC KHI CODE
-
-### Rule 1: Challenge Gate
-`award_badge` KHÔNG BAO GIỜ được gọi khi `pending_challenge` còn trong state.
-Lio KHÔNG tiếp tục kể chuyện khi `pending_challenge != None`.
-
-### Rule 2: No Raw Media Storage
-KHÔNG lưu video frame, audio recording vào Firestore hay bất kỳ storage nào.
-Vision Verifier chỉ xử lý frame in-memory rồi discard ngay.
-
-### Rule 3: Child-safe Content
-Mọi output từ AI đều phải qua Guardian trước khi đến tay trẻ (Agent Mode).
-Live Mode dùng Gemini safety settings mức cao nhất.
-
-### Rule 4: Graceful Degradation
-Nếu Vision Verifier fail sau 30 giây → hiển thị nút "Thử lại" cho trẻ.
-Nếu Gemini API timeout → Lio nói câu chờ, retry 1 lần, không crash app.
-
-### Rule 5: Environment Parity
-Code phải chạy được ở local (Windows) lẫn Cloud Run.
-Không dùng path separator `\` — luôn dùng `os.path.join()` hoặc `pathlib`.
-
----
-
-## API Contracts
-
-### WebSocket `/ws/lio/{session_id}`
-**Frontend → Backend**
-```json
-{ "type": "audio_input", "data": "<base64 PCM>" }
-```
-**Backend → Frontend**
-```json
-{ "type": "lio_speaking", "audio_data": "<base64>" }
-{ "type": "challenge_issued", "challenge_id": "...", "exercise": "jump", "reps": 5, "instruction": "..." }
-{ "type": "badge_awarded", "badge": "brave_jumper", "reason": "..." }
-{ "type": "scene_update", "scene": "...", "trigger_image_gen": true }
-```
-
-### WebSocket `/ws/vision/{session_id}`
-**Frontend → Backend**
-```json
-{ "type": "frame", "data": "<base64 JPEG 320x240>" }
-{ "type": "start_verification", "exercise": "jump", "reps": 5, "id": "challenge_id" }
-{ "type": "check_magic_sign" }
-```
-**Backend → Frontend**
-```json
-{ "type": "magic_sign_result", "verified": true, "confidence": 0.92 }
-{ "type": "progress", "rep_count": 3, "required": 5 }
-{ "type": "verification_result", "verified": true, "rep_count": 5, "challenge_id": "..." }
-```
-
-### REST Endpoints
-```
-GET  /health                          → { status: "ok" }
-POST /api/session/start               → { session_id }
-POST /api/session/{id}/end            → { status: "saved" }
-GET  /api/user/{user_id}/history      → { total_sessions, all_badges, favorite_theme }
-POST /api/generate-story              → { story } (Agent Mode only)
-```
-
----
-
-## Gemini Model Usage
-
-| Tác vụ | Model | Lý do |
-|--------|-------|-------|
-| Lio realtime voice+vision | `gemini-2.5-flash` (Live) | Latency thấp nhất |
-| Vision verification | `gemini-2.5-flash` | Nhanh, đủ accurate |
-| Adventure Seeker | `gemini-2.5-flash-lite` | Chi phí thấp, task đơn giản |
-| Guardian of Balance | `gemini-2.5-flash-lite` | Chi phí thấp, structured output |
-| Storysmith | `gemini-2.5-pro` | Chất lượng narrative cao nhất |
-
----
-
-## MVP Scope (Vòng 2 — deadline 17/4)
-
-Chỉ build những thứ sau, không thêm:
-
-**Must have:**
-- [ ] Magic sign detection hoạt động qua camera
-- [ ] Lio kể chuyện bằng giọng nói (Gemini Live)
-- [ ] Giao 1 thử thách vận động và xác minh được
-- [ ] Trao badge sau khi xác minh thành công
-- [ ] Session state persist trong phiên
-
-**Nice to have (nếu còn thời gian):**
-- [ ] Agent Mode pipeline (Adventure Seeker → Guardian → Storysmith)
-- [ ] Firestore cross-session memory
-- [ ] Sinh minh họa truyện
-
-**OUT OF SCOPE cho MVP:**
-- Multi-language support
-- Mobile app
+- Gemini Live real-time streaming
+- Multi-agent pipeline (Adventure Seeker, Guardian, Storysmith, Orchestrator)
+- Per-scene image generation
+- Veo animation
+- Firestore / Redis
+- WebSockets
+- Cloud Run deployment
+- Authentication / OAuth
 - Parent dashboard
-- Avatar customization từ ảnh thật
+- Avatar personalization from photo
+- Agent Mode / Live Mode toggle
+- Multi-language support
+- Cross-session memory
+
+---
+
+## Key Constraints
+
+- **Latency:** Keep each API call under 3s where possible. Vision verify and TTS are the slowest — show loading states on FE.
+- **Camera:** All camera usage is single-frame capture (no video stream to backend). Capture → base64 → POST.
+- **Audio:** TTS response is audio bytes. FE creates a Blob URL and plays via `<audio>` element.
+- **Vision actions:** Only 3 supported actions for MVP: `jump`, `raise_hands`, `spin`.
+- **Stories:** Only 2 pre-generated stories. No dynamic story generation in MVP.
+- **Error handling:** All endpoints must return structured errors. FE must handle timeout and API errors gracefully without crashing the loop.
