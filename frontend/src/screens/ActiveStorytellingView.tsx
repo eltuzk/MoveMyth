@@ -39,14 +39,23 @@ export const ActiveStorytellingView: React.FC = () => {
           />
         </div>
 
-        {/* Demo continue button */}
-        <button 
-          onClick={handleNext}
-          className="bg-[#f8a826] text-[#4e3000] px-10 py-4 rounded-full font-black text-lg shadow-xl shadow-amber-500/30 hover:scale-105 transition-transform active:scale-95 flex items-center gap-3 z-50"
-        >
-          Tiếp tục
-          <span className="material-symbols-outlined">arrow_forward</span>
-        </button>
+        {/* Demo Navigation: Compact fixed panel on the right */}
+        <div className="fixed right-6 bottom-[88px] z-[150] bg-white/90 backdrop-blur-sm p-3 rounded-2xl shadow-xl border border-slate-200 flex flex-col gap-3">
+          <button 
+            onClick={() => navigate('/challenge/voice')}
+            className="w-12 h-12 bg-blue-500 hover:bg-blue-600 text-white rounded-xl shadow-lg transition-all active:scale-95 flex items-center justify-center p-0"
+            title="Qua phần Challenge"
+          >
+            <span className="material-symbols-outlined text-[28px]">rocket_launch</span>
+          </button>
+          <button 
+            onClick={() => navigate('/complete')}
+            className="w-12 h-12 bg-amber-500 hover:bg-amber-600 text-white rounded-xl shadow-lg transition-all active:scale-95 flex items-center justify-center p-0"
+            title="Qua phần Endgame"
+          >
+            <span className="material-symbols-outlined text-[28px]">emoji_events</span>
+          </button>
+        </div>
       </main>
     </>
   );
