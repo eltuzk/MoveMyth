@@ -12,6 +12,8 @@ interface UseCameraOptions {
   width?: number;
   /** Desired video height */
   height?: number;
+  /** Camera direction for mobile devices */
+  facingMode?: 'user' | 'environment';
   /** Whether to start camera automatically */
   autoStart?: boolean;
 }
@@ -27,6 +29,8 @@ interface UseCameraReturn {
   stopCamera: () => void;
   /** Capture current frame as base64 JPEG */
   captureFrame: () => string | null;
+  /** Capture current frame as full data URL JPEG */
+  captureFrameDataUrl: () => string | null;
   /** Any error that occurred */
   error: string | null;
 }
@@ -34,6 +38,7 @@ interface UseCameraReturn {
 export function useCamera({
   width = 320,
   height = 240,
+  facingMode = 'user',
   autoStart = false,
 }: UseCameraOptions = {}): UseCameraReturn {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -46,7 +51,11 @@ export function useCamera({
     try {
       setError(null);
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: { width: { ideal: width }, height: { ideal: height } },
+        video: {
+          width: { ideal: width },
+          height: { ideal: height },
+          facingMode: { ideal: facingMode },
+        },
         audio: false,
       });
       streamRef.current = stream;
@@ -62,7 +71,7 @@ export function useCamera({
       setError(message);
       console.error('[useCamera] Error:', message);
     }
-  }, [width, height]);
+  }, [width, height, facingMode]);
 
   const stopCamera = useCallback(() => {
     streamRef.current?.getTracks().forEach((track) => track.stop());
@@ -95,6 +104,36 @@ export function useCamera({
     return dataUrl.split(',')[1] || null;
   }, [isActive, width, height]);
 
+  const captureFrameDataUrl = useCallback((): string | null => {
+    if (!videoRef.current || !isActive) return null;
+
+    if (!canvasRef.current) {
+      canvasRef.current = document.createElement('canvas');
+    }
+
+    const canvas = canvasRef.current;
+    canvas.width = width;
+    canvas.height = height;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return null;
+
+    ctx.drawImage(videoRef.current, 0, 0, width, height);
+    return canvas.toDataURL('image/jpeg', 0.8);
+  }, [isActive, width, height]);
+
+  // Ensure stream is attached after the <video> element is mounted.
+  useEffect(() => {
+    if (!isActive || !videoRef.current || !streamRef.current) return;
+
+    videoRef.current.srcObject = streamRef.current;
+    videoRef.current.play().catch((playError) => {
+      const message = playError instanceof Error ? playError.message : 'Cannot play camera stream';
+      setError(message);
+      console.error('[useCamera] Play error:', message);
+    });
+  }, [isActive]);
+
   // Auto-start if requested
   useEffect(() => {
     if (autoStart) {
@@ -105,5 +144,13 @@ export function useCamera({
     };
   }, [autoStart, startCamera, stopCamera]);
 
-  return { videoRef, isActive, startCamera, stopCamera, captureFrame, error };
+  return {
+    videoRef,
+    isActive,
+    startCamera,
+    stopCamera,
+    captureFrame,
+    captureFrameDataUrl,
+    error,
+  };
 }

@@ -1,0 +1,208 @@
+﻿<!DOCTYPE html>
+
+<html lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lio's Stories - Active Challenge</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@100;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+        }
+        .skeleton-overlay {
+            stroke: #70f8e8;
+            stroke-width: 4;
+            stroke-linecap: round;
+            filter: drop-shadow(0 0 8px #70f8e8);
+        }
+        .glass-panel {
+            background: rgba(255, 252, 247, 0.8);
+            backdrop-filter: blur(16px);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary": "#ffffff",
+                        "on-surface-variant": "#656461",
+                        "on-tertiary-container": "#4e3000",
+                        "on-surface": "#383835",
+                        "primary-fixed": "#c596fe",
+                        "surface-dim": "#e5e2dc",
+                        "surface-bright": "#fffcf7",
+                        "on-primary-fixed-variant": "#49197d",
+                        "outline-variant": "#bbb9b4",
+                        "on-primary-fixed": "#1b0039",
+                        "surface-container": "#f6f3ee",
+                        "on-error-container": "#510017",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed": "#301c00",
+                        "background": "#fffcf7",
+                        "error-dim": "#a70138",
+                        "surface": "#fffcf7",
+                        "secondary-container": "#70f8e8",
+                        "on-secondary": "#ffffff",
+                        "tertiary-container": "#f8a826",
+                        "secondary-fixed": "#70f8e8",
+                        "tertiary": "#8b5a00",
+                        "primary": "#7a4eb0",
+                        "surface-container-highest": "#eae8e2",
+                        "on-primary-container": "#3f0b73",
+                        "primary-container": "#c596fe",
+                        "surface-tint": "#7a4eb0",
+                        "primary-fixed-dim": "#b789ef",
+                        "on-background": "#383835",
+                        "error": "#c12048",
+                        "secondary-fixed-dim": "#60e9da",
+                        "tertiary-dim": "#7b4f00",
+                        "primary-dim": "#6e42a3",
+                        "outline": "#82807c",
+                        "on-error": "#ffffff",
+                        "error-container": "#f74b6d",
+                        "on-secondary-fixed": "#004842",
+                        "tertiary-fixed-dim": "#e89b14",
+                        "secondary": "#007168",
+                        "inverse-primary": "#c596fe",
+                        "inverse-surface": "#0e0e0c",
+                        "surface-container-low": "#fcf9f4",
+                        "inverse-on-surface": "#9e9d98",
+                        "on-secondary-fixed-variant": "#00675f",
+                        "on-primary": "#ffffff",
+                        "secondary-dim": "#00645c",
+                        "on-secondary-container": "#005c55",
+                        "surface-container-high": "#f0eee8",
+                        "surface-variant": "#eae8e2",
+                        "on-tertiary-fixed-variant": "#593800",
+                        "tertiary-fixed": "#f8a826"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Be Vietnam Pro"],
+                        "body": ["Be Vietnam Pro"],
+                        "label": ["Be Vietnam Pro"]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background font-body text-on-background overflow-hidden h-screen w-full flex flex-col">
+<!-- Top Overlay Shell -->
+<header class="fixed top-0 left-0 w-full z-50 p-6 pointer-events-none">
+<div class="max-w-7xl mx-auto flex flex-col items-center gap-4">
+<!-- Global Challenge Bar -->
+<div class="glass-panel px-8 py-4 rounded-full flex items-center justify-between w-full max-w-4xl shadow-[0_32px_32px_-4px_rgba(73,25,125,0.08)] pointer-events-auto border-outline-variant/15 border-[0.5px]">
+<div class="flex items-center gap-4">
+<div class="bg-primary-container text-on-primary-container w-12 h-12 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl">directions_run</span>
+</div>
+<div>
+<h2 class="font-headline font-bold text-lg text-primary">To cross the Magic Bridge, jump 5 times! ð</h2>
+<p class="text-on-surface-variant text-sm font-medium">KEEP MOVING! You can do it!</p>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-tertiary font-black text-2xl tracking-tighter">45s</span>
+<span class="text-[10px] uppercase font-bold text-outline">Countdown</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Area: Split Screen -->
+<main class="flex-grow flex flex-col md:flex-row w-full h-full relative">
+<!-- LEFT HALF: Camera Feed -->
+<section class="w-full md:w-1/2 h-1/2 md:h-full relative overflow-hidden bg-surface-dim">
+<img class="w-full h-full object-cover grayscale-[0.2]" data-alt="Young child jumping happily in a living room, motion blur, soft indoor natural lighting, 4k high definition" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDG07qQ7e49es7_x5VIXQd8Pe3JGg9op0R2ix2FJBPp-kpcj2UTLNvLe9j3LmmrCloLEkFNnAhI4wSoe1zmKITAaXRKO5MOgc0owLbUved8inFrFurAcVnWiCoWYAjfbz_9Tc6LaeQQK-MBkNDTilpMgD52OlMKkZH436RoQGbJvY3o3p0hQ27jKpLJMTzCW7lrsdHJerd4LrSmeVuN8hDN4rDUach_kprP7bQn_nAS5xzsaEdbsezeFVC2aLDM1gTeYzaxTT4Se4Hy"/>
+<!-- Skeleton Overlay Simulation -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" viewbox="0 0 400 600">
+<!-- Head -->
+<circle class="skeleton-overlay fill-none" cx="200" cy="180" r="30"></circle>
+<!-- Torso -->
+<line class="skeleton-overlay" x1="200" x2="200" y1="210" y2="350"></line>
+<!-- Arms -->
+<line class="skeleton-overlay" x1="200" x2="140" y1="240" y2="300"></line>
+<line class="skeleton-overlay" x1="200" x2="260" y1="240" y2="300"></line>
+<!-- Legs (Jump pose) -->
+<line class="skeleton-overlay" x1="200" x2="160" y1="350" y2="450"></line>
+<line class="skeleton-overlay" x1="200" x2="240" y1="350" y2="450"></line>
+</svg>
+<!-- Status Badge -->
+<div class="absolute top-24 left-8 bg-secondary/90 text-on-secondary px-4 py-2 rounded-full flex items-center gap-2 font-bold animate-pulse">
+<span class="w-2 h-2 bg-white rounded-full"></span>
+                â PhÃ¡t hiá»n!
+            </div>
+<!-- Cheering Lio -->
+<div class="absolute bottom-32 md:bottom-32 left-8 flex items-end">
+<div class="relative w-24 h-24">
+<img class="w-full h-full object-contain" data-alt="Cute magical purple creature Lio wearing a small explorer hat, jumping and cheering with a wide happy smile, cartoon style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCl4hhbPDp-8HbCnYjPVS7tSCRFB7Pxf34o8h3fzBwnyrXUVmGZhVGng2jXssUVQThExNAYYIPQYczMI3Ri2a2VTLywDNZxjOHA21R6u8jpCuNvEFe9S6MzB-D317wq7mC_88d2g8l2_awwUyeBtweOpFHzb2lFRpOcP4b22n9fhyLqteuUZsIHzCG20zDD8Uva5ZYIGnlt3XcVZ595EuoN8zW9sV1CrAYgezNrtIiF9J0M-qBEaGZJpJjdb2FXAB-QL7TkKyFFn8Pt"/>
+</div>
+</div>
+</section>
+<!-- RIGHT HALF: Story Preview -->
+<section class="w-full md:w-1/2 h-1/2 md:h-full relative overflow-hidden bg-on-primary-container flex items-center justify-center">
+<div class="absolute inset-0 opacity-60">
+<img class="w-full h-full object-cover" data-alt="Epic cinematic scene of a golden dragon soaring through swirling amber and purple magical clouds at twilight, storybook illustration style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAu3Oubn12PnJUNbtqrxU5mQa4Yi9j29oAp2bpn4aSuutji2nSKm-V3W7ST6QEqhYZe-k6XQkROwuzdSD3UaGNTQlbRCkvyn4OlCxvuVxL0Bms2nNeARGKeAkH4DzRjSjdt5uwHN-mTiPxIMYG-XTzJ-UQke4BqgGaow75wsIF1glQYwo7rUZfIiUhEzBEZaILcKhfnejVAKIBok1sjP8REHITk6bwn5oW1Jdomq_dV-qo1P3C1u8NNhdx-C9_ETLHqs3XDjlyZmlMK"/>
+<!-- Atmospheric Glow Overlay -->
+<div class="absolute inset-0 bg-gradient-to-t from-primary/40 to-transparent"></div>
+</div>
+<!-- Story Preview Content -->
+<div class="relative z-10 text-center p-8">
+<div class="glass-panel p-8 rounded-xl border border-white/10 shadow-2xl">
+<h3 class="font-headline text-3xl md:text-5xl font-black text-on-tertiary-container mb-4 drop-shadow-lg leading-tight">
+                        â¦ Tháº¿ giá»i Äang chá» Äá»£i báº¡n!
+                    </h3>
+<div class="flex justify-center gap-2">
+<span class="bg-tertiary-fixed text-on-tertiary-fixed px-4 py-1 rounded-full text-xs font-black uppercase tracking-widest">Upcoming Scene</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Bar Shell -->
+<footer class="fixed bottom-0 left-0 w-full z-50 p-6">
+<div class="max-w-7xl mx-auto glass-panel rounded-xl shadow-[0_-8px_32px_rgba(73,25,125,0.12)] p-4 flex flex-col md:flex-row items-center justify-between gap-6">
+<!-- Lio Feedback -->
+<div class="flex items-center gap-4 flex-1">
+<div class="w-16 h-16 rounded-full bg-primary-container/30 overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Portrait of Lio the mascot, close-up friendly expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtaqul9nFjKLFBi3rA9MPQmrUtlNXqKnJwEev-OgNEtaTL5yPGMqj3afnZPv1HKLSnkr5kUJy1J1VE7BHtt97r_yRbeUNGBnr7oBgNL5dU132ELlR0At1j-U0YjuvKcAGUBBY_8rsTlgv7QyqMETupvpdAzUmx5WPwadlhBq4fEt-TtwR5gmQooA4goNGYAjhCk3FXL420zJusZ3pByu1OhqA4SjL8kxOYXLbYcjdJxFw2i_XkHun7I8NChfFzVL8qU2kFyyTKWaEg"/>
+</div>
+<div class="relative">
+<!-- Speech Bubble Tail -->
+<div class="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-surface-container rotate-45 hidden md:block"></div>
+<div class="bg-surface-container-high px-6 py-3 rounded-2xl">
+<p class="font-bold text-primary text-lg">Nháº£y tháº­t cao Äá» con rá»ng bay lÃªn!</p>
+</div>
+</div>
+</div>
+<!-- Progress & Controls -->
+<div class="flex items-center gap-8">
+<div class="text-center md:text-right">
+<p class="text-xs font-black text-outline uppercase tracking-widest mb-1">Current Progress</p>
+<h4 class="text-tertiary text-4xl font-black italic tracking-tighter leading-none">
+                        3/5 <span class="text-2xl not-italic">Láº¦N NHáº¢Y</span>
+</h4>
+</div>
+<!-- Done Button (Conditional, shown here for structure) -->
+<button class="bg-secondary text-on-secondary px-10 py-4 rounded-full font-black text-xl shadow-lg hover:scale-105 transition-transform duration-300 flex items-center gap-2 group">
+                    Xong!
+                    <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</button>
+</div>
+</div>
+</footer>
+<!-- Side Decoration (Mascot Interaction) -->
+<div class="hidden xl:block fixed bottom-40 right-10 z-0 pointer-events-none opacity-20">
+<div class="w-64 h-64 bg-tertiary-fixed rounded-full blur-[80px]"></div>
+</div>
+</body></html>
