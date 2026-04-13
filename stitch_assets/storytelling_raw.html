@@ -1,0 +1,191 @@
+﻿<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed": "#004842",
+                    "inverse-surface": "#0e0e0c",
+                    "tertiary-container": "#f8a826",
+                    "on-secondary-container": "#005c55",
+                    "surface-container-high": "#f0eee8",
+                    "on-tertiary-fixed": "#301c00",
+                    "on-tertiary-fixed-variant": "#593800",
+                    "primary-fixed": "#c596fe",
+                    "on-background": "#383835",
+                    "secondary-dim": "#00645c",
+                    "primary-container": "#c596fe",
+                    "on-error-container": "#510017",
+                    "secondary": "#007168",
+                    "inverse-primary": "#c596fe",
+                    "outline": "#82807c",
+                    "error-dim": "#a70138",
+                    "surface-dim": "#e5e2dc",
+                    "surface-container-low": "#fcf9f4",
+                    "inverse-on-surface": "#9e9d98",
+                    "on-secondary-fixed-variant": "#00675f",
+                    "primary-dim": "#6e42a3",
+                    "primary": "#7a4eb0",
+                    "surface-tint": "#7a4eb0",
+                    "background": "#fffcf7",
+                    "tertiary": "#8b5a00",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-variant": "#eae8e2",
+                    "on-primary-fixed-variant": "#49197d",
+                    "on-surface-variant": "#656461",
+                    "surface": "#fffcf7",
+                    "on-surface": "#383835",
+                    "error-container": "#f74b6d",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed": "#1b0039",
+                    "secondary-container": "#70f8e8",
+                    "tertiary-dim": "#7b4f00",
+                    "surface-container-highest": "#eae8e2",
+                    "surface-bright": "#fffcf7",
+                    "on-error": "#ffffff",
+                    "primary-fixed-dim": "#b789ef",
+                    "outline-variant": "#bbb9b4",
+                    "on-primary": "#ffffff",
+                    "tertiary-fixed-dim": "#e89b14",
+                    "error": "#c12048",
+                    "tertiary-fixed": "#f8a826",
+                    "secondary-fixed-dim": "#60e9da",
+                    "on-primary-container": "#3f0b73",
+                    "secondary-fixed": "#70f8e8",
+                    "on-tertiary-container": "#4e3000",
+                    "surface-container": "#f6f3ee",
+                    "on-tertiary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Be Vietnam Pro"],
+                    "body": ["Be Vietnam Pro"],
+                    "label": ["Be Vietnam Pro"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .watercolor-overlay {
+            background-image: linear-gradient(to bottom, rgba(73, 25, 125, 0.1), transparent 30%, transparent 70%, rgba(27, 0, 57, 0.8));
+        }
+        .audio-wave {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+        .wave-bar {
+            width: 3px;
+            background: #f8a826;
+            border-radius: 99px;
+        }
+    </style>
+</head>
+<body class="bg-background font-body text-on-background selection:bg-primary-container overflow-hidden h-screen w-screen">
+<!-- FULL BLEED BACKGROUND ENCHANTED GROVE -->
+<div class="fixed inset-0 z-0">
+<img alt="The Enchanted Grove" class="w-full h-full object-cover" data-alt="Dreamy watercolor illustration of a magical enchanted forest with glowing violet trees, golden light rays filtering through leaves, and sparkling dust particles." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyAjFZaZMd-bwIyYoVJOuiadjJoJIZ-mgNwffUzk9wxMsOKrWN-NxwwjazdsJO8WcN1zU0KET-EKe-hs0H2L_a8nTksksxGGPHWqvEG2JkwaS7nxgRWhT9ZLkX9yFsV0XOZrzAq4R7kUbVOLIlkVlLWf76beC0BBruokwljxSf9DZeUo0RE1J3WGi0t81MQg2ms0pMkMc7nSgCemld2p3jE1TDNL0pcFL1xYSO6_jDn8IkT89igdUUl1yYywxdM3BpCddBYRQns4sa"/>
+<div class="absolute inset-0 watercolor-overlay"></div>
+</div>
+<!-- SHARED COMPONENT: TopNavBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-transparent">
+<div class="flex items-center gap-2">
+<h1 class="font-be-vietnam-pro headline-sm font-bold tracking-tight text-2xl font-bold text-purple-800 dark:text-purple-200">MoveMyth</h1>
+</div>
+<div class="flex items-center gap-4">
+<!-- Location Chip Overlay -->
+<div class="bg-inverse-surface/60 backdrop-blur-md px-4 py-2 rounded-full flex items-center gap-2 border border-outline-variant/15">
+<span class="material-symbols-outlined text-secondary-fixed text-sm">filter_hdr</span>
+<span class="text-white text-xs font-bold tracking-wide">ð¿ The Enchanted Grove</span>
+</div>
+<!-- Child Avatar -->
+<div class="w-10 h-10 rounded-full border-2 border-primary-fixed shadow-lg overflow-hidden scale-100 hover:scale-105 transition-transform">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="Close-up portrait of a cheerful young child wearing a colorful explorer hat, soft studio lighting with a warm glow." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5KXVVNSU7XAziOfyHNV2WDHQ_i5FWOYeXMesvJxoZKLMnzokSh7iY2ZE0O0J1Ct0cufsa2Me3BxNs__YRtkAq7D6qrL6vqUwV1b9CAyVuDFDc5VvNAOtiQ25CwHZZ9ImNeS676-PzRj68xQX7VaGTUg_1NTC31nFfUohMxvWCwwV9n0xi8DucdSCBUVZnjHYQcmPWue43oCG_ZISzCbPlQsDdhZhK9Y8Da2HE6IP-jarfo3H2CjDmUipqj3u_eT4CBt8YVOZOr7Kn"/>
+</div>
+</div>
+</header>
+<!-- CENTER: LIO CHARACTER FLOATING -->
+<main class="relative z-10 h-full flex items-center justify-center pointer-events-none">
+<div class="relative w-64 h-64 flex items-center justify-center transform translate-y-[-10%]">
+<!-- Glow Effect behind Lio -->
+<div class="absolute inset-0 bg-primary/20 blur-[64px] rounded-full"></div>
+<!-- Lio Mascot -->
+<img alt="Lio the Mascot" class="w-48 h-48 object-contain drop-shadow-[0_20px_50px_rgba(73,25,125,0.3)] animate-pulse" data-alt="A cute, friendly purple fantasy creature with large expressive eyes and small wings, floating in a magical pose, soft textured illustration." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDt5M_I20RrgvLBYtoABzpUWieqcmrtY2i2_N-9XvwH6SLE3iVCjkvs3pkMjnk6u73tTwMZlxYywvH6NhdYbM9pR9I5d_Mv4nNhZyjmDosPJwV-ZxCt5szabzAGq6i2bVKMGeEFvknE3tH3HvKwzkqq7I4-HE27ivJJG7Xz8jHbAlt0ZzVoux4E43PXcL4vI1BidVBq-WtQOy-1B2buO4ynnCRJCHk1LNVYYomt8-2XjCtQ-VgwqfeAVEBCcN_UB7Cd2sN2EHpwR8xw"/>
+</div>
+</main>
+<!-- BOTTOM INTERFACE OVERLAY -->
+<div class="fixed bottom-0 left-0 right-0 z-20 px-6 pb-32 flex flex-col items-center">
+<!-- Narrator PIP & Audio Waveform -->
+<div class="w-full max-w-2xl flex items-end gap-4 mb-6">
+<!-- Lio PIP Narrator -->
+<div class="relative">
+<div class="w-20 h-20 rounded-lg overflow-hidden border-4 border-secondary-fixed shadow-[0_0_20px_rgba(112,248,232,0.4)]">
+<img alt="Lio PIP" class="w-full h-full object-cover" data-alt="Close up of a friendly purple fantasy character's face, smiling warmly at the camera, magical art style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuArQ6txpD8QdO7FWcqMH4N3U1IKbQaBGfK3cSz-i5sreNilnWiK32RtYGOGkJEewxsPkBEZrIoxETSczD2dfUm6touH8YqG9wtWwHbT9cRPdBrIEes_p-PFRUshR8-lgZw1poGaqe31Aqg9l875ogjnVUicoYKXADDNsjh4Ed3qAg8vunsy0Gn4LpVDewGfyhE8W6SjfPbrgjxfMn_GdyjorLhBu0Y5LlOC26gArwxLlP-nrlMzUSEtoYZE7h9GmqS_GP_EYb16EROR"/>
+</div>
+<div class="absolute -bottom-2 -right-2 bg-secondary-fixed text-on-secondary-fixed p-1 rounded-full shadow-md">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">mic</span>
+</div>
+</div>
+<!-- Speech Bubble & Waveform -->
+<div class="flex-1 flex flex-col gap-3">
+<!-- Audio Indicator -->
+<div class="flex items-center gap-3 bg-black/30 backdrop-blur-md px-3 py-1 rounded-full w-fit border border-white/10">
+<div class="audio-wave">
+<div class="wave-bar h-2"></div>
+<div class="wave-bar h-4"></div>
+<div class="wave-bar h-2"></div>
+<div class="wave-bar h-5"></div>
+<div class="wave-bar h-3"></div>
+</div>
+<span class="text-[10px] font-bold text-tertiary-fixed tracking-widest uppercase">STORYTELLING</span>
+</div>
+<!-- Purple Speech Bubble -->
+<div class="bg-primary/90 backdrop-blur-xl text-white p-5 rounded-xl rounded-bl-none shadow-xl relative border border-primary-fixed/20">
+<p class="text-base leading-relaxed font-medium">
+                        Look at that, Little Explorer! The glowing flowers only open when they hear the sound of your footsteps. Can you try walking slowly on your tip-toes?
+                    </p>
+<!-- Bubble tail -->
+<div class="absolute bottom-0 left-0 -translate-x-1/2 translate-y-full w-0 h-0 border-l-[12px] border-l-transparent border-t-[12px] border-t-primary/90 border-r-[12px] border-r-transparent"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- SHARED COMPONENT: BottomNavBar -->
+<div class="fixed bottom-0 w-full z-50 flex justify-center pb-8">
+<nav class="bg-white/80 dark:bg-purple-950/80 backdrop-blur-lg fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] rounded-[3rem] shadow-[0_8px_32px_rgba(73,25,125,0.08)] flex justify-between items-center px-4 py-3">
+<!-- Story (ACTIVE) -->
+<a class="flex flex-col items-center justify-center bg-purple-100 dark:bg-purple-800 text-purple-900 dark:text-purple-100 rounded-full px-6 py-2 shadow-inner hover:scale-105 transition-transform active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories" style="font-variation-settings: 'FILL' 1;">auto_stories</span>
+<span class="font-be-vietnam-pro text-xs font-medium">Story</span>
+</a>
+<!-- Listen -->
+<a class="flex flex-col items-center justify-center text-purple-400 dark:text-purple-500 px-6 py-2 hover:scale-105 transition-transform active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="headset">headset</span>
+<span class="font-be-vietnam-pro text-xs font-medium">Listen</span>
+</a>
+<!-- Play -->
+<a class="flex flex-col items-center justify-center text-purple-400 dark:text-purple-500 px-6 py-2 hover:scale-105 transition-transform active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="videogame_asset">videogame_asset</span>
+<span class="font-be-vietnam-pro text-xs font-medium">Play</span>
+</a>
+</nav>
+</div>
+</body></html>
