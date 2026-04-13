@@ -1,0 +1,306 @@
+﻿<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Adventure Complete | StoryTime with Lio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-fixed-variant": "#49197d",
+                    "on-surface": "#383835",
+                    "secondary": "#007168",
+                    "surface-container-high": "#f0eee8",
+                    "tertiary-dim": "#7b4f00",
+                    "on-error-container": "#510017",
+                    "on-tertiary": "#ffffff",
+                    "primary-container": "#c596fe",
+                    "tertiary": "#8b5a00",
+                    "on-secondary": "#ffffff",
+                    "primary-dim": "#6e42a3",
+                    "secondary-dim": "#00645c",
+                    "outline-variant": "#bbb9b4",
+                    "surface-dim": "#e5e2dc",
+                    "surface-container-highest": "#eae8e2",
+                    "primary": "#7a4eb0",
+                    "inverse-primary": "#c596fe",
+                    "surface": "#fffcf7",
+                    "error-dim": "#a70138",
+                    "on-primary-fixed": "#1b0039",
+                    "on-secondary-container": "#005c55",
+                    "primary-fixed-dim": "#b789ef",
+                    "secondary-container": "#70f8e8",
+                    "surface-container-low": "#fcf9f4",
+                    "surface-tint": "#7a4eb0",
+                    "inverse-surface": "#0e0e0c",
+                    "surface-container": "#f6f3ee",
+                    "on-primary-container": "#3f0b73",
+                    "surface-bright": "#fffcf7",
+                    "inverse-on-surface": "#9e9d98",
+                    "secondary-fixed": "#70f8e8",
+                    "tertiary-container": "#f8a826",
+                    "error": "#c12048",
+                    "primary-fixed": "#c596fe",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-fixed-dim": "#60e9da",
+                    "tertiary-fixed-dim": "#e89b14",
+                    "on-tertiary-fixed-variant": "#593800",
+                    "on-secondary-fixed-variant": "#00675f",
+                    "on-secondary-fixed": "#004842",
+                    "background": "#fffcf7",
+                    "on-tertiary-fixed": "#301c00",
+                    "tertiary-fixed": "#f8a826",
+                    "outline": "#82807c",
+                    "error-container": "#f74b6d",
+                    "surface-variant": "#eae8e2",
+                    "on-surface-variant": "#656461",
+                    "on-primary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "on-tertiary-container": "#4e3000",
+                    "on-background": "#383835"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Be Vietnam Pro"],
+                    "body": ["Be Vietnam Pro"],
+                    "label": ["Be Vietnam Pro"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Be Vietnam Pro', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 252, 247, 0.8);
+            backdrop-filter: blur(16px);
+        }
+        .text-shadow-glow {
+            text-shadow: 0 0 20px rgba(122, 78, 176, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-[#FAF7F2] to-[#FFF0D6] min-h-screen text-on-surface selection:bg-primary-container">
+<!-- Top Navigation Bar -->
+<header class="flex justify-between items-center w-full sticky top-0 z-50 bg-[#fffcf7] dark:bg-stone-950 top-0 px-6 py-4 no-border tonal-shift flat-no-shadows">
+<div class="flex items-center gap-2">
+<span class="text-2xl font-black text-[#6B3FA0] dark:text-[#c596fe] tracking-tighter">StoryTime with Lio</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-[#6B3FA0] dark:text-[#c596fe] text-2xl hover:opacity-80 transition-opacity scale-95 active:scale-90 duration-300">account_circle</button>
+</div>
+</header>
+<main class="max-w-4xl mx-auto px-6 py-8 md:py-12 relative">
+<!-- Mascot Overlap -->
+<div class="absolute -top-12 right-0 md:right-8 w-32 md:w-48 z-10 drop-shadow-2xl transform rotate-12">
+<img alt="Lio the fox mascot celebrating with a big smile" class="w-full h-auto" data-alt="whimsical 3d render of a cute orange fox mascot with large friendly eyes, wearing a small green scarf, waving excitedly" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDSKLb22rWwwsbjRyFgxZmvIHc0qoKEI1o9XMeTM3AUU05SxH6IGNzcP2NZ4ZLVytf5bg_WzIptHI8tHOzHPCRJ8W97qP8ceH6cDQ0rF3awb5sXpsRfEiSqh7pSxuGES5MRgf96cMSatXvOFN9EN1UCFJclRJizMYPosXz5em07g-SeLVTDT9mKNIyKyCBfeJmh56A8Wadd-g9qxXbG0A2Uo8WTpuJ6VvPWlSqu36pYMaK71K5g8b9nPIbomTD8StoKzk0UG-59qW-"/>
+</div>
+<!-- Header Section -->
+<div class="mb-10 relative">
+<h1 class="text-4xl md:text-6xl font-black text-on-primary-fixed-variant tracking-tight text-shadow-glow mb-2">
+                Adventure Complete! ð
+            </h1>
+<p class="text-lg text-on-surface-variant font-medium">You did it, little explorer!</p>
+</div>
+<!-- Main Summary Card -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[32px_0_32px_-4px_rgba(73,25,125,0.08)] p-8 md:p-12 mb-10 relative overflow-hidden">
+<!-- Background Magic Sparkles -->
+<div class="absolute top-0 right-0 p-4">
+<span class="material-symbols-outlined text-tertiary-fixed text-4xl opacity-40">auto_awesome</span>
+</div>
+<div class="flex flex-col items-center text-center">
+<div class="w-24 h-24 rounded-full bg-primary-container/20 flex items-center justify-center mb-6 overflow-hidden">
+<img alt="Lio the mascot waving hello" class="w-full h-full object-cover" data-alt="close-up portrait of a friendly cartoon fox mascot with soft textures and bright sparkling eyes" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtlURl52xJn7paeRTmLNz-fb8qwMXNA7aNjDxtp8ZlTt78qKRE6SiI218TJGuQ4GdXsabPt3idVlsLjjZIzifwGl7cYfoBszPsFka58I85MGYCMu5eKKBlAm8rcUw9GyQw4QF3W1l4pzOPvg10fEisNWrJnVdxO-MMD4_35W5ImSSbXarKUhrPa33428PrAgETPR0vOHG6FuNhTtuBcKkECsathwv9PwN81KxVwqdRm42qJQpImGUSSE4TQoLNL02H6mdxUQbxzS3R"/>
+</div>
+<h2 class="text-2xl md:text-3xl font-bold text-on-surface mb-4">The Secret of the Whispering Woods</h2>
+<p class="text-lg text-on-surface-variant leading-relaxed max-w-2xl mb-10">
+                    You helped Lio find the lost crystal and saved the forest! Your bravery sparked the ancient magic once more.
+                </p>
+<!-- Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full mb-10">
+<div class="bg-surface-container-low rounded-lg p-6 flex flex-col items-center transition-transform hover:scale-[1.02]">
+<span class="material-symbols-outlined text-primary text-3xl mb-2">directions_run</span>
+<span class="text-2xl font-black text-on-surface">15 Jumps</span>
+<span class="text-sm text-on-surface-variant font-medium uppercase tracking-wider">Active Movement</span>
+</div>
+<div class="bg-surface-container-low rounded-lg p-6 flex flex-col items-center transition-transform hover:scale-[1.02]">
+<span class="material-symbols-outlined text-secondary text-3xl mb-2">auto_stories</span>
+<span class="text-2xl font-black text-on-surface">5 Beats</span>
+<span class="text-sm text-on-surface-variant font-medium uppercase tracking-wider">Story Progress</span>
+</div>
+<div class="bg-surface-container-low rounded-lg p-6 flex flex-col items-center transition-transform hover:scale-[1.02]">
+<span class="material-symbols-outlined text-tertiary text-3xl mb-2">schedule</span>
+<span class="text-2xl font-black text-on-surface">12 Minutes</span>
+<span class="text-sm text-on-surface-variant font-medium uppercase tracking-wider">Played</span>
+</div>
+</div>
+<!-- Navigation Shortcuts -->
+<div class="flex flex-wrap justify-center gap-6 border-t border-outline-variant/15 pt-8 w-full">
+<button class="flex flex-col items-center gap-1 group">
+<div class="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center group-hover:bg-primary-container/30 transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">auto_stories</span>
+</div>
+<span class="text-xs font-bold text-on-surface-variant uppercase tracking-tighter">Library</span>
+</button>
+<button class="flex flex-col items-center gap-1 group">
+<div class="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center group-hover:bg-primary-container/30 transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">electric_bolt</span>
+</div>
+<span class="text-xs font-bold text-on-surface-variant uppercase tracking-tighter">Active</span>
+</button>
+<button class="flex flex-col items-center gap-1 group">
+<div class="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center group-hover:bg-primary-container/30 transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">insights</span>
+</div>
+<span class="text-xs font-bold text-on-surface-variant uppercase tracking-tighter">Progress</span>
+</button>
+<button class="flex flex-col items-center gap-1 group">
+<div class="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center group-hover:bg-primary-container/30 transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">family_restroom</span>
+</div>
+<span class="text-xs font-bold text-on-surface-variant uppercase tracking-tighter">Parents</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Your Journey Timeline -->
+<section class="mb-16">
+<h3 class="text-xl font-bold text-on-surface mb-8 ml-2 flex items-center gap-2">
+                Your Journey <span class="text-tertiary-fixed material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">stars</span>
+</h3>
+<div class="flex flex-nowrap md:justify-between items-center gap-4 overflow-x-auto pb-6 scrollbar-hide">
+<!-- Scene 1 -->
+<div class="flex-shrink-0 flex flex-col items-center relative group">
+<div class="w-20 h-20 rounded-full border-4 border-secondary p-1 bg-surface-container relative">
+<img alt="Forest entrance" class="w-full h-full object-cover rounded-full" data-alt="watercolor illustration of a magical glowing forest entrance with purple vines and soft sunlight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEW1PZYliargXTbKjv8qZrTz5_MOc2X_28GV1z0CuKj8FVtf9QuI4r3QPEltsGpkLktFwrJJOBSlTg5-6aKF7uTb7nZqR-HpnuDedODhN6VW0fLZYd8cF3waKBI_gPe9lvKgp8t3oEm55GzCueUCU7ahvRZQN3-mxSDdEEnXv9qEZRwViNN_fS3TMTIBVbuBGRwEdtWh_A0YJJQPGBi6rbdNXo85mvel_cha-zyZplojNCZbRDoGKNHnAse-kqeBapPkAYM9rSYq_t"/>
+<div class="absolute -top-1 -right-1 bg-secondary text-white rounded-full w-6 h-6 flex items-center justify-center border-2 border-surface">
+<span class="material-symbols-outlined text-xs font-bold">check</span>
+</div>
+</div>
+</div>
+<!-- Connector -->
+<div class="hidden md:block flex-grow h-px border-t-2 border-dotted border-outline-variant mx-2"></div>
+<!-- Scene 2 -->
+<div class="flex-shrink-0 flex flex-col items-center relative">
+<div class="w-20 h-20 rounded-full border-4 border-secondary p-1 bg-surface-container relative">
+<img alt="Lio meets a friend" class="w-full h-full object-cover rounded-full" data-alt="soft digital painting of a fox meeting a blue glowing butterfly in a clearing" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsF0dAWqqNmKRK80tGWOVn08sIiAp-Llsh7dSqBufBSMXKBk-GvhEdsuez3oBSpxsoahR8X6DnqvKoWD0WJoE69nfsQIHX6RgY9JKwcnEHVkQL8rVnYisu1XTyKO1R2M-rZ1oH6KfbCeVWzODAut-KJz1YAg6zdrQtBLRYr-PtBDBlaaFhc31i6LegpIDpI2ys5a6CfXS11do9CWs0IC0xfuI9QloVM0UzV7Zkvm0Ewl6UnHK9AMLSAnwupkJwz-pB9CGMnmsTDU6T"/>
+<div class="absolute -top-1 -right-1 bg-secondary text-white rounded-full w-6 h-6 flex items-center justify-center border-2 border-surface">
+<span class="material-symbols-outlined text-xs font-bold">check</span>
+</div>
+</div>
+</div>
+<!-- Connector -->
+<div class="hidden md:block flex-grow h-px border-t-2 border-dotted border-outline-variant mx-2"></div>
+<!-- Scene 3 -->
+<div class="flex-shrink-0 flex flex-col items-center relative">
+<div class="w-20 h-20 rounded-full border-4 border-secondary p-1 bg-surface-container relative">
+<img alt="Finding the crystal" class="w-full h-full object-cover rounded-full" data-alt="magical glowing crystal sitting on a mossy rock pedestal inside a cave" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCO_M6DyzJm1_FuD60xUQurcEcQIbnOrbdP0VZ75ee574bfwnxbFekRQVmYccWQ48fEwisONLrygwRHctqj7Lq4K-mUpdHS4gpUwTAQmIOJ0fcplXInreK_eixnTuGFsIi89qymawNOk22r_P6NVw7KmBSFsJKN0iuXDLbquSycvJ09agJxjGmTwv_Ze0kPBsybFFHZqtX6lx0WahFfouz55cZWkw6eC6iZTWB0oWooeMUVTgYXwIP8LGgf4VKMN1xqLc1ptlzdp4qk"/>
+<div class="absolute -top-1 -right-1 bg-secondary text-white rounded-full w-6 h-6 flex items-center justify-center border-2 border-surface">
+<span class="material-symbols-outlined text-xs font-bold">check</span>
+</div>
+</div>
+</div>
+<!-- Connector -->
+<div class="hidden md:block flex-grow h-px border-t-2 border-dotted border-outline-variant mx-2"></div>
+<!-- Scene 4 -->
+<div class="flex-shrink-0 flex flex-col items-center relative">
+<div class="w-20 h-20 rounded-full border-4 border-secondary p-1 bg-surface-container relative">
+<img alt="Saving the forest" class="w-full h-full object-cover rounded-full" data-alt="vibrant green forest canopy glowing with magical energy and sparkles" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJ16KCPb8pOXZROM8XI-aURI99IalBNZ1-RZqZQ3XYaklq0tCqkbe4DaVJNetoGSYfO3Nd-mUo_nf0yOsNSYCn5ReXqVLpYiw1MLKsLvr2GzJOrmngXzEeKBwJYLovRv5sYwpwJXWx0aTXTyb-iQTkyjcysQMriGyCzFmYUnoeULWhNP7hVYQ_jw5kU1EWD8JzN7oKb8o9Ri6jh6EIcQWAgH_wCyChsIXArkA3YAZQlUTNy9ORxn0_GFQnSbSx8ULKPgRUxKaW02_0"/>
+<div class="absolute -top-1 -right-1 bg-secondary text-white rounded-full w-6 h-6 flex items-center justify-center border-2 border-surface">
+<span class="material-symbols-outlined text-xs font-bold">check</span>
+</div>
+</div>
+</div>
+<!-- Connector -->
+<div class="hidden md:block flex-grow h-px border-t-2 border-dotted border-outline-variant mx-2"></div>
+<!-- Scene 5 -->
+<div class="flex-shrink-0 flex flex-col items-center relative">
+<div class="w-20 h-20 rounded-full border-4 border-secondary p-1 bg-surface-container relative">
+<img alt="The celebration" class="w-full h-full object-cover rounded-full" data-alt="fox mascot and various woodland creatures dancing under a starry night sky" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBH7jqGO5scGQP3QSsTulPkAfTsO4epUCYFJAO34ZZKhXHQhtB4k6SHpgzGb6U-oUPTj4_xdZl7c7Plbl-R7OfuiZkhY0A3mL_McvdYvj3MwrkhxuygjkGSSo0gCGyoQSPyGfl2nxb9bqUCEmzgtmmrbS6sNekhNYybLSSBhxHJVAGGWMnkbHxgpm-9xIOUV-iIpqtyX0KIcyXBPNaSfRy7F5-b_NNQtoKAl2Y0BXnnknF_IKubtaULtyMhUjClDvDe_siZnMA-wtGi"/>
+<div class="absolute -top-1 -right-1 bg-secondary text-white rounded-full w-6 h-6 flex items-center justify-center border-2 border-surface">
+<span class="material-symbols-outlined text-xs font-bold">check</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bottom CTAs -->
+<div class="flex flex-col items-center gap-6 mt-12">
+<div class="flex flex-col md:flex-row gap-4 w-full md:w-auto">
+<button class="px-8 py-4 rounded-full border-2 border-primary text-primary font-bold text-lg hover:bg-primary/5 transition-all scale-95 active:scale-90 duration-300 min-w-[200px]">
+                    Play Again
+                </button>
+<button class="px-8 py-4 rounded-full bg-primary text-on-primary font-bold text-lg shadow-lg hover:shadow-xl transition-all scale-95 active:scale-90 duration-300 min-w-[200px] flex items-center justify-center gap-2">
+                    New Adventure <span class="text-tertiary-fixed material-symbols-outlined">colors_spark</span>
+</button>
+</div>
+<a class="flex items-center gap-2 text-primary font-bold hover:underline transition-all" href="#">
+<span class="material-symbols-outlined text-sm">arrow_back_ios</span>
+                Share with Parent
+            </a>
+</div>
+</main>
+<!-- Side Navigation (Mobile Hidden) -->
+<nav class="hidden md:flex flex-col w-72 h-screen fixed left-0 top-0 z-40 bg-[#fffcf7] dark:bg-stone-950 rounded-r-xl tonal-shift shadow-[32px_0_32px_-4px_rgba(73,25,125,0.08)] p-6">
+<div class="mb-10 mt-16">
+<h2 class="font-be-vietnam-pro title-md font-medium text-stone-500 dark:text-stone-400 mb-1">Hi, Adventurer!</h2>
+<p class="text-xl font-bold text-[#6B3FA0]">Ready for a new story?</p>
+</div>
+<div class="space-y-2 flex-grow">
+<a class="flex items-center gap-4 px-4 py-3 text-stone-500 dark:text-stone-400 font-medium hover:bg-[#6B3FA0]/5 transition-colors rounded-full scale-[0.98] transition-transform duration-300" href="#">
+<span class="material-symbols-outlined">home</span>
+<span>Home</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-stone-500 dark:text-stone-400 font-medium hover:bg-[#6B3FA0]/5 transition-colors rounded-full scale-[0.98] transition-transform duration-300" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+<span>My Library</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-[#6B3FA0] dark:text-[#c596fe] font-bold bg-[#6B3FA0]/10 rounded-full scale-[0.98] transition-transform duration-300" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+<span>Achievements</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-stone-500 dark:text-stone-400 font-medium hover:bg-[#6B3FA0]/5 transition-colors rounded-full scale-[0.98] transition-transform duration-300" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+</div>
+<button class="w-full py-4 bg-primary text-on-primary rounded-full font-bold mb-4 shadow-md">
+            Start Adventure
+        </button>
+</nav>
+<!-- Bottom Navigation (Mobile Only) -->
+<nav class="md:hidden fixed bottom-6 left-6 right-6 bg-surface-container-highest rounded-xl shadow-lg flex justify-around items-center py-3 px-4 z-50">
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Books</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-primary relative">
+<div class="absolute -top-1 w-8 h-8 bg-primary/10 rounded-full -z-10"></div>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Wins</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Menu</span>
+</button>
+</nav>
+</body></html>
