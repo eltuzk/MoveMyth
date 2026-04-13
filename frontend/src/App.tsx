@@ -1,42 +1,40 @@
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { SessionProvider } from './contexts/SessionContext'
-import MagicMirror from './components/MagicMirror'
-import StoryScene from './components/StoryScene'
-import BadgeDisplay from './components/BadgeDisplay'
-import ChallengeOverlay from './components/ChallengeOverlay'
+import { HomeLandingScreen } from './screens/HomeLandingScreen'
+import { CharacterSetupOnboarding } from './screens/CharacterSetupOnboarding'
+import { MagicSignActivation } from './screens/MagicSignActivation'
+import { ActiveStorytellingView } from './screens/ActiveStorytellingView'
+import { ActiveVerificationChallenge } from './screens/ActiveVerificationChallenge'
+import { AdventureCompleteSummary } from './screens/AdventureCompleteSummary'
+import { StoryLaunchWelcome } from './screens/StoryLaunchWelcome'
+import { VoiceChoiceChallenge } from './screens/VoiceChoiceChallenge'
+import { LioDemoChallenge } from './screens/LioDemoChallenge'
+import { ParentDashboard } from './screens/ParentDashboard'
+
+import { BaseLayout } from './layouts/BaseLayout'
+import { GameLayout } from './layouts/GameLayout'
+import { StandaloneLayout } from './layouts/StandaloneLayout'
 
 function App() {
   return (
     <SessionProvider>
-      <div className="min-h-screen bg-gradient-to-br from-magic-50 via-fairy-50 to-forest-50">
-        {/* Header */}
-        <header className="p-4 text-center">
-          <h1 className="font-display text-4xl font-bold text-magic-600">
-            🧚 MoveMyth
-          </h1>
-          <p className="font-body text-magic-400 mt-1">
-            Câu chuyện phép thuật đang chờ bạn!
-          </p>
-        </header>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<BaseLayout screenKey="home"><HomeLandingScreen /></BaseLayout>} />
+          <Route path="/onboarding" element={<GameLayout screenKey="onboarding"><CharacterSetupOnboarding /></GameLayout>} />
+          <Route path="/magic-sign" element={<GameLayout screenKey="magic-sign"><MagicSignActivation /></GameLayout>} />
+          <Route path="/welcome" element={<GameLayout screenKey="story-launch"><StoryLaunchWelcome /></GameLayout>} />
+          <Route path="/story" element={<GameLayout screenKey="story"><ActiveStorytellingView /></GameLayout>} />
+          <Route path="/challenge/voice" element={<GameLayout screenKey="challenge-voice"><VoiceChoiceChallenge /></GameLayout>} />
+          <Route path="/challenge/demo" element={<StandaloneLayout screenKey="challenge-demo"><LioDemoChallenge /></StandaloneLayout>} />
+          <Route path="/verify" element={<GameLayout screenKey="verify"><ActiveVerificationChallenge /></GameLayout>} />
+          <Route path="/complete" element={<GameLayout screenKey="complete"><AdventureCompleteSummary /></GameLayout>} />
+          <Route path="/parent" element={<BaseLayout screenKey="parent"><ParentDashboard /></BaseLayout>} />
 
-        {/* Main Content */}
-        <main className="container mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Camera / Magic Mirror */}
-          <section className="order-1">
-            <MagicMirror />
-          </section>
-
-          {/* Story Scene */}
-          <section className="order-2">
-            <StoryScene />
-          </section>
-        </main>
-
-        {/* Badge Display */}
-        <BadgeDisplay />
-
-        {/* Challenge Overlay (shows on top when active) */}
-        <ChallengeOverlay />
-      </div>
+          {/* Catch-all redirect */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
     </SessionProvider>
   )
 }
