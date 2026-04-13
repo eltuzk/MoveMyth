@@ -1,10 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Sidebar } from '../components/Sidebar';
 
 export const HomeLandingScreen: React.FC = () => {
   const navigate = useNavigate();
-  const [isSidebarExpanded, setIsSidebarExpanded] = React.useState(false);
 
   const handleStart = () => {
     navigate('/onboarding');
@@ -97,18 +95,7 @@ export const HomeLandingScreen: React.FC = () => {
         }
       `}</style>
       
-      <Sidebar
-        isExpanded={isSidebarExpanded}
-        onExpandChange={setIsSidebarExpanded}
-      />
-
-      <div
-        className="flex-1 overflow-x-hidden px-8 py-10 transition-[margin-left] duration-250 ease-in-out"
-        style={{
-          marginLeft: isSidebarExpanded ? '200px' : '64px',
-          width: isSidebarExpanded ? 'calc(100% - 200px)' : 'calc(100% - 64px)',
-        }}
-      >
+      <div className="w-full flex-1 px-8 py-10">
         <div className="mx-auto w-full max-w-[1440px]">
           <div className="mb-12 flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
             <div className="min-w-0">
