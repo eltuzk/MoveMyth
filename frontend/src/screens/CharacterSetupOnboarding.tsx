@@ -38,7 +38,7 @@ export const CharacterSetupOnboarding: React.FC = () => {
               </label>
               <div className="relative group">
                 <input
-                  className="w-full bg-[#fcf9f4] border-none rounded-full py-6 px-8 text-xl font-semibold text-[#383835] placeholder:text-[#82807c] shadow-[0_8px_30px_rgb(73,25,125,0.04)] focus:ring-4 focus:ring-[#c596fe]/30 transition-all outline-none"
+                  className="w-full bg-white border-none rounded-full py-6 px-8 text-xl font-semibold text-[#383835] placeholder:text-[#6e7280] ring-1 ring-[#e5deef] shadow-[0_10px_28px_rgba(73,25,125,0.08)] focus:ring-4 focus:ring-[#c596fe]/35 transition-all outline-none"
                   placeholder="Nhập tên tại đây..."
                   type="text"
                 />
@@ -47,8 +47,8 @@ export const CharacterSetupOnboarding: React.FC = () => {
                 </button>
               </div>
             </div>
-            
-            <button 
+
+            <button
               onClick={handleNext}
               className="bg-[#6B3FA0] text-white px-10 py-4 rounded-full font-black text-lg shadow-xl shadow-[#6B3FA0]/30 hover:scale-105 transition-transform active:scale-95 flex items-center gap-3 w-fit"
             >

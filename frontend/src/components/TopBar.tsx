@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export interface TopBarProps {
   screenKey: string;
@@ -18,23 +19,29 @@ const BREADCRUMB_MAP: Record<string, { prev: string[], current: string }> = {
 };
 
 export const TopBar: React.FC<TopBarProps> = ({ screenKey }) => {
+  const navigate = useNavigate();
   const isHome = screenKey === 'home';
   const breadcrumb = BREADCRUMB_MAP[screenKey] || { prev: ['Hành trình'], current: 'MoveMyth' };
 
   return (
     <div className="sticky top-0 z-[100] w-full h-[56px] bg-[#2d1b69] px-6 py-3 flex items-center justify-between shadow-md text-white font-['Be_Vietnam_Pro'] shrink-0">
       {/* Left */}
-      <div className="font-bold text-lg tracking-wide shrink-0">
+      <button
+        type="button"
+        onClick={() => navigate('/')}
+        className="font-bold text-lg tracking-wide shrink-0 hover:text-[#f8a826] transition-colors"
+        aria-label="Go to home"
+      >
         MoveMyth
-      </div>
+      </button>
 
       {/* Center */}
       {isHome ? (
         <div className="hidden md:flex items-center w-[320px] bg-white rounded-full px-4 py-1.5 gap-2 group border border-transparent focus-within:border-[#f8a826] transition-all">
           <span className="material-symbols-outlined text-slate-400 text-lg group-focus-within:text-[#7a4eb0]">search</span>
-          <input 
-            type="text" 
-            placeholder="Tìm câu chuyện..." 
+          <input
+            type="text"
+            placeholder="Tìm câu chuyện..."
             className="w-full bg-transparent border-none outline-none text-slate-700 text-sm font-medium placeholder:text-slate-400"
           />
         </div>

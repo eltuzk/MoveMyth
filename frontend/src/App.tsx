@@ -15,6 +15,7 @@ import { BaseLayout } from './layouts/BaseLayout'
 import { GameLayout } from './layouts/GameLayout'
 import { StandaloneLayout } from './layouts/StandaloneLayout'
 
+
 function App() {
   return (
     <SessionProvider>
@@ -27,7 +28,17 @@ function App() {
           <Route path="/story" element={<GameLayout screenKey="story"><ActiveStorytellingView /></GameLayout>} />
           <Route path="/challenge/voice" element={<GameLayout screenKey="challenge-voice"><VoiceChoiceChallenge /></GameLayout>} />
           <Route path="/challenge/demo" element={<StandaloneLayout screenKey="challenge-demo"><LioDemoChallenge /></StandaloneLayout>} />
-          <Route path="/verify" element={<GameLayout screenKey="verify"><ActiveVerificationChallenge /></GameLayout>} />
+          <Route 
+            path="/verify" 
+            element={
+              <GameLayout 
+                screenKey="verify" 
+                showFooter={false}
+              >
+                <ActiveVerificationChallenge />
+              </GameLayout>
+            } 
+          />
           <Route path="/complete" element={<GameLayout screenKey="complete"><AdventureCompleteSummary /></GameLayout>} />
           <Route path="/parent" element={<BaseLayout screenKey="parent"><ParentDashboard /></BaseLayout>} />
 
