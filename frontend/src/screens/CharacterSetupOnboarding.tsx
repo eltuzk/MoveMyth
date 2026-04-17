@@ -47,8 +47,8 @@ export const CharacterSetupOnboarding: React.FC = () => {
                 </button>
               </div>
             </div>
-            
-            <button 
+
+            <button
               onClick={handleNext}
               className="bg-[#6B3FA0] text-white px-10 py-4 rounded-full font-black text-lg shadow-xl shadow-[#6B3FA0]/30 hover:scale-105 transition-transform active:scale-95 flex items-center gap-3 w-fit"
             >
