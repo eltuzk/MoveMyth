@@ -24,3 +24,62 @@ body {
 #root {
   min-height: 100vh;
 }
+
+/* ============================================================
+   Magic Camera Frame — animated rotating gradient border
+   ============================================================ */
+@property --angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes magic-border-rotate {
+  to { --angle: 360deg; }
+}
+
+.camera-frame-border {
+  animation: magic-border-rotate 4s linear infinite;
+}
+
+/* ============================================================
+   Touch targets — enforce minimum 48px for child-friendly UI
+   ============================================================ */
+button, [role="button"], a {
+  min-height: 48px;
+  min-width: 48px;
+}
+
+/* Override for inline/icon elements that shouldn't be enlarged */
+button.inline-icon, a.inline-icon {
+  min-height: unset;
+  min-width: unset;
+}
+
+/* ============================================================
+   Utility: smooth text rendering for large emoji
+   ============================================================ */
+.emoji-display {
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+/* ============================================================
+   Framer Motion — prevent flash on initial AnimatePresence
+   ============================================================ */
+[data-framer-portal-id] {
+  pointer-events: none;
+}
+
+/* ============================================================
+   Badge glow utility
+   ============================================================ */
+.badge-emoji {
+  filter: drop-shadow(0 0 10px rgba(255, 200, 0, 0.5));
+  animation: badge-glow 2s ease-in-out infinite;
+}
+
+@keyframes badge-glow {
+  0%, 100% { filter: drop-shadow(0 0 8px rgba(255, 200, 0, 0.4)); }
+  50%       { filter: drop-shadow(0 0 22px rgba(255, 200, 0, 0.85)); }
+}

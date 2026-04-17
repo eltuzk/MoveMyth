@@ -1,144 +1,174 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import confetti from 'canvas-confetti';
 
 export interface BadgeModalProps {
   isOpen: boolean;
   onClose?: () => void;
   hasMoreScenes?: boolean;
+  badge?: { emoji: string; label: string; description?: string };
 }
 
-export const BadgeModal: React.FC<BadgeModalProps> = ({ 
-  isOpen, 
+function fireCelebrationConfetti() {
+  confetti({
+    particleCount: 130,
+    spread: 75,
+    origin: { x: 0.5, y: 0.6 },
+    colors: ['#58CC02', '#FF9600', '#CE82FF', '#FFD700', '#4FC3F7'],
+    ticks: 220,
+    gravity: 0.85,
+    scalar: 1.15,
+  });
+  setTimeout(() => {
+    confetti({ particleCount: 45, angle: 60,  spread: 60, origin: { x: 0, y: 0.65 } });
+    confetti({ particleCount: 45, angle: 120, spread: 60, origin: { x: 1, y: 0.65 } });
+  }, 220);
+}
+
+export const BadgeModal: React.FC<BadgeModalProps> = ({
+  isOpen,
   onClose,
-  hasMoreScenes = true 
+  hasMoreScenes = true,
+  badge = { emoji: '🏆', label: 'Dũng Cảm Bắt Đầu', description: 'Bạn đã xuất sắc kích hoạt phép thuật! Huy hiệu này minh chứng cho sự can đảm của một Nhà Thám Hiểm đích thực!' },
 }) => {
   const navigate = useNavigate();
-  const [showConfetti, setShowConfetti] = useState(false);
+  const [hasFired, setHasFired] = useState(false);
 
   useEffect(() => {
-    if (isOpen) {
-      setShowConfetti(true);
-      const timer = setTimeout(() => setShowConfetti(false), 3000);
-      return () => clearTimeout(timer);
+    if (isOpen && !hasFired) {
+      const t = setTimeout(() => {
+        fireCelebrationConfetti();
+        setHasFired(true);
+      }, 180);
+      return () => clearTimeout(t);
     }
-  }, [isOpen]);
-
-  if (!isOpen) return null;
+    if (!isOpen) setHasFired(false);
+  }, [isOpen, hasFired]);
 
   const handleContinue = () => {
-    if (onClose) onClose();
-    if (hasMoreScenes) {
-      navigate('/story');
-    } else {
-      navigate('/complete');
-    }
+    onClose?.();
+    if (hasMoreScenes) navigate('/story');
+    else navigate('/complete');
   };
 
   return (
-    <>
-      <style>{`
-        .badge-modal-overlay {
-          font-family: 'Be Vietnam Pro', sans-serif;
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: rgba(14, 14, 12, 0.6);
-          backdrop-filter: blur(8px);
-          z-index: 1000;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 24px;
-        }
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          key="badge-overlay"
+          className="fixed inset-0 z-[300] flex items-center justify-center px-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.25 }}
+          onClick={handleContinue}
+          style={{ background: 'rgba(14,14,12,0.65)', backdropFilter: 'blur(10px)' }}
+        >
+          {/* Warm background flash */}
+          <motion.div
+            className="absolute inset-0 pointer-events-none"
+            initial={{ opacity: 0.7 }}
+            animate={{ opacity: 0 }}
+            transition={{ duration: 1, delay: 0.1 }}
+            style={{ background: 'radial-gradient(circle at 50% 50%, rgba(255,200,0,0.35), transparent 70%)' }}
+          />
 
-        .badge-modal-card {
-          background: white;
-          border-radius: 24px;
-          max-width: 420px;
-          width: 100%;
-          padding: 32px;
-          box-shadow: 0 24px 48px -12px rgba(73, 25, 125, 0.25);
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          text-align: center;
-          position: relative;
-          overflow: hidden;
-          animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        @keyframes modalPop {
-          0% { opacity: 0; transform: scale(0.8) translateY(20px); }
-          100% { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
-        /* Subtle CSS Confetti */
-        .confetti {
-          position: absolute;
-          width: 8px;
-          height: 8px;
-          background-color: #f8a826;
-          border-radius: 2px;
-          opacity: 0;
-        }
-
-        @keyframes confettiFall {
-          0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
-          100% { transform: translateY(200px) rotate(360deg); opacity: 0; }
-        }
-
-        .show-confetti .confetti {
-          animation: confettiFall 2s ease-in forwards;
-        }
-
-        .c1 { left: 10%; background: #c596fe; animation-delay: 0.1s; animation-duration: 2.2s; }
-        .c2 { left: 20%; background: #007168; animation-delay: 0.3s; animation-duration: 1.8s; }
-        .c3 { left: 30%; background: #c12048; animation-delay: 0.2s; animation-duration: 2.5s; }
-        .c4 { left: 40%; background: #f8a826; animation-delay: 0.5s; animation-duration: 2.0s; }
-        .c5 { left: 50%; background: #7a4eb0; animation-delay: 0.0s; animation-duration: 2.1s; }
-        .c6 { left: 60%; background: #c596fe; animation-delay: 0.4s; animation-duration: 1.9s; }
-        .c7 { left: 70%; background: #007168; animation-delay: 0.2s; animation-duration: 2.3s; }
-        .c8 { left: 80%; background: #c12048; animation-delay: 0.6s; animation-duration: 2.2s; }
-        .c9 { left: 90%; background: #f8a826; animation-delay: 0.1s; animation-duration: 1.7s; }
-      `}</style>
-
-      <div className="badge-modal-overlay" onClick={handleContinue}>
-        <div className={`badge-modal-card ${showConfetti ? 'show-confetti' : ''}`} onClick={(e) => e.stopPropagation()}>
-          {/* Confetti Elements */}
-          <div className="confetti c1"></div><div className="confetti c2"></div>
-          <div className="confetti c3"></div><div className="confetti c4"></div>
-          <div className="confetti c5"></div><div className="confetti c6"></div>
-          <div className="confetti c7"></div><div className="confetti c8"></div>
-          <div className="confetti c9"></div>
-
-          {/* Badge Content */}
-          <div className="relative mb-6">
-            <div className="w-24 h-24 bg-[#7a4eb0]/10 rounded-full flex items-center justify-center animate-pulse">
-              <span className="text-6xl drop-shadow-md">🏆</span>
-            </div>
-            {/* Sparkles */}
-            <span className="absolute -top-2 -right-2 text-2xl text-[#f8a826] animate-bounce">✨</span>
-            <span className="absolute bottom-0 -left-4 text-xl text-[#c596fe] animate-bounce delay-100">✨</span>
-          </div>
-
-          <h2 className="text-2xl font-black text-[#383835] mb-2 uppercase tracking-wide">
-            Dũng cảm bắt đầu!
-          </h2>
-          <p className="text-[#656461] text-sm leading-relaxed mb-8 px-4">
-            Bạn đã xuất sắc kích hoạt phép thuật trên Cầu Cầu Vồng. Huy hiệu này minh chứng cho sự can đảm của một Nhà Thám Hiểm đích thực!
-          </p>
-
-          <button 
-            onClick={handleContinue}
-            className="w-full bg-[#f8a826] text-[#4e3000] py-4 rounded-full font-black text-lg shadow-xl shadow-amber-500/30 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2"
+          <motion.div
+            key="badge-card"
+            className="relative w-full max-w-[400px] bg-white rounded-[28px] overflow-hidden text-center"
+            initial={{ scale: 0.5, opacity: 0, y: 50 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.75, opacity: 0, y: -16 }}
+            transition={{ type: 'spring', stiffness: 280, damping: 22 }}
+            onClick={(e) => e.stopPropagation()}
+            style={{ boxShadow: '0 24px 64px -12px rgba(73,25,125,0.3)' }}
           >
-            Tiếp tục hành trình
-            <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
-          </button>
-        </div>
-      </div>
-    </>
+            {/* Gradient top strip */}
+            <div className="h-2 w-full" style={{ background: 'linear-gradient(90deg, #58CC02, #FF9600, #CE82FF)' }} />
+
+            <div className="px-8 pt-8 pb-8">
+              {/* Badge emoji with spring entrance */}
+              <motion.div
+                className="relative mx-auto mb-6 w-28 h-28"
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ type: 'spring', stiffness: 260, damping: 18, delay: 0.12 }}
+              >
+                {/* Glow ring */}
+                <motion.div
+                  className="absolute inset-0 rounded-full"
+                  animate={{ opacity: [0.35, 0.75, 0.35], scale: [1, 1.28, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  style={{ background: 'radial-gradient(circle, rgba(255,180,0,0.45), transparent 70%)' }}
+                />
+                <div
+                  className="w-full h-full rounded-full flex items-center justify-center"
+                  style={{ background: 'linear-gradient(135deg, #fff9e6, #fff3cc)', boxShadow: '0 6px 24px rgba(255,150,0,0.28)' }}
+                >
+                  <motion.span
+                    className="text-6xl select-none"
+                    animate={{ scale: [1, 1.08, 1] }}
+                    transition={{ duration: 1.8, repeat: Infinity }}
+                  >
+                    {badge.emoji}
+                  </motion.span>
+                </div>
+
+                {/* Corner sparkles */}
+                <motion.span className="absolute -top-2 -right-3 text-2xl select-none"
+                  animate={{ scale: [0.8, 1.3, 0.8], opacity: [0.6, 1, 0.6] }}
+                  transition={{ duration: 1.4, repeat: Infinity }}
+                >✨</motion.span>
+                <motion.span className="absolute bottom-0 -left-4 text-xl select-none"
+                  animate={{ scale: [0.7, 1.2, 0.7], opacity: [0.5, 1, 0.5] }}
+                  transition={{ duration: 1.7, repeat: Infinity, delay: 0.4 }}
+                >⭐</motion.span>
+              </motion.div>
+
+              {/* Heading */}
+              <motion.h2
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.38, duration: 0.4 }}
+                className="font-display text-2xl font-bold uppercase tracking-wide mb-1"
+                style={{ color: '#383835' }}
+              >
+                {badge.label}
+              </motion.h2>
+
+              <motion.p
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.52, duration: 0.38 }}
+                className="font-body text-sm leading-relaxed mb-8 px-2"
+                style={{ color: '#656461' }}
+              >
+                {badge.description ?? 'Bạn thật dũng cảm! Tiếp tục hành trình nhé!'}
+              </motion.p>
+
+              {/* CTA button */}
+              <motion.button
+                onClick={handleContinue}
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.96 }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.68, duration: 0.35 }}
+                className="w-full py-4 rounded-full font-display font-bold text-lg flex items-center justify-center gap-2"
+                style={{
+                  background: 'linear-gradient(135deg, #f8a826, #FF9600)',
+                  boxShadow: '0 8px 24px rgba(248,168,38,0.38)',
+                  color: '#4e3000',
+                }}
+              >
+                Tiếp tục hành trình
+                <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
+              </motion.button>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };

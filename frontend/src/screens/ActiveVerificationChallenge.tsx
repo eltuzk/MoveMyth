@@ -1,9 +1,45 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import type { Variants } from 'framer-motion';
 import { BadgeModal } from '../components/BadgeModal';
+import { DoneButton } from '../components/DoneButton';
+
+type StatusType = 'idle' | 'loading' | 'success' | 'fail';
+
+const STATUS_MESSAGES = {
+  loading: ['Lio đang xem...', 'Phép thuật đang hoạt động...', 'Sắp xong rồi!'],
+};
+
+/** Overlay variants for success / fail feedback */
+const overlayVariants: Variants = {
+  hidden:  { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.25 } },
+  exit:    { opacity: 0, transition: { duration: 0.35 } },
+};
+
+const pillVariants: Variants = {
+  hidden:  { scale: 0.6, y: 20, opacity: 0 },
+  visible: { scale: 1, y: 0, opacity: 1, transition: { type: 'spring' as const, stiffness: 300, damping: 22 } },
+  exit:    { scale: 0.8, y: -10, opacity: 0, transition: { duration: 0.25 } },
+};
 
 export const ActiveVerificationChallenge: React.FC = () => {
-  const [status, setStatus] = useState<'idle' | 'success' | 'fail'>('idle');
+  const [status, setStatus] = useState<StatusType>('idle');
   const [showBadgeModal, setShowBadgeModal] = useState(false);
+
+  const handleDone = () => {
+    if (status !== 'idle') return;
+    setStatus('loading');
+
+    // Simulate a verify API call (1.8s)
+    setTimeout(() => {
+      setStatus('success');
+      setTimeout(() => {
+        setStatus('idle');
+        setShowBadgeModal(true);
+      }, 1800);
+    }, 1800);
+  };
 
   const simulateSuccess = () => {
     setStatus('success');
@@ -31,13 +67,6 @@ export const ActiveVerificationChallenge: React.FC = () => {
           background: rgba(255, 252, 247, 0.85);
           backdrop-filter: blur(16px);
         }
-        .status-alert {
-          animation: slide-up 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        @keyframes slide-up {
-          from { transform: translateY(100%); opacity: 0; }
-          to { transform: translateY(0); opacity: 1; }
-        }
       `}</style>
 
       {/* Main Content Area: Split Screen */}
@@ -46,7 +75,24 @@ export const ActiveVerificationChallenge: React.FC = () => {
         {/* Split Screen Container */}
         <div className="flex flex-col md:flex-row w-full max-w-7xl h-[60vh] gap-4 mb-8">
           {/* LEFT HALF: Camera Feed */}
-          <section className="flex-1 relative overflow-hidden bg-[#e5e2dc] rounded-[2rem] border-4 border-[#70f8e8] shadow-2xl">
+          <section
+            className="flex-1 relative overflow-hidden bg-[#e5e2dc] rounded-[2rem] shadow-2xl"
+            style={{
+              border: status === 'success'
+                ? '4px solid #58CC02'
+                : status === 'fail'
+                ? '4px solid #FF9600'
+                : status === 'loading'
+                ? '4px solid #FF9600'
+                : '4px solid #70f8e8',
+              transition: 'border-color 0.4s ease',
+              boxShadow: status === 'success'
+                ? '0 0 32px rgba(88,204,2,0.4)'
+                : status === 'loading'
+                ? '0 0 32px rgba(255,150,0,0.4)'
+                : '0 0 20px rgba(112,248,232,0.25)',
+            }}
+          >
             <img
               className="w-full h-full object-cover grayscale-[0.2]"
               alt="Young child jumping happily"
@@ -61,29 +107,98 @@ export const ActiveVerificationChallenge: React.FC = () => {
               <line className="skeleton-overlay" x1="200" x2="160" y1="350" y2="450"></line>
               <line className="skeleton-overlay" x1="200" x2="240" y1="350" y2="450"></line>
             </svg>
+
             {/* Status Badge */}
-            <div className="absolute top-8 left-8 bg-[#007168]/90 text-white px-4 py-2 rounded-full flex items-center gap-2 font-bold animate-pulse">
+            <motion.div
+              className="absolute top-8 left-8 bg-[#007168]/90 text-white px-4 py-2 rounded-full flex items-center gap-2 font-bold"
+              animate={{ opacity: [0.7, 1, 0.7] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            >
               <span className="w-2 h-2 bg-white rounded-full"></span>
               ● Phát hiện!
-            </div>
+            </motion.div>
 
-            {/* Simulation Feedback Overlays */}
-            {status === 'success' && (
-              <div className="absolute inset-0 bg-green-500/20 backdrop-blur-[2px] flex items-center justify-center z-50 status-alert">
-                <div className="bg-white px-8 py-4 rounded-full shadow-2xl flex items-center gap-3 scale-125">
-                  <span className="material-symbols-outlined text-green-600 text-3xl">check_circle</span>
-                  <span className="font-black text-green-800 tracking-tight">XUẤT SẮC!</span>
-                </div>
-              </div>
-            )}
-            {status === 'fail' && (
-              <div className="absolute inset-0 bg-red-500/20 backdrop-blur-[2px] flex items-center justify-center z-50 status-alert">
-                <div className="bg-white px-8 py-4 rounded-full shadow-2xl flex items-center gap-3 scale-125">
-                  <span className="material-symbols-outlined text-red-600 text-3xl">error</span>
-                  <span className="font-black text-red-800 tracking-tight">THỬ LẠI CHÚT NHA!</span>
-                </div>
-              </div>
-            )}
+            {/* Status overlays — animated with AnimatePresence */}
+            <AnimatePresence>
+              {status === 'success' && (
+                <motion.div
+                  key="success-overlay"
+                  className="absolute inset-0 flex items-center justify-center z-50"
+                  variants={overlayVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  style={{ background: 'rgba(88,204,2,0.15)', backdropFilter: 'blur(2px)' }}
+                >
+                  <motion.div
+                    className="bg-white px-8 py-4 rounded-full shadow-2xl flex items-center gap-3"
+                    variants={pillVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                  >
+                    <span className="material-symbols-outlined text-green-600 text-3xl">check_circle</span>
+                    <span className="font-black text-green-800 tracking-tight">XUẤT SẮC!</span>
+                  </motion.div>
+                </motion.div>
+              )}
+
+              {status === 'fail' && (
+                <motion.div
+                  key="fail-overlay"
+                  className="absolute inset-0 flex items-center justify-center z-50"
+                  variants={overlayVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  style={{ background: 'rgba(255,150,0,0.12)', backdropFilter: 'blur(2px)' }}
+                >
+                  <motion.div
+                    className="bg-white px-8 py-4 rounded-full shadow-2xl flex items-center gap-3"
+                    variants={pillVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                  >
+                    <span className="text-2xl">🌟</span>
+                    <span className="font-black tracking-tight" style={{ color: '#7a4eb0' }}>THỬ LẠI CHÚT NHA!</span>
+                  </motion.div>
+                </motion.div>
+              )}
+
+              {status === 'loading' && (
+                <motion.div
+                  key="loading-overlay"
+                  className="absolute inset-0 flex items-center justify-center z-50"
+                  variants={overlayVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  style={{ background: 'rgba(255,150,0,0.08)', backdropFilter: 'blur(1px)' }}
+                >
+                  <motion.div
+                    className="bg-white/90 px-8 py-5 rounded-2xl shadow-xl flex flex-col items-center gap-3"
+                    variants={pillVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                  >
+                    <div className="flex gap-2">
+                      {[0, 1, 2].map((i) => (
+                        <motion.div
+                          key={i}
+                          className="w-3 h-3 rounded-full"
+                          style={{ backgroundColor: i === 0 ? '#58CC02' : i === 1 ? '#FF9600' : '#CE82FF' }}
+                          animate={{ y: [0, -10, 0] }}
+                          transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15 }}
+                        />
+                      ))}
+                    </div>
+                    <span className="font-bold text-sm" style={{ color: '#383835' }}>Lio đang xem...</span>
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </section>
 
           {/* RIGHT HALF: Story Preview */}
@@ -107,26 +222,40 @@ export const ActiveVerificationChallenge: React.FC = () => {
           </section>
         </div>
 
+        {/* "Xong rồi!" — DoneButton with loading state */}
+        <div className="w-full max-w-sm mb-6">
+          <DoneButton
+            onClick={handleDone}
+            isLoading={status === 'loading'}
+            disabled={status === 'success' || status === 'fail'}
+            loadingMessage={STATUS_MESSAGES.loading}
+          />
+        </div>
+
         {/* Demo Controls: Placed below the split screen */}
         <div className="w-full max-w-2xl bg-white p-6 rounded-[1.5rem] shadow-lg border border-[#bbb9b4]/20">
           <h4 className="text-center font-bold text-[#656461] mb-4 text-sm tracking-widest uppercase">
             Bảng điều khiển Giả lập (Cho giám khảo)
           </h4>
           <div className="flex flex-col md:flex-row gap-4 justify-center">
-            <button 
+            <motion.button 
               onClick={simulateSuccess}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.96 }}
               className="flex-1 bg-green-600 hover:bg-green-700 text-white px-6 py-4 rounded-full text-sm font-black uppercase tracking-widest shadow-lg transition-colors flex items-center justify-center gap-2"
             >
               <span className="material-symbols-outlined">check_circle</span>
               Giả lập Thành công
-            </button>
-            <button 
+            </motion.button>
+            <motion.button 
               onClick={simulateFail}
-              className="flex-1 bg-red-600 hover:bg-red-700 text-white px-6 py-4 rounded-full text-sm font-black uppercase tracking-widest shadow-lg transition-colors flex items-center justify-center gap-2"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.96 }}
+              className="flex-1 bg-orange-500 hover:bg-orange-600 text-white px-6 py-4 rounded-full text-sm font-black uppercase tracking-widest shadow-lg transition-colors flex items-center justify-center gap-2"
             >
-              <span className="material-symbols-outlined">cancel</span>
-              Giả lập Thất bại
-            </button>
+              <span className="material-symbols-outlined">replay</span>
+              Giả lập Thử lại
+            </motion.button>
           </div>
         </div>
 
