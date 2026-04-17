@@ -6,23 +6,6 @@ import { LioBar } from '../components/LioBar';
 
 type StatusType = 'idle' | 'loading' | 'success' | 'fail';
 
-const STATUS_MESSAGES = {
-  loading: ['Lio đang xem...', 'Phép thuật đang hoạt động...', 'Sắp xong rồi!'],
-};
-
-/** Overlay variants for success / fail feedback */
-const overlayVariants: Variants = {
-  hidden:  { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.25 } },
-  exit:    { opacity: 0, transition: { duration: 0.35 } },
-};
-
-const pillVariants: Variants = {
-  hidden:  { scale: 0.6, y: 20, opacity: 0 },
-  visible: { scale: 1, y: 0, opacity: 1, transition: { type: 'spring' as const, stiffness: 300, damping: 22 } },
-  exit:    { scale: 0.8, y: -10, opacity: 0, transition: { duration: 0.25 } },
-};
-
 export const ActiveVerificationChallenge: React.FC = () => {
   const [status, setStatus] = useState<StatusType>('idle');
   const [showBadgeModal, setShowBadgeModal] = useState(false);
@@ -67,152 +50,6 @@ export const ActiveVerificationChallenge: React.FC = () => {
 
   return (
     <>
-      <style>{`
-        .skeleton-overlay {
-          stroke: #70f8e8;
-          stroke-width: 4;
-          stroke-linecap: round;
-          filter: drop-shadow(0 0 8px #70f8e8);
-        }
-        .glass-panel {
-          background: rgba(255, 252, 247, 0.85);
-          backdrop-filter: blur(16px);
-        }
-      `}</style>
-
-<<<<<<< HEAD
-      {/* Main Content Area: Split Screen */}
-      <main className="flex-1 flex flex-col items-center px-4 pt-4 pb-12 min-h-[calc(100vh-136px)]">
-        
-        {/* Split Screen Container */}
-        <div className="flex flex-col md:flex-row w-full max-w-7xl h-[60vh] gap-4 mb-8">
-          {/* LEFT HALF: Camera Feed */}
-          <section
-            className="flex-1 relative overflow-hidden bg-[#e5e2dc] rounded-[2rem] shadow-2xl"
-            style={{
-              border: status === 'success'
-                ? '4px solid #58CC02'
-                : status === 'fail'
-                ? '4px solid #FF9600'
-                : status === 'loading'
-                ? '4px solid #FF9600'
-                : '4px solid #70f8e8',
-              transition: 'border-color 0.4s ease',
-              boxShadow: status === 'success'
-                ? '0 0 32px rgba(88,204,2,0.4)'
-                : status === 'loading'
-                ? '0 0 32px rgba(255,150,0,0.4)'
-                : '0 0 20px rgba(112,248,232,0.25)',
-            }}
-          >
-            <img
-              className="w-full h-full object-cover grayscale-[0.2]"
-              alt="Young child jumping happily"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDG07qQ7e49es7_x5VIXQd8Pe3JGg9op0R2ix2FJBPp-kpcj2UTLNvLe9j3LmmrCloLEkFNnAhI4wSoe1zmKITAaXRKO5MOgc0owLbUved8inFrFurAcVnWiCoWYAjfbz_9Tc6LaeQQK-MBkNDTilpMgD52OlMKkZH436RoQGbJvY3o3p0hQ27jKpLJMTzCW7lrsdHJerd4LrSmeVuN8hDN4rDUach_kprP7bQn_nAS5xzsaEdbsezeFVC2aLDM1gTeYzaxTT4Se4Hy"
-            />
-            {/* Skeleton Overlay */}
-            <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 600">
-              <circle className="skeleton-overlay fill-none" cx="200" cy="180" r="30"></circle>
-              <line className="skeleton-overlay" x1="200" x2="200" y1="210" y2="350"></line>
-              <line className="skeleton-overlay" x1="200" x2="140" y1="240" y2="300"></line>
-              <line className="skeleton-overlay" x1="200" x2="260" y1="240" y2="300"></line>
-              <line className="skeleton-overlay" x1="200" x2="160" y1="350" y2="450"></line>
-              <line className="skeleton-overlay" x1="200" x2="240" y1="350" y2="450"></line>
-            </svg>
-
-            {/* Status Badge */}
-            <motion.div
-              className="absolute top-8 left-8 bg-[#007168]/90 text-white px-4 py-2 rounded-full flex items-center gap-2 font-bold"
-              animate={{ opacity: [0.7, 1, 0.7] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-            >
-              <span className="w-2 h-2 bg-white rounded-full"></span>
-              ● Phát hiện!
-            </motion.div>
-
-            {/* Status overlays — animated with AnimatePresence */}
-            <AnimatePresence>
-              {status === 'success' && (
-                <motion.div
-                  key="success-overlay"
-                  className="absolute inset-0 flex items-center justify-center z-50"
-                  variants={overlayVariants}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                  style={{ background: 'rgba(88,204,2,0.15)', backdropFilter: 'blur(2px)' }}
-                >
-                  <motion.div
-                    className="bg-white px-8 py-4 rounded-full shadow-2xl flex items-center gap-3"
-                    variants={pillVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                  >
-                    <span className="material-symbols-outlined text-green-600 text-3xl">check_circle</span>
-                    <span className="font-black text-green-800 tracking-tight">XUẤT SẮC!</span>
-                  </motion.div>
-                </motion.div>
-              )}
-
-              {status === 'fail' && (
-                <motion.div
-                  key="fail-overlay"
-                  className="absolute inset-0 flex items-center justify-center z-50"
-                  variants={overlayVariants}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                  style={{ background: 'rgba(255,150,0,0.12)', backdropFilter: 'blur(2px)' }}
-                >
-                  <motion.div
-                    className="bg-white px-8 py-4 rounded-full shadow-2xl flex items-center gap-3"
-                    variants={pillVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                  >
-                    <span className="text-2xl">🌟</span>
-                    <span className="font-black tracking-tight" style={{ color: '#7a4eb0' }}>THỬ LẠI CHÚT NHA!</span>
-                  </motion.div>
-                </motion.div>
-              )}
-
-              {status === 'loading' && (
-                <motion.div
-                  key="loading-overlay"
-                  className="absolute inset-0 flex items-center justify-center z-50"
-                  variants={overlayVariants}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                  style={{ background: 'rgba(255,150,0,0.08)', backdropFilter: 'blur(1px)' }}
-                >
-                  <motion.div
-                    className="bg-white/90 px-8 py-5 rounded-2xl shadow-xl flex flex-col items-center gap-3"
-                    variants={pillVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                  >
-                    <div className="flex gap-2">
-                      {[0, 1, 2].map((i) => (
-                        <motion.div
-                          key={i}
-                          className="w-3 h-3 rounded-full"
-                          style={{ backgroundColor: i === 0 ? '#58CC02' : i === 1 ? '#FF9600' : '#CE82FF' }}
-                          animate={{ y: [0, -10, 0] }}
-                          transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15 }}
-                        />
-                      ))}
-                    </div>
-                    <span className="font-bold text-sm" style={{ color: '#383835' }}>Lio đang xem...</span>
-                  </motion.div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </section>
-=======
       <style>{`
         .skeleton-overlay {
           stroke: #70f8e8;
@@ -320,7 +157,6 @@ export const ActiveVerificationChallenge: React.FC = () => {
               )}
             </div>
           </div>
->>>>>>> 1a1b055 (feat: standardize character bar UI and add firework celebration)
 
           {/* RIGHT HALF: Story Preview */}
           <section className="flex-1 relative overflow-hidden bg-[#3f0b73] rounded-[3rem] flex items-center justify-center shadow-2xl h-full">
@@ -372,7 +208,6 @@ export const ActiveVerificationChallenge: React.FC = () => {
           >
             <span className="material-symbols-outlined text-[28px]">cancel</span>
           </button>
-        </div>
         </div>
 
       </main>
