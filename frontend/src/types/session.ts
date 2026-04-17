@@ -1,20 +1,19 @@
 /**
- * Session types — matches backend Session State Schema from AGENTS.md
+ * session.ts — MVP session types.
+ *
+ * Replaced old WebSocket-era types with the MVP API shapes.
+ * All shapes re-exported from types/api.ts for convenience.
  */
 
-export interface Badge {
-  name: string;
-  reason: string;
-  challengeId?: string;
-  awardedAt?: string;
-}
+export type { Segment, Challenge, Badge } from './api';
 
+// Legacy exports kept as empty-compat stubs so existing imports don't break
+// before we clean them up. Remove after full integration.
 export interface CompletedChallenge {
   challengeId: string;
   exercise: string;
   reps: number;
   verified: boolean;
-  badgeAwarded?: string;
 }
 
 export interface PendingChallenge {
@@ -28,39 +27,33 @@ export interface PendingChallenge {
 
 export type SessionMode = 'live' | 'agent';
 
+/**
+ * Frontend session state — MVP version.
+ * SessionContext holds these fields and distributes them to all screens.
+ */
 export interface SessionState {
-  // Runtime (ADK state)
-  childName: string;
-  sessionStarted: boolean;
-  storyTheme: string;
-  mode: SessionMode;
-  currentScene: number;
-  badges: Badge[];
-  scenes: string[];
-  completedChallenges: CompletedChallenge[];
-  pendingChallenge: PendingChallenge | null;
-  narrativeDirection: string;
+  // API-provided session ID (null before /api/story/start completes)
+  sessionId: string | null;
 
-  // Long-term memory (loaded from Firestore)
-  isReturningUser: boolean;
-  previousBadges: Badge[];
-  favoriteTheme: string | null;
-  totalSessions: number;
+  // Story progress
+  childName: string;
+  segment: import('./api').Segment | null;
+  challenge: import('./api').Challenge | null;
+  segmentIndex: number;
+  badges: import('./api').Badge[];
+
+  // UI flags
+  sessionStarted: boolean;
+  storyComplete: boolean;
 }
 
 export const DEFAULT_SESSION_STATE: SessionState = {
+  sessionId: null,
   childName: '',
-  sessionStarted: false,
-  storyTheme: '',
-  mode: 'live',
-  currentScene: 0,
+  segment: null,
+  challenge: null,
+  segmentIndex: 0,
   badges: [],
-  scenes: [],
-  completedChallenges: [],
-  pendingChallenge: null,
-  narrativeDirection: '',
-  isReturningUser: false,
-  previousBadges: [],
-  favoriteTheme: null,
-  totalSessions: 0,
+  sessionStarted: false,
+  storyComplete: false,
 };

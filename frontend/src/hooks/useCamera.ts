@@ -1,156 +1,137 @@
 /**
- * useCamera — Camera stream access hook via getUserMedia.
+ * useCamera — Camera stream hook with single-init pattern.
  *
- * Provides camera stream, canvas capture for sending frames,
- * and cleanup on unmount.
+ * Camera starts automatically on mount via a single useEffect with [] deps.
+ * This prevents the "play() interrupted by a new load request" AbortError
+ * that occurs when the effect runs twice due to state-triggered re-renders.
+ *
+ * captureFrameDataUrl() returns full "data:image/jpeg;base64,..." string.
+ * captureFrame()        returns raw base64 string (no prefix).
  */
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 
 interface UseCameraOptions {
-  /** Desired video width */
   width?: number;
-  /** Desired video height */
   height?: number;
-  /** Camera direction for mobile devices */
   facingMode?: 'user' | 'environment';
-  /** Whether to start camera automatically */
-  autoStart?: boolean;
 }
 
 interface UseCameraReturn {
-  /** Ref to attach to a <video> element */
+  /** Attach to <video ref={videoRef}> */
   videoRef: React.RefObject<HTMLVideoElement | null>;
-  /** Whether the camera stream is active */
+  /** True once the stream is playing */
   isActive: boolean;
-  /** Start the camera */
-  startCamera: () => Promise<void>;
-  /** Stop the camera */
-  stopCamera: () => void;
-  /** Capture current frame as base64 JPEG */
-  captureFrame: () => string | null;
-  /** Capture current frame as full data URL JPEG */
+  /** Capture current frame as "data:image/jpeg;base64,..." */
   captureFrameDataUrl: () => string | null;
-  /** Any error that occurred */
+  /** Capture current frame as raw base64 (no data-URL prefix) */
+  captureFrame: () => string | null;
+  /** Any camera error message */
   error: string | null;
 }
 
 export function useCamera({
-  width = 320,
-  height = 240,
+  width = 640,
+  height = 480,
   facingMode = 'user',
-  autoStart = false,
 }: UseCameraOptions = {}): UseCameraReturn {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isActive, setIsActive] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const startCamera = useCallback(async () => {
-    try {
-      setError(null);
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          width: { ideal: width },
-          height: { ideal: height },
-          facingMode: { ideal: facingMode },
-        },
-        audio: false,
-      });
-      streamRef.current = stream;
+  // -------------------------------------------------------------------------
+  // Single-init effect — empty deps means this runs EXACTLY ONCE on mount.
+  // Do NOT add any state dependencies here — that would re-run initCamera()
+  // and cause "play() interrupted by a new load request" AbortError.
+  // -------------------------------------------------------------------------
+  useEffect(() => {
+    let cancelled = false;
 
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        await videoRef.current.play();
+    async function initCamera() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            width: { ideal: width },
+            height: { ideal: height },
+            facingMode: { ideal: facingMode },
+          },
+          audio: false,
+        });
+
+        if (cancelled) {
+          // Component unmounted before stream was ready — clean up immediately
+          stream.getTracks().forEach((t) => t.stop());
+          return;
+        }
+
+        streamRef.current = stream;
+        const videoEl = videoRef.current;
+
+        if (videoEl) {
+          videoEl.srcObject = stream;
+          try {
+            await videoEl.play();
+            if (!cancelled) setIsActive(true);
+          } catch (e: unknown) {
+            // AbortError fires when a re-render calls load() before play() resolves.
+            // It is harmless — the stream is still playing after the interruption.
+            if (e instanceof Error && e.name !== 'AbortError') {
+              console.error('[useCamera] play() error:', e.message);
+              if (!cancelled) setError(e.message);
+            }
+            // Even on AbortError the video usually recovers — mark active anyway
+            if (!cancelled) setIsActive(true);
+          }
+        }
+      } catch (err) {
+        if (!cancelled) {
+          const message =
+            err instanceof Error ? err.message : 'Camera access denied';
+          console.error('[useCamera] getUserMedia error:', message);
+          setError(message);
+        }
       }
-
-      setIsActive(true);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Camera access denied';
-      setError(message);
-      console.error('[useCamera] Error:', message);
-    }
-  }, [width, height, facingMode]);
-
-  const stopCamera = useCallback(() => {
-    streamRef.current?.getTracks().forEach((track) => track.stop());
-    streamRef.current = null;
-    if (videoRef.current) {
-      videoRef.current.srcObject = null;
-    }
-    setIsActive(false);
-  }, []);
-
-  const captureFrame = useCallback((): string | null => {
-    if (!videoRef.current || !isActive) return null;
-
-    // Create canvas lazily
-    if (!canvasRef.current) {
-      canvasRef.current = document.createElement('canvas');
     }
 
-    const canvas = canvasRef.current;
-    canvas.width = width;
-    canvas.height = height;
+    initCamera();
 
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return null;
+    // Cleanup: stop all tracks when component unmounts
+    return () => {
+      cancelled = true;
+      streamRef.current?.getTracks().forEach((t) => t.stop());
+      streamRef.current = null;
+      const videoEl = videoRef.current;
+      if (videoEl) {
+        videoEl.pause();
+        videoEl.srcObject = null;
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // ← MUST remain empty — see comment above
 
-    ctx.drawImage(videoRef.current, 0, 0, width, height);
-
-    // Return base64 JPEG (without the data:image/jpeg;base64, prefix)
-    const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
-    return dataUrl.split(',')[1] || null;
-  }, [isActive, width, height]);
+  // -------------------------------------------------------------------------
+  // Frame capture helpers
+  // -------------------------------------------------------------------------
 
   const captureFrameDataUrl = useCallback((): string | null => {
-    if (!videoRef.current || !isActive) return null;
+    const videoEl = videoRef.current;
+    if (!videoEl || !streamRef.current) return null;
 
-    if (!canvasRef.current) {
-      canvasRef.current = document.createElement('canvas');
-    }
-
-    const canvas = canvasRef.current;
-    canvas.width = width;
-    canvas.height = height;
-
+    const canvas = document.createElement('canvas');
+    canvas.width = videoEl.videoWidth || width;
+    canvas.height = videoEl.videoHeight || height;
     const ctx = canvas.getContext('2d');
     if (!ctx) return null;
 
-    ctx.drawImage(videoRef.current, 0, 0, width, height);
+    ctx.drawImage(videoEl, 0, 0);
     return canvas.toDataURL('image/jpeg', 0.8);
-  }, [isActive, width, height]);
+  }, [width, height]);
 
-  // Ensure stream is attached after the <video> element is mounted.
-  useEffect(() => {
-    if (!isActive || !videoRef.current || !streamRef.current) return;
+  const captureFrame = useCallback((): string | null => {
+    const dataUrl = captureFrameDataUrl();
+    return dataUrl ? (dataUrl.split(',')[1] ?? null) : null;
+  }, [captureFrameDataUrl]);
 
-    videoRef.current.srcObject = streamRef.current;
-    videoRef.current.play().catch((playError) => {
-      const message = playError instanceof Error ? playError.message : 'Cannot play camera stream';
-      setError(message);
-      console.error('[useCamera] Play error:', message);
-    });
-  }, [isActive]);
-
-  // Auto-start if requested
-  useEffect(() => {
-    if (autoStart) {
-      startCamera();
-    }
-    return () => {
-      stopCamera();
-    };
-  }, [autoStart, startCamera, stopCamera]);
-
-  return {
-    videoRef,
-    isActive,
-    startCamera,
-    stopCamera,
-    captureFrame,
-    captureFrameDataUrl,
-    error,
-  };
+  return { videoRef, isActive, captureFrameDataUrl, captureFrame, error };
 }
