@@ -159,22 +159,15 @@ export const ActiveVerificationChallenge: React.FC = () => {
           </div>
 
           {/* RIGHT HALF: Story Preview */}
-          <section className="flex-1 relative overflow-hidden bg-[#3f0b73] rounded-[3rem] flex items-center justify-center shadow-2xl h-full">
-            <div className="absolute inset-0 opacity-60">
-              <img
+          <section className="flex-1 relative overflow-hidden rounded-[3rem] shadow-2xl h-full">
+            <div className="absolute inset-0">
+              <video
                 className="w-full h-full object-cover"
-                alt="Epic cinematic scene"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAu3Oubn12PnJUNbtqrxU5mQa4Yi9j29oAp2bpn4aSuutji2nSKm-V3W7ST6QEqhYZe-k6XQkROwuzdSD3UaGNTQlbRCkvyn4OlCxvuVxL0Bms2nNeARGKeAkH4DzRjSjdt5uwHN-mTiPxIMYG-XTzJ-UQke4BqgGaow75wsIF1glQYwo7rUZfIiUhEzBEZaILcKhfnejVAKIBok1sjP8REHITk6bwn5oW1Jdomq_dV-qo1P3C1u8NNhdx-C9_ETLHqs3XDjlyZmlMK"
+                autoPlay
+                loop
+                playsInline
+                src="/Flow_202604172214.mp4"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#7a4eb0]/40 to-transparent"></div>
-            </div>
-            <div className="relative z-10 text-center p-8">
-              <div className="glass-panel p-10 rounded-[2.5rem] border border-white/20 shadow-2xl">
-                <h3 className="text-3xl md:text-5xl font-black text-[#4e3000] drop-shadow-xl leading-tight mb-4">
-                  ✦ Thế giới đang chờ đợi con!
-                </h3>
-                <p className="text-[#4e3000] font-bold opacity-80 uppercase text-xs tracking-[0.3em] leading-none">Cảnh tiếp theo</p>
-              </div>
             </div>
           </section>
         </div>
