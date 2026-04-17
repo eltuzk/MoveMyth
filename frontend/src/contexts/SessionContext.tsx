@@ -1,8 +1,10 @@
 /**
- * SessionContext — React Context for session state management.
+ * SessionContext — React Context for MVP session state management.
  *
- * Uses Context API (sufficient for MVP per user decision).
- * Provides session state and actions to all child components.
+ * Holds all state that needs to flow across screens:
+ *   sessionId, segment, challenge, childName, segmentIndex, badges
+ *
+ * Actions are kept minimal — each screen updates what it owns.
  */
 
 import {
@@ -13,77 +15,60 @@ import {
 } from 'react';
 import {
   type SessionState,
-  type Badge,
-  type PendingChallenge,
   DEFAULT_SESSION_STATE,
 } from '../types/session';
+import type { Segment, Challenge, Badge } from '../types/api';
 
-// --- Actions ---
+// ---------------------------------------------------------------------------
+// Actions
+// ---------------------------------------------------------------------------
+
 type SessionAction =
-  | { type: 'START_SESSION'; payload: { sessionId: string; childName: string } }
-  | { type: 'SET_THEME'; payload: string }
-  | { type: 'SET_CHALLENGE'; payload: PendingChallenge }
-  | { type: 'UPDATE_PROGRESS'; payload: { repCount: number } }
-  | { type: 'COMPLETE_CHALLENGE' }
-  | { type: 'AWARD_BADGE'; payload: Badge }
-  | { type: 'UPDATE_SCENE'; payload: string }
+  | {
+      type: 'SET_SESSION';
+      payload: { sessionId: string; segment: Segment; challenge: Challenge };
+    }
+  | { type: 'SET_CHILD_NAME'; payload: string }
+  | {
+      type: 'SET_SEGMENT';
+      payload: { segment: Segment; challenge: Challenge; segmentIndex: number };
+    }
+  | { type: 'ADD_BADGE'; payload: Badge }
+  | { type: 'SET_STORY_COMPLETE' }
   | { type: 'RESET_SESSION' };
 
-// --- Reducer ---
+// ---------------------------------------------------------------------------
+// Reducer
+// ---------------------------------------------------------------------------
+
 function sessionReducer(state: SessionState, action: SessionAction): SessionState {
   switch (action.type) {
-    case 'START_SESSION':
+    case 'SET_SESSION':
       return {
         ...state,
+        sessionId: action.payload.sessionId,
+        segment: action.payload.segment,
+        challenge: action.payload.challenge,
+        segmentIndex: action.payload.segment.segment_index,
         sessionStarted: true,
-        childName: action.payload.childName,
       };
 
-    case 'SET_THEME':
-      return { ...state, storyTheme: action.payload };
+    case 'SET_CHILD_NAME':
+      return { ...state, childName: action.payload };
 
-    case 'SET_CHALLENGE':
-      return { ...state, pendingChallenge: action.payload };
-
-    case 'UPDATE_PROGRESS':
-      if (!state.pendingChallenge) return state;
+    case 'SET_SEGMENT':
       return {
         ...state,
-        pendingChallenge: {
-          ...state.pendingChallenge,
-          repCount: action.payload.repCount,
-        },
+        segment: action.payload.segment,
+        challenge: action.payload.challenge,
+        segmentIndex: action.payload.segmentIndex,
       };
 
-    case 'COMPLETE_CHALLENGE':
-      if (!state.pendingChallenge) return state;
-      return {
-        ...state,
-        pendingChallenge: { ...state.pendingChallenge, verified: true },
-        completedChallenges: [
-          ...state.completedChallenges,
-          {
-            challengeId: state.pendingChallenge.challengeId,
-            exercise: state.pendingChallenge.exercise,
-            reps: state.pendingChallenge.reps,
-            verified: true,
-          },
-        ],
-      };
+    case 'ADD_BADGE':
+      return { ...state, badges: [...state.badges, action.payload] };
 
-    case 'AWARD_BADGE':
-      return {
-        ...state,
-        badges: [...state.badges, action.payload],
-        pendingChallenge: null, // Clear pending challenge after badge award
-      };
-
-    case 'UPDATE_SCENE':
-      return {
-        ...state,
-        currentScene: state.currentScene + 1,
-        scenes: [...state.scenes, action.payload],
-      };
+    case 'SET_STORY_COMPLETE':
+      return { ...state, storyComplete: true };
 
     case 'RESET_SESSION':
       return DEFAULT_SESSION_STATE;
@@ -93,34 +78,35 @@ function sessionReducer(state: SessionState, action: SessionAction): SessionStat
   }
 }
 
-// --- Context ---
+// ---------------------------------------------------------------------------
+// Context
+// ---------------------------------------------------------------------------
+
 interface SessionContextValue {
   state: SessionState;
   dispatch: React.Dispatch<SessionAction>;
-  sessionId: string | null;
 }
 
 const SessionContext = createContext<SessionContextValue | null>(null);
 
-// --- Provider ---
-interface SessionProviderProps {
-  children: ReactNode;
-}
+// ---------------------------------------------------------------------------
+// Provider
+// ---------------------------------------------------------------------------
 
-export function SessionProvider({ children }: SessionProviderProps) {
+export function SessionProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(sessionReducer, DEFAULT_SESSION_STATE);
 
-  // TODO: Set sessionId from API call to /api/session/start
-  const sessionId: string | null = null;
-
   return (
-    <SessionContext.Provider value={{ state, dispatch, sessionId }}>
+    <SessionContext.Provider value={{ state, dispatch }}>
       {children}
     </SessionContext.Provider>
   );
 }
 
-// --- Hook ---
+// ---------------------------------------------------------------------------
+// Hook
+// ---------------------------------------------------------------------------
+
 export function useSession() {
   const context = useContext(SessionContext);
   if (!context) {
