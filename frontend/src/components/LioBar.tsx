@@ -29,7 +29,7 @@ export const LioBar: React.FC<LioBarProps> = ({
         <div className="shrink-0">
           <div className="w-20 h-20 rounded-full border-4 border-white shadow-md overflow-hidden bg-white">
             <img 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuArQ6txpD8QdO7FWcqMH4N3U1IKbQaBGfK3cSz-i5sreNilnWiK32RtYGOGkJEewxsPkBEZrIoxETSczD2dfUm6touH8YqG9wtWwHbT9cRPdBrIEes_p-PFRUshR8-lgZw1poGaqe31Aqg9l875ogjnVUicoYKXADDNsjh4Ed3qAg8vunsy0Gn4LpVDewGfyhE8W6SjfPbrgjxfMn_GdyjorLhBu0Y5LlOC26gArwxLlP-nrlMzUSEtoYZE7h9GmqS_GP_EYb16EROR" 
+              src="/avt_Lio.png" 
               alt="Lio" 
               className="w-full h-full object-cover"
             />

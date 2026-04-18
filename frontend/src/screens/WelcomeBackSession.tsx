@@ -51,7 +51,7 @@ export const WelcomeBackSession: React.FC = () => {
               <img
                 alt="Lio the mascot waving"
                 className="w-full h-full object-contain drop-shadow-xl"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBYjHXYvUmniYNa9pzeo0qFPG_nQCqK0lRuKx6W0jQBnZ-NMMKQhZp01r7LOzoENkJ8U0lsYIJ3d0Au3Vr8qlP5NbEhGEP4_LnZnR0xwz1sqAx19OEB5vj-wCGd-IYAJ5QHrndhp3v5QbkZ2AdWZ2cQS9Ussu5PC5grqlbLIxyw_Si-B1QMfAxQOwX_5Xj2U-E_klUG7t4l89Nu8dKAAb8s9nJaf1i0s8-2JKi9eNQ3SzO3DWdMzrjv_okuDPZdDE5h4CAFAt3ncHH"
+                src="/avt_Lio.png"
               />
               {/* Speech Bubble */}
               <div className="absolute -top-4 -right-12 glass-card p-6 rounded-[1rem] border-2 border-[#bbb9b4]/15 tinted-shadow max-w-[240px]">
@@ -153,12 +153,12 @@ export const WelcomeBackSession: React.FC = () => {
           <div className="mb-10 flex flex-col items-center text-center">
             <div 
               onClick={() => navigate('/parent')}
-              className="w-16 h-16 rounded-full bg-[#c596fe]/30 mb-4 overflow-hidden border-2 border-[#7a4eb0]/20 cursor-pointer hover:scale-105 transition-transform active:scale-95"
+              className="w-[110px] h-[110px] rounded-full bg-gradient-to-br from-white to-[#f5f3ef] border-4 border-white shadow-[0_15px_35px_rgba(122,78,176,0.2),inset_0_2px_4px_rgba(0,0,0,0.05)] mb-4 p-0 flex items-center justify-center overflow-hidden cursor-pointer hover:scale-110 transition-transform active:scale-95"
             >
               <img
                 alt="Lio mascot"
-                className="w-full h-full object-cover"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqIa0dZEn4Q7E7nelj-sJs0Tc6RfW5EvWLmoVLxitaBUM7VngJ0GlvUDc1uAD-_Gi-EFwbsoCt6fpGCF5Ljp-P0UYSD3D2fhc9Wcg3M-X4ah6uwBm7kCDOqSLeSilK_tlESswALMZYn4RZzO_jbCCIYHCC8NVVhDTglxtoisKjjOe2V8TkQBgMbUbVOwqdcEva9WY1LwKr8D8HIJGEmvIUki4YeqmKpizFegdXQL4REDZWZlQ5vaKmBBZjqSqvRPWdr9TcLGLQR2jb"
+                className="w-full h-full object-cover scale-125"
+                src="/avt_Lio.png"
               />
             </div>
             <h3 className="font-bold text-[#6B3FA0]">Chào, Nhà thám hiểm!</h3>
