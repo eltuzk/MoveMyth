@@ -5,7 +5,7 @@
   AI Storyteller <em>Lio</em> narrates, assigns challenges, verifies via camera — turning screen time into move time.
 </p>
 
-> GDGoC Hackathon Vietnam 2026 — "Agentic AI: Agents of Change"
+> GDGoC Hackathon Vietnam 2026 — "Agentic AI: Agents of Change" 
 
 ---
 
