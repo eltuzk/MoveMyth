@@ -99,7 +99,7 @@ export const MagicSignActivation: React.FC = () => {
       if (result.result === 'pass') {
         setVerifyState('pass');
         // Small delay so child sees the success state before navigating
-        setTimeout(() => navigate('/welcome'), 700);
+        setTimeout(() => navigate('/story'), 700);
       } else {
         setVerifyState('fail');
         setVerifyMessage('Thử lại ký hiệu phép thuật nhé! ✌️');

@@ -41,6 +41,7 @@ export const ActiveStorytellingView: React.FC = () => {
   const navigate = useNavigate();
   const { state, dispatch } = useSession();
   const { playBlob, isPlaying } = useAudio();
+
   // Camera: managed inline so we can start/stop based on phase.
   // The <video> element is only in the DOM during challenge/verifying phases,
   // so we can't rely on useCamera's mount-time [] effect.

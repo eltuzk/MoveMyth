@@ -49,7 +49,7 @@ export interface SessionState {
 
 export const DEFAULT_SESSION_STATE: SessionState = {
   sessionId: null,
-  childName: '',
+  childName: 'bạn nhỏ',
   segment: null,
   challenge: null,
   segmentIndex: 0,
