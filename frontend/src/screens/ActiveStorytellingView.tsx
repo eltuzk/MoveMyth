@@ -88,16 +88,9 @@ export const ActiveStorytellingView: React.FC = () => {
   const [retryFn, setRetryFn] = useState<(() => void) | null>(null);
 
   // Current challenge (may be downgraded during a loop iteration)
-  const activeChallenge = phase === 'challenge' ? state.challenge : null;
-
-  // Video mapping for challenge actions
-  const CHALLENGE_VIDEOS: Record<string, string> = {
-    jump: '/Lio_Jump.mp4',
-    raise_hands: '/Lio_RaiseHand.mp4',
-    spin: '/Lio_Spin.mp4',
-  };
-
-  const challengeVideo = activeChallenge ? CHALLENGE_VIDEOS[activeChallenge.action] : null;
+  const [activeChallenge, setActiveChallenge] = useState<Challenge | null>(
+    state.challenge,
+  );
 
   // Badge shown in modal
   const [badgeData, setBadgeData] = useState<Badge | null>(null);
