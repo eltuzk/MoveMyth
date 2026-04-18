@@ -51,17 +51,30 @@ export const HomeLandingScreen: React.FC = () => {
             align-items: center;
             gap: 4px;
         }
-        .badge-easy { background: rgba(76, 175, 130, 0.1); color: var(--success); }
-        .badge-medium { background: rgba(245, 166, 35, 0.1); color: var(--accent); }
+        .badge-easy { 
+            background: var(--success); 
+            color: white; 
+            box-shadow: 0 4px 12px rgba(76, 175, 130, 0.4);
+            border: 1.5px solid rgba(255,255,255,0.2);
+        }
+        .badge-medium { 
+            background: var(--accent); 
+            color: white; 
+            box-shadow: 0 4px 12px rgba(245, 166, 35, 0.4);
+            border: 1.5px solid rgba(255,255,255,0.2);
+        }
         .duration {
             position: absolute;
             bottom: 1rem;
             right: 1rem;
-            background: rgba(255,255,255,0.9);
-            padding: 2px 8px;
-            border-radius: 8px;
+            background: #fff;
+            padding: 4px 10px;
+            border-radius: 12px;
             font-size: 11px;
-            font-weight: 700;
+            font-weight: 800;
+            color: var(--text-dark);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 1px solid rgba(0,0,0,0.05);
         }
         .play-btn {
             background: var(--accent);
@@ -78,37 +91,23 @@ export const HomeLandingScreen: React.FC = () => {
         .play-btn:hover {
             transform: scale(1.1);
         }
-        .start-quest-btn {
-            background: var(--primary);
-            color: #fff;
-            padding: 12px 24px;
-            border-radius: 100px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 8px 20px rgba(107, 63, 160, 0.3);
-            transition: transform 0.2s;
-        }
-        .start-quest-btn:hover {
-            transform: translateY(-2px);
-        }
+
       `}</style>
       
       <div className="w-full flex-1 px-8 py-10">
         <div className="mx-auto w-full max-w-[1440px]">
           <div className="mb-12 flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
             <div className="min-w-0">
-              <h2 className="mb-2 text-4xl font-black tracking-tight text-[#1A1A2E]">Choose Your Adventure</h2>
+              <h2 className="mb-2 text-4xl font-black tracking-tight text-[#1A1A2E]">Chọn cuộc phiêu lưu của con</h2>
               <p className="max-w-xl text-lg leading-relaxed text-slate-500">
-                Step into a world where your movements power the magic. Where will Lio guide you today?
+                Bước vào thế giới nơi mọi chuyển động của con đều tạo ra phép thuật. Lio sẽ dẫn con đi đâu hôm nay?
               </p>
             </div>
             
             <div className="flex items-center gap-4 xl:self-start">
-              <div className="flex items-center gap-3 rounded-full border border-slate-100 bg-white px-5 py-2.5 shadow-sm">
-                <span className="material-symbols-outlined text-amber-500">stars</span>
-                <span className="font-bold text-slate-700">Magic Level 12</span>
+              <div className="flex items-center gap-3 rounded-full border-2 border-[#f8a826] bg-[#fffcf0] px-5 py-2.5 shadow-md">
+                <span className="material-symbols-outlined text-[#f8a826] font-bold">stars</span>
+                <span className="font-black text-[#7a4eb0]">Cấp độ Phép thuật 12</span>
               </div>
             </div>
           </div>
@@ -116,13 +115,13 @@ export const HomeLandingScreen: React.FC = () => {
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
             <div className="story-card" onClick={handleStart}>
               <div className="card-image" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&q=80&w=800')" }}>
-                <span className="badge badge-easy"><span className="material-symbols-outlined text-sm">eco</span> Easy</span>
-                <span className="duration">15 Min</span>
+                <span className="badge badge-easy"><span className="material-symbols-outlined text-sm">eco</span> Dễ</span>
+                <span className="duration">15 Phút</span>
               </div>
               <div className="p-6">
-                <h3 className="mb-2 text-xl font-bold">The Whispering Woods</h3>
+                <h3 className="mb-2 text-xl font-bold">Khu Rừng Thì Thầm</h3>
                 <p className="mb-6 line-clamp-3 text-sm text-slate-500">
-                  Hop like a bunny and dance through the leaves to help the forest spirits wake up from their long nap.
+                  Nhảy như chú thỏ và khiêu vũ giữa những tán lá để đánh thức các linh hồn rừng xanh khỏi giấc ngủ dài.
                 </p>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1 font-bold text-rose-500">
@@ -138,13 +137,13 @@ export const HomeLandingScreen: React.FC = () => {
 
             <div className="story-card" onClick={handleStart}>
               <div className="card-image" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&q=80&w=800')" }}>
-                <span className="badge badge-medium"><span className="material-symbols-outlined text-sm">rocket_launch</span> Medium</span>
-                <span className="duration">20 Min</span>
+                <span className="badge badge-medium"><span className="material-symbols-outlined text-sm">rocket_launch</span> Trung bình</span>
+                <span className="duration">20 Phút</span>
               </div>
               <div className="p-6">
-                <h3 className="mb-2 text-xl font-bold">Space Fox Adventure</h3>
+                <h3 className="mb-2 text-xl font-bold">Cuộc Phiêu Lưu Của Cáo Vũ Trụ</h3>
                 <p className="mb-6 line-clamp-3 text-sm text-slate-500">
-                  Launch into the stardust! Use your arms to steer through asteroid fields and reach the Moon Palace.
+                  Bay vào bụi sao! Sử dụng đôi tay để lái qua các vành đai tiểu hành tinh và vươn tới Cung Trăng.
                 </p>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1 font-bold text-rose-500">
@@ -160,13 +159,13 @@ export const HomeLandingScreen: React.FC = () => {
 
             <div className="story-card" onClick={handleStart}>
               <div className="card-image" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&q=80&w=800')" }}>
-                <span className="badge badge-easy"><span className="material-symbols-outlined text-sm">water_drop</span> Easy</span>
-                <span className="duration">10 Min</span>
+                <span className="badge badge-easy"><span className="material-symbols-outlined text-sm">water_drop</span> Dễ</span>
+                <span className="duration">10 Phút</span>
               </div>
               <div className="p-6">
-                <h3 className="mb-2 text-xl font-bold">Ocean Deep Discovery</h3>
+                <h3 className="mb-2 text-xl font-bold">Khám Phá Đại Dương Sâu Thẳm</h3>
                 <p className="mb-6 line-clamp-3 text-sm text-slate-500">
-                  Swim like a turtle and dodge giant bubbles to find the hidden treasure chest deep in the coral palace.
+                  Bơi như chú rùa và né những bong bóng khổng lồ để tìm rương kho báu ẩn sâu trong cung điện san hô.
                 </p>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1 font-bold text-rose-500">
@@ -182,12 +181,7 @@ export const HomeLandingScreen: React.FC = () => {
           </div>
         </div>
 
-        <div className="fixed bottom-12 right-12 z-50">
-          <button className="start-quest-btn" onClick={handleStart}>
-            <span className="material-symbols-outlined">auto_fix_high</span>
-            <span>Start Quest</span>
-          </button>
-        </div>
+
       </div>
     </>
   );

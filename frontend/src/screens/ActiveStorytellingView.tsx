@@ -39,8 +39,30 @@ type LoopPhase = 'narrating' | 'challenge' | 'verifying' | 'badge' | 'error';
 
 export const ActiveStorytellingView: React.FC = () => {
   const navigate = useNavigate();
-  const { state, dispatch } = useSession();
+  const { state: realState, dispatch } = useSession();
   const { playBlob, isPlaying } = useAudio();
+
+  // QUICK PREVIEW BYPASS FOR DEV/TESTING
+  const state = (!realState.sessionId && import.meta.env.DEV) 
+    ? {
+        ...realState,
+        sessionId: 'mock-session-id',
+        childName: 'Minh',
+        segmentIndex: 0,
+        segment: {
+          segment_index: 0,
+          narrative_text: 'Xin chào {child_name}! Lio đang cùng con khám phá khu rừng thần tiên. LioBar hoạt động tốt!',
+          narration_tts: 'Xin chào Minh! Lio đang cùng con khám phá khu rừng thần tiên.',
+        },
+        challenge: {
+          action: 'jump',
+          display_text: 'Nhảy lên 3 lần để kích hoạt cầu phép thuật!',
+          tts_text: 'Bé hãy nhảy 3 lần để mở cầu phép thuật nhé!',
+          difficulty: 'normal',
+          fallback_action: 'raise_hands',
+        }
+      }
+    : realState;
 
   // Camera: managed inline so we can start/stop based on phase.
   // The <video> element is only in the DOM during challenge/verifying phases,
@@ -333,13 +355,31 @@ export const ActiveStorytellingView: React.FC = () => {
 
   const { segment, childName } = state;
 
+  // -------------------------------------------------------------------------
+  // Global Lio Bar Dynamic Content
+  // -------------------------------------------------------------------------
+  const showLioBar = phase === 'narrating' || phase === 'challenge' || phase === 'verifying';
+  let lioLabel = '';
+  let lioText = '';
+
+  if (phase === 'narrating') {
+    lioLabel = 'Lio đang kể chuyện...';
+    lioText = segment?.narrative_text?.replace('{child_name}', childName || 'bạn') || '';
+  } else if (phase === 'challenge') {
+    lioLabel = 'Mục tiêu của con 🌟';
+    lioText = activeChallenge?.tts_text || activeChallenge?.display_text || '';
+  } else if (phase === 'verifying') {
+    lioLabel = '✨ Phép thuật đang hoạt động...';
+    lioText = 'Lio đang dùng phép thuật kiểm tra động tác, ráng giữ nguyên vị trí nhé...';
+  }
+
   // Camera border color by phase
   const cameraBorder =
     phase === 'verifying'
       ? '#FF9600'
       : phase === 'challenge'
-      ? '#70f8e8'
-      : '#444';
+        ? '#70f8e8'
+        : '#444';
 
   // -------------------------------------------------------------------------
   // Render
@@ -379,91 +419,115 @@ export const ActiveStorytellingView: React.FC = () => {
         {/* PHASE: NARRATING */}
         {/* ------------------------------------------------------------------ */}
         <AnimatePresence>
-          {phase === 'narrating' && segment && (
+          {showLioBar && (
             <motion.div
-              key="narrating-phase"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="flex flex-col items-center justify-center flex-1 gap-10 w-full max-w-2xl"
+              initial={{ y: 100, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 100, opacity: 0 }}
+              className="fixed bottom-10 left-[72px] right-0 z-[100] flex justify-center pointer-events-none px-8"
             >
-              {/* Lio character */}
-              <motion.div
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
-                className="relative"
-              >
-                {/* Glow */}
-                <div className="absolute inset-0 bg-[#7a4eb0]/30 blur-[48px] rounded-full scale-150" />
-                <motion.div
-                  className="relative text-8xl select-none"
-                  animate={{ scale: isPlaying ? [1, 1.06, 1] : 1 }}
-                  transition={{ duration: 0.8, repeat: isPlaying ? Infinity : 0 }}
-                >
-                  🦁
-                </motion.div>
+              <div className="bg-[#f2f1ef]/95 backdrop-blur-xl border border-white/60 shadow-[0_15px_50px_rgba(0,0,0,0.2)] rounded-[24px] px-8 py-6 flex items-center gap-6 w-full max-w-5xl pointer-events-auto min-h-[140px]">
 
-                {/* Speaking waves when TTS is playing */}
-                <AnimatePresence>
-                  {isPlaying && (
-                    <motion.div
-                      key="speaking-wave"
+                {/* Left: Lio Avatar (Static) */}
+                <div className="shrink-0 self-center relative flex justify-center">
+                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border-4 border-white shadow-md overflow-hidden bg-white relative z-10">
+                    <img 
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuArQ6txpD8QdO7FWcqMH4N3U1IKbQaBGfK3cSz-i5sreNilnWiK32RtYGOGkJEewxsPkBEZrIoxETSczD2dfUm6touH8YqG9wtWwHbT9cRPdBrIEes_p-PFRUshR8-lgZw1poGaqe31Aqg9l875ogjnVUicoYKXADDNsjh4Ed3qAg8vunsy0Gn4LpVDewGfyhE8W6SjfPbrgjxfMn_GdyjorLhBu0Y5LlOC26gArwxLlP-nrlMzUSEtoYZE7h9GmqS_GP_EYb16EROR" 
+                      alt="Lio" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+
+                {/* Center: Story Text */}
+                <div className="flex-1 flex flex-col justify-center min-w-0 pr-4">
+                  <AnimatePresence mode="wait">
+                    <motion.span 
+                      key={lioLabel}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      className="absolute -bottom-6 left-1/2 -translate-x-1/2 flex gap-1"
+                      className="text-[10px] md:text-[11px] font-black text-[#7a4eb0] tracking-[0.15em] uppercase mb-1.5 md:mb-2 block"
                     >
-                      {[0, 1, 2, 3].map((i) => (
-                        <motion.div
-                          key={i}
-                          className="w-1.5 rounded-full bg-[#c596fe]"
-                          animate={{ height: ['8px', '20px', '8px'] }}
-                          transition={{
-                            duration: 0.6,
-                            repeat: Infinity,
-                            delay: i * 0.1,
-                            ease: 'easeInOut',
-                          }}
-                        />
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
+                      {lioLabel}
+                    </motion.span>
+                  </AnimatePresence>
+                  
+                  <AnimatePresence mode="wait">
+                    <motion.span 
+                      key={lioText}
+                      initial={{ opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      className="text-[#383835] font-bold text-base md:text-xl leading-relaxed whitespace-normal break-words block"
+                    >
+                      {lioText}
+                    </motion.span>
+                  </AnimatePresence>
+                </div>
 
-              {/* Story text */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.6 }}
-                className="glass-panel rounded-[1.5rem] p-8 text-center shadow-2xl border border-white/20"
-              >
-                <p className="text-[10px] font-black text-[#4e3000] opacity-60 uppercase tracking-widest mb-3">
-                  Đoạn {segment.segment_index + 1}
-                </p>
-                <p className="text-xl font-semibold text-[#383835] leading-relaxed">
-                  {segment.narrative_text.replace('{child_name}', childName || 'bạn')}
-                </p>
-
-                {/* Pulsing "listening" indicator */}
-                <motion.div
-                  className="mt-6 flex items-center justify-center gap-2 text-[#7a4eb0]"
-                  animate={{ opacity: [0.4, 1, 0.4] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                >
-                  <div className="flex gap-1">
-                    {[0, 1, 2].map((i) => (
-                      <motion.div
-                        key={i}
-                        className="w-1.5 h-1.5 rounded-full bg-[#7a4eb0]"
-                        animate={{ y: [0, -4, 0] }}
-                        transition={{ duration: 0.5, repeat: Infinity, delay: i * 0.1 }}
-                      />
-                    ))}
+                {/* Right: Actions & Audio */}
+                <div className="shrink-0 flex items-center justify-end gap-3 md:gap-4">
+                  
+                  {/* Audio Waveform */}
+                  <div className="flex items-center justify-center w-12 h-12 md:w-16 md:h-16 bg-[#7a4eb0]/10 rounded-full border border-[#7a4eb0]/20">
+                    {isPlaying ? (
+                      <div className="flex items-center gap-1">
+                        {[
+                          { h: ['8px', '20px', '8px'], dur: 0.6, del: 0 },
+                          { h: ['12px', '28px', '12px'], dur: 0.5, del: 0.2 },
+                          { h: ['10px', '22px', '10px'], dur: 0.7, del: 0.1 },
+                          { h: ['8px', '18px', '8px'], dur: 0.55, del: 0.3 }
+                        ].map((anim, i) => (
+                          <motion.div
+                            key={i}
+                            className="w-1.5 bg-[#7a4eb0] rounded-full flex-shrink-0"
+                            animate={{ height: anim.h }}
+                            transition={{ duration: anim.dur, repeat: Infinity, delay: anim.del, ease: 'easeInOut' }}
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-1.5">
+                        {[0, 1, 2, 3].map((i) => (
+                          <div key={i} className="w-1.5 h-2 bg-[#7a4eb0]/40 rounded-full" />
+                        ))}
+                      </div>
+                    )}
                   </div>
-                  <span className="text-xs font-semibold">Lio đang kể chuyện...</span>
-                </motion.div>
-              </motion.div>
+
+                  {/* Xong Rồi Button (Only in Challenge / Verifying Phase) */}
+                  <AnimatePresence mode="wait">
+                    {phase === 'challenge' && (
+                      <motion.button
+                        key="done-btn"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={handleDone}
+                        className="bg-[#58CC02] text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-black text-sm md:text-lg shadow-xl shadow-[#58CC02]/30 flex items-center gap-2 border-[3px] border-white/20 whitespace-nowrap pointer-events-auto"
+                      >
+                        Bắt đầu thực hiện thử thách
+                      </motion.button>
+                    )}
+                    
+                    {phase === 'verifying' && (
+                      <motion.div
+                        key="verifying-btn"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        className="bg-[#e5e5e5] text-[#a1a1a1] px-6 md:px-8 py-3 md:py-4 rounded-full font-black text-sm md:text-lg shadow-inner flex items-center gap-2 border-[3px] border-white/20 whitespace-nowrap cursor-not-allowed pointer-events-auto"
+                      >
+                        <span className="material-symbols-outlined animate-spin mr-1 text-sm md:text-base">refresh</span>
+                        Lio đang xem...
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
@@ -604,15 +668,7 @@ export const ActiveStorytellingView: React.FC = () => {
                 </section>
               </div>
 
-              {/* Done Button */}
-              <div className="w-full max-w-sm mt-2">
-                <DoneButton
-                  onClick={handleDone}
-                  isLoading={phase === 'verifying'}
-                  disabled={phase === 'verifying'}
-                  loadingMessage={['Lio đang xem...', 'Phép thuật đang hoạt động...', 'Sắp xong rồi!']}
-                />
-              </div>
+              {/* Done Button section removed entirely as requested */}
             </motion.div>
           )}
         </AnimatePresence>
