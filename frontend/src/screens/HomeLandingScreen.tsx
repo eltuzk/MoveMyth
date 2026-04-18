@@ -183,6 +183,30 @@ export const HomeLandingScreen: React.FC = () => {
 
 
       </div>
+
+      {/* Lio's Magic Tip Bar - Fixed at Bottom */}
+      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[200] w-full max-w-4xl px-8">
+        <div className="bg-white/90 backdrop-blur-xl border border-white/60 shadow-[0_20px_50px_rgba(73,25,125,0.12)] rounded-full px-8 py-4 flex items-center gap-6">
+          <div className="shrink-0">
+            <div className="w-20 h-20 rounded-full border-2 border-[#7a4eb0]/30 overflow-hidden bg-[#92C5E9] flex items-center justify-center shadow-md">
+              <img src="/avt_Lio.png" alt="Lio" className="w-full h-full object-cover rounded-full" />
+            </div>
+          </div>
+          
+          <div className="flex-1 flex flex-col justify-center">
+            <span className="text-[11px] font-black text-[#7a4eb0] tracking-[0.2em] uppercase mb-0.5">
+              BÍ KÍP PHÉP THUẬT CỦA LIO
+            </span>
+            <p className="text-[#383835] font-bold text-lg italic leading-tight">
+              "Hãy vươn vai thật đã, dang tay thật rộng để đánh thức sự tập trung nhé!"
+            </p>
+          </div>
+
+          <button className="bg-[#8B4513] text-white px-10 py-4 rounded-full font-black shadow-lg hover:bg-[#703810] transition-all hover:scale-105 active:scale-95 flex items-center justify-center leading-none group">
+            <span className="text-lg uppercase tracking-widest italic">Thử ngay</span>
+          </button>
+        </div>
+      </div>
     </>
   );
 };

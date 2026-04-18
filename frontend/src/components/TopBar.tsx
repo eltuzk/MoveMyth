@@ -6,16 +6,16 @@ export interface TopBarProps {
 }
 
 const BREADCRUMB_MAP: Record<string, { prev: string[], current: string }> = {
-  'home': { prev: ['Hành trình'], current: '🏠 Thư viện' },
-  'onboarding': { prev: ['Hành trình'], current: '✨ Tạo hồ sơ' },
-  'magic-sign': { prev: ['Hành trình'], current: '🪄 Kích hoạt phép thuật' },
-  'story-launch': { prev: ['Hành trình'], current: '🚀 Bắt đầu câu chuyện' },
-  'story': { prev: ['Hành trình'], current: '📖 Lio kể chuyện' },
-  'challenge-voice': { prev: ['Hành trình', '📖 Lio kể chuyện'], current: '🎤 Chọn câu trả lời' },
-  'challenge-demo': { prev: ['Hành trình', '📖 Lio kể chuyện'], current: '🎯 Lio làm mẫu' },
-  'verify': { prev: ['Hành trình', '📖 Lio kể chuyện'], current: '⚡ Xác minh' },
-  'complete': { prev: ['Hành trình'], current: '🎉 Tổng kết phiên chơi' },
-  'parent': { prev: ['Hành trình'], current: '👨👩👧 Phụ huynh' }
+  'home': { prev: [], current: 'Thư viện' },
+  'onboarding': { prev: [], current: 'Tạo hồ sơ' },
+  'magic-sign': { prev: [], current: 'Kích hoạt phép thuật' },
+  'story-launch': { prev: [], current: 'Bắt đầu câu chuyện' },
+  'story': { prev: [], current: 'Lio kể chuyện' },
+  'challenge-voice': { prev: [], current: 'Chọn câu trả lời' },
+  'challenge-demo': { prev: [], current: 'Lio làm mẫu' },
+  'verify': { prev: [], current: 'Xác minh' },
+  'complete': { prev: [], current: 'Tổng kết phiên chơi' },
+  'parent': { prev: [], current: 'Phụ huynh' }
 };
 
 export const TopBar: React.FC<TopBarProps> = ({ screenKey }) => {
@@ -46,16 +46,8 @@ export const TopBar: React.FC<TopBarProps> = ({ screenKey }) => {
           />
         </div>
       ) : (
-        <div className="hidden md:flex items-center gap-2 text-sm font-medium">
-          {breadcrumb.prev.map((step, idx) => (
-            <React.Fragment key={idx}>
-              <span className="text-[#c596fe]">{step}</span>
-              <span className="text-[#f8a826] font-bold">›</span>
-            </React.Fragment>
-          ))}
-          <div className="bg-[#7a4eb0]/30 px-3 py-1 rounded-full text-white font-bold ml-1">
-            {breadcrumb.current}
-          </div>
+        <div className="hidden md:flex items-center text-sm font-bold text-white/90 tracking-wide uppercase">
+          {breadcrumb.current}
         </div>
       )}
 

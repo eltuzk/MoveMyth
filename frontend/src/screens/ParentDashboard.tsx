@@ -39,15 +39,15 @@ export const ParentDashboard: React.FC = () => {
 
         {/* Hero Section */}
         <header className="mb-6 text-center md:text-left">
-          <h1 className="text-4xl md:text-[3.25rem] leading-tight font-extrabold tracking-tight text-[#383835] mb-1">Welcome back, Sarah!</h1>
-          <p className="text-base md:text-lg text-[#656461] font-medium">Here's how your little explorers are doing today.</p>
+          <h1 className="text-4xl md:text-[3.25rem] leading-tight font-extrabold tracking-tight text-[#383835] mb-1">Chào mừng trở lại, Sarah!</h1>
+          <p className="text-base md:text-lg text-[#656461] font-medium">Cùng xem các nhà thám hiểm nhỏ đang vận động thế nào nhé.</p>
         </header>
 
         {/* Child Switcher */}
         <div className="flex justify-center md:justify-start gap-3 mb-6">
           <button className="px-7 py-2.5 rounded-full bg-[#c12048] text-white font-bold shadow-lg flex items-center gap-2 active:scale-95 transition-transform">
             <span className="material-symbols-outlined text-sm">child_care</span>
-            Leo
+            Paul
           </button>
           <button className="px-7 py-2.5 rounded-full bg-[#f0eee8] text-[#656461] font-semibold hover:bg-[#eae8e2] transition-colors active:scale-95">
             Maya
@@ -64,18 +64,18 @@ export const ParentDashboard: React.FC = () => {
                   <img
                     alt="Child Avatar"
                     className="w-full h-full rounded-full object-cover"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgNkSVb5uUx6rzqIoJ7yP8w09NXPzVBWfySzl6FVVBQjm6El4-xMGYywDCf8_0TinzfmDBFlyq77mG2KKZQSmVxwg6WZ-EBmATBkLoxFlKLECW-5IXcpqYAZUsXO9PLP5hfBZ1wkMhS5oKbvv9An3JXs56Zfn-Yw_NplrveL9e5650k5CwqQY0Xqn4q9Z8uJFiS8LQYUGSUHwDCGX9ofMbCus97igqfCfcw8Olgh9BbWb3mCgwTfGilbCE2UylglbQBimwe1kVLGyp"
+                    src="/avt_kid.png"
                   />
                 </div>
                 <div className="absolute -bottom-2 -right-2 bg-[#f8a826] text-[#4e3000] px-3 py-1 rounded-full text-[10px] font-black shadow-md">LVL 12</div>
               </div>
               <div className="flex-1 text-center md:text-left">
-                <h2 className="text-2xl font-bold text-[#383835] mb-3">Leo's Daily Journey</h2>
+                <h2 className="text-2xl font-bold text-[#383835] mb-3">Hành trình của Paul</h2>
                 <div className="grid grid-cols-3 gap-3">
                   {[
-                    { label: 'Active', value: '30m', color: 'text-[#7a4eb0]' },
-                    { label: 'Moves', value: '45', color: 'text-[#007168]' },
-                    { label: 'Stories', value: '2', color: 'text-[#8b5a00]' },
+                    { label: 'Vận động', value: '30p', color: 'text-[#7a4eb0]' },
+                    { label: 'Động tác', value: '45', color: 'text-[#007168]' },
+                    { label: 'Truyện', value: '2', color: 'text-[#8b5a00]' },
                   ].map(({ label, value, color }) => (
                     <div key={label} className="bg-[#fcf9f4] p-3 rounded-[1rem]">
                       <span className="block text-xs font-bold text-[#82807c] uppercase tracking-widest mb-1">{label}</span>
@@ -92,7 +92,7 @@ export const ParentDashboard: React.FC = () => {
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <span className="text-lg font-black">20/30</span>
-                  <span className="text-[10px] font-bold text-[#82807c] uppercase">Min Goal</span>
+                  <span className="text-[10px] font-bold text-[#82807c] uppercase">Mục tiêu</span>
                 </div>
               </div>
             </div>
@@ -103,13 +103,13 @@ export const ParentDashboard: React.FC = () => {
           <section className="md:col-span-4 bg-white rounded-[1rem] p-5 shadow-sm">
             <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
               <span className="material-symbols-outlined text-[#7a4eb0]">settings_accessibility</span>
-              Parent Controls
+              Quản lý Phụ huynh
             </h3>
             <div className="space-y-2">
               {[
-                { icon: 'security', label: 'Content Controls' },
-                { icon: 'auto_stories', label: 'Story Preferences' },
-                { icon: 'videocam', label: 'Camera Permissions' },
+                { icon: 'security', label: 'Nội dung phù hợp' },
+                { icon: 'auto_stories', label: 'Cài đặt câu chuyện' },
+                { icon: 'videocam', label: 'Quyền Camera' },
               ].map(({ icon, label }) => (
                 <button key={label} className="w-full flex items-center justify-between p-3 rounded-[1rem] hover:bg-[#fcf9f4] transition-colors group">
                   <div className="flex items-center gap-3">
@@ -127,9 +127,9 @@ export const ParentDashboard: React.FC = () => {
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-xl font-bold flex items-center gap-2">
                 <span className="material-symbols-outlined text-[#007168]">history</span>
-                Recent Activity
+                Hoạt động gần đây
               </h3>
-              <a className="text-[#7a4eb0] text-sm font-bold hover:underline" href="#">View All</a>
+              <a className="text-[#7a4eb0] text-sm font-bold hover:underline" href="#">Xem tất cả</a>
             </div>
             <div className="space-y-4">
               <div className="flex items-start gap-4">
@@ -138,12 +138,12 @@ export const ParentDashboard: React.FC = () => {
                 </div>
                 <div className="flex-1">
                   <div className="flex justify-between">
-                    <h4 className="font-bold">The Whispering Woods</h4>
-                    <span className="text-xs font-bold text-[#82807c] uppercase">Today</span>
+                    <h4 className="font-bold">Bí mật Khu rừng Thầm thì</h4>
+                    <span className="text-xs font-bold text-[#82807c] uppercase">Hôm nay</span>
                   </div>
                   <div className="flex gap-2 mt-2">
-                    <span className="px-2 py-0.5 bg-[#70f8e8]/30 text-[#005c55] text-[10px] font-black rounded uppercase">Badge Earned</span>
-                    <span className="px-2 py-0.5 bg-[#eae8e2] text-[#656461] text-[10px] font-black rounded uppercase">+12 Moves</span>
+                    <span className="px-2 py-0.5 bg-[#70f8e8]/30 text-[#005c55] text-[10px] font-black rounded uppercase">Nhận huy hiệu</span>
+                    <span className="px-2 py-0.5 bg-[#eae8e2] text-[#656461] text-[10px] font-black rounded uppercase">+12 Động tác</span>
                   </div>
                 </div>
               </div>
@@ -153,11 +153,11 @@ export const ParentDashboard: React.FC = () => {
                 </div>
                 <div className="flex-1">
                   <div className="flex justify-between">
-                    <h4 className="font-bold">Moonlit Meadow</h4>
-                    <span className="text-xs font-bold text-[#82807c] uppercase">Yesterday</span>
+                    <h4 className="font-bold">Đồng cỏ Ánh trăng</h4>
+                    <span className="text-xs font-bold text-[#82807c] uppercase">Hôm qua</span>
                   </div>
                   <div className="flex gap-2 mt-2">
-                    <span className="px-2 py-0.5 bg-[#eae8e2] text-[#656461] text-[10px] font-black rounded uppercase">+8 Moves</span>
+                    <span className="px-2 py-0.5 bg-[#eae8e2] text-[#656461] text-[10px] font-black rounded uppercase">+8 Động tác</span>
                   </div>
                 </div>
               </div>
@@ -169,9 +169,9 @@ export const ParentDashboard: React.FC = () => {
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-xl font-bold flex items-center gap-2">
                 <span className="material-symbols-outlined text-[#8b5a00]">military_tech</span>
-                Badge Collection
+                Bộ sưu tập Huy hiệu
               </h3>
-              <span className="text-sm font-bold text-[#656461]">3 / 12 Unlocked</span>
+              <span className="text-sm font-bold text-[#656461]">Đã mở khóa 3 / 12</span>
             </div>
             <div className="grid grid-cols-3 sm:grid-cols-3 gap-3">
               {unlockedBadges.map(({ icon, gradient, label }) => (
@@ -199,7 +199,7 @@ export const ParentDashboard: React.FC = () => {
       <div className="fixed bottom-4 right-4 z-40 hidden xl:flex flex-col items-end">
         <div className="glass-panel p-4 rounded-[1rem] border border-[#bbb9b4]/15 shadow-2xl mb-2 max-w-[240px] relative">
           <p className="text-sm font-medium leading-relaxed">
-            "Leo is doing great today! Only 10 more minutes until he reaches his daily goal."
+            "Paul đang làm rất tốt! Chỉ còn 10 phút nữa là cậu bé sẽ đạt mục tiêu ngày rồi."
           </p>
           <div className="absolute bottom-[-10px] right-8 w-5 h-5 bg-white/80 backdrop-blur-md border-r border-b border-[#bbb9b4]/15 rotate-45"></div>
         </div>
