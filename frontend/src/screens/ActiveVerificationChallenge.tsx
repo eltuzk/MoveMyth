@@ -51,12 +51,6 @@ export const ActiveVerificationChallenge: React.FC = () => {
   return (
     <>
       <style>{`
-        .skeleton-overlay {
-          stroke: #70f8e8;
-          stroke-width: 4;
-          stroke-linecap: round;
-          filter: drop-shadow(0 0 8px #70f8e8);
-        }
         .glass-panel {
           background: rgba(255, 252, 247, 0.85);
           backdrop-filter: blur(16px);
@@ -125,15 +119,7 @@ export const ActiveVerificationChallenge: React.FC = () => {
                 alt="Young child jumping happily"
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuDG07qQ7e49es7_x5VIXQd8Pe3JGg9op0R2ix2FJBPp-kpcj2UTLNvLe9j3LmmrCloLEkFNnAhI4wSoe1zmKITAaXRKO5MOgc0owLbUved8inFrFurAcVnWiCoWYAjfbz_9Tc6LaeQQK-MBkNDTilpMgD52OlMKkZH436RoQGbJvY3o3p0hQ27jKpLJMTzCW7lrsdHJerd4LrSmeVuN8hDN4rDUach_kprP7bQn_nAS5xzsaEdbsezeFVC2aLDM1gTeYzaxTT4Se4Hy"
               />
-              {/* Skeleton Overlay */}
-              <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice">
-                <circle className="skeleton-overlay fill-none" cx="200" cy="180" r="30"></circle>
-                <line className="skeleton-overlay" x1="200" x2="200" y1="210" y2="350"></line>
-                <line className="skeleton-overlay" x1="200" x2="140" y1="240" y2="300"></line>
-                <line className="skeleton-overlay" x1="200" x2="260" y1="240" y2="300"></line>
-                <line className="skeleton-overlay" x1="200" x2="160" y1="350" y2="450"></line>
-                <line className="skeleton-overlay" x1="200" x2="240" y1="350" y2="450"></line>
-              </svg>
+
               <div className="absolute top-8 left-8 bg-[#007168]/90 text-white px-6 py-3 rounded-full flex items-center gap-3 font-bold animate-pulse text-lg">
                 <span className="w-3 h-3 bg-white rounded-full"></span>
                 ● Phát hiện!

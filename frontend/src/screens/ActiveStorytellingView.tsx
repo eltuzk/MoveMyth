@@ -92,6 +92,7 @@ export const ActiveStorytellingView: React.FC = () => {
   const [phase, setPhase] = useState<LoopPhase>('narrating');
   const [errorMessage, setErrorMessage] = useState('');
   const [retryFn, setRetryFn] = useState<(() => void) | null>(null);
+  const [verifyResultState, setVerifyResultState] = useState<'pass' | 'retry' | 'fail' | null>(null);
 
   // Current challenge (may be downgraded during a loop iteration)
   const [activeChallenge, setActiveChallenge] = useState<Challenge | null>(
@@ -124,7 +125,7 @@ export const ActiveStorytellingView: React.FC = () => {
   // -------------------------------------------------------------------------
 
   useEffect(() => {
-    const needsCamera = phase === 'challenge' || phase === 'verifying';
+    const needsCamera = phase === 'challenge' || phase === 'verifying' || phase === 'badge';
 
     if (needsCamera) {
       // Only start if not already streaming
@@ -244,6 +245,11 @@ export const ActiveStorytellingView: React.FC = () => {
         'challenge_verify',
       );
 
+      setVerifyResultState(verifyResult.result as 'pass' | 'retry' | 'fail');
+
+      // Wait 1.5s to show the result overlay before proceeding
+      await new Promise(r => setTimeout(r, 1500));
+
       // 2. Adapt narrative
       const adaptResult = await adaptNarrative(
         state.sessionId,
@@ -270,19 +276,24 @@ export const ActiveStorytellingView: React.FC = () => {
         setPhase('badge');
       } else if (adaptResult.next_action === 'retry_challenge') {
         // Same challenge — loop back
+        setVerifyResultState(null);
         setPhase('challenge');
       } else {
         // downgrade_challenge
         const downgraded = adaptResult.downgraded_challenge!;
         setActiveChallenge(downgraded);
         await runChallengeTTS(downgraded);
+        setVerifyResultState(null);
         setPhase('challenge');
       }
     } catch (err) {
       console.error('[Story] verify/adapt error:', err);
       showError(
         'Lio gặp sự cố. Thử lại nhé!',
-        () => setPhase('challenge'),
+        () => {
+          setVerifyResultState(null);
+          setPhase('challenge');
+        }
       );
     }
   }, [
@@ -303,6 +314,7 @@ export const ActiveStorytellingView: React.FC = () => {
 
   const handleBadgeDismiss = useCallback(() => {
     setBadgeData(null);
+    setVerifyResultState(null);
     const adaptResult = adaptRef.current;
 
     if (!adaptResult || !adaptResult.next_segment_data) {
@@ -409,12 +421,6 @@ export const ActiveStorytellingView: React.FC = () => {
         .glass-panel {
           background: rgba(255,252,247,0.85);
           backdrop-filter: blur(16px);
-        }
-        .skeleton-overlay {
-          stroke: #70f8e8;
-          stroke-width: 4;
-          stroke-linecap: round;
-          filter: drop-shadow(0 0 8px #70f8e8);
         }
       `}</style>
 
@@ -565,7 +571,7 @@ export const ActiveStorytellingView: React.FC = () => {
         {/* PHASE: CHALLENGE + VERIFYING */}
         {/* ------------------------------------------------------------------ */}
         <AnimatePresence>
-          {(phase === 'challenge' || phase === 'verifying') && (
+          {(phase === 'challenge' || phase === 'verifying' || phase === 'badge') && (
             <motion.div
               key="challenge-phase"
               initial={{ opacity: 0 }}
@@ -613,15 +619,7 @@ export const ActiveStorytellingView: React.FC = () => {
                     </div>
                   )}
 
-                  {/* Skeleton overlay */}
-                  <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 600">
-                    <circle className="skeleton-overlay fill-none" cx="200" cy="180" r="30" />
-                    <line className="skeleton-overlay" x1="200" x2="200" y1="210" y2="350" />
-                    <line className="skeleton-overlay" x1="200" x2="140" y1="240" y2="300" />
-                    <line className="skeleton-overlay" x1="200" x2="260" y1="240" y2="300" />
-                    <line className="skeleton-overlay" x1="200" x2="160" y1="350" y2="450" />
-                    <line className="skeleton-overlay" x1="200" x2="240" y1="350" y2="450" />
-                  </svg>
+
 
                   {/* Live badge */}
                   <motion.div
@@ -635,7 +633,7 @@ export const ActiveStorytellingView: React.FC = () => {
 
                   {/* Verifying overlay */}
                   <AnimatePresence>
-                    {phase === 'verifying' && (
+                    {phase === 'verifying' && !verifyResultState && (
                       <motion.div
                         key="verifying-overlay"
                         initial={{ opacity: 0 }}
@@ -664,6 +662,34 @@ export const ActiveStorytellingView: React.FC = () => {
                             Phép thuật đang hoạt động...
                           </span>
                         </motion.div>
+                      </motion.div>
+                    )}
+                    {(phase === 'verifying' || phase === 'badge') && verifyResultState === 'pass' && (
+                      <motion.div
+                        key="pass-overlay"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        className="absolute inset-0 flex items-center justify-center bg-green-500/20 backdrop-blur-[2px] z-50"
+                      >
+                        <div className="bg-white px-8 py-5 rounded-full shadow-2xl flex items-center gap-3">
+                          <span className="material-symbols-outlined text-green-600 text-3xl">check_circle</span>
+                          <span className="font-black text-green-800 text-lg">XUẤT SẮC!</span>
+                        </div>
+                      </motion.div>
+                    )}
+                    {(phase === 'verifying' || phase === 'badge') && (verifyResultState === 'retry' || verifyResultState === 'fail') && (
+                      <motion.div
+                        key="fail-overlay"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        className="absolute inset-0 flex items-center justify-center bg-red-500/20 backdrop-blur-[2px] z-50"
+                      >
+                        <div className="bg-white px-8 py-5 rounded-full shadow-2xl flex items-center gap-3">
+                          <span className="material-symbols-outlined text-red-600 text-3xl">error</span>
+                          <span className="font-black text-red-800 text-lg">THỬ LẠI CHÚT NHA!</span>
+                        </div>
                       </motion.div>
                     )}
                   </AnimatePresence>
