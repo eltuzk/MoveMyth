@@ -51,6 +51,12 @@ export const ActiveStorytellingView: React.FC = () => {
     '2_raise_hands':   '/raise_hands.mp4',
   };
 
+  const storyVideoMap: Record<number, string> = {
+    0: '/story_segment_0.mp4',
+    1: '/story_segment_1.mp4',
+    2: '/story_segment_2.mp4',
+  };
+
   // QUICK PREVIEW BYPASS FOR DEV/TESTING
   const state = (!realState.sessionId && import.meta.env.DEV) 
     ? {
@@ -60,8 +66,8 @@ export const ActiveStorytellingView: React.FC = () => {
         segmentIndex: 0,
         segment: {
           segment_index: 0,
-          narrative_text: 'Xin chào {child_name}! Lio đang cùng con khám phá khu rừng thần tiên. LioBar hoạt động tốt!',
-          narration_tts: 'Xin chào Minh! Lio đang cùng con khám phá khu rừng thần tiên.',
+          narrative_text: 'Lio và {child_name} bước vào khu rừng phép thuật. Những cây cổ thụ cao vút tỏa bóng mát, và ánh sáng vàng lấp lánh giữa các tán lá. Phía trước là một cây cầu gỗ bắc qua suối nhỏ — nhưng cây cầu chỉ mở ra khi có đủ phép thuật!',
+          narration_tts: 'Lio và bạn nhỏ bước vào khu rừng phép thuật. Những cây cổ thụ cao vút tỏa bóng mát, và ánh sáng vàng lấp lánh giữa các tán lá. Phía trước là một cây cầu gỗ bắc qua suối nhỏ — nhưng cây cầu chỉ mở ra khi có đủ phép thuật!',
         },
         challenge: {
           action: 'jump',
@@ -83,7 +89,7 @@ export const ActiveStorytellingView: React.FC = () => {
   // -------------------------------------------------------------------------
   // Local state
   // -------------------------------------------------------------------------
-  const [phase, setPhase] = useState<LoopPhase>(import.meta.env.DEV ? 'challenge' : 'narrating');
+  const [phase, setPhase] = useState<LoopPhase>('narrating');
   const [errorMessage, setErrorMessage] = useState('');
   const [retryFn, setRetryFn] = useState<(() => void) | null>(null);
 
@@ -414,11 +420,25 @@ export const ActiveStorytellingView: React.FC = () => {
 
       {/* Background */}
       <div className="fixed inset-0 z-0">
-        <img
-          alt="Enchanted forest story background"
-          className="w-full h-full object-cover"
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyAjFZaZMd-bwIyYoVJOuiadjJoJIZ-mgNwffUzk9wxMsOKrWN-NxwwjazdsJO8WcN1zU0KET-EKe-hs0H2L_a8nTksksxGGPHWqvEG2JkwaS7nxgRWhT9ZLkX9yFsV0XOZrzAq4R7kUbVOLIlkVlLWf76beC0BBruokwljxSf9DZeUo0RE1J3WGi0t81MQg2ms0pMkMc7nSgCemld2p3jE1TDNL0pcFL1xYSO6_jDn8IkT89igdUUl1yYywxdM3BpCddBYRQns4sa"
-        />
+        {phase === 'narrating' ? (
+          <video
+            key={state.segmentIndex}
+            src={storyVideoMap[state.segmentIndex] ?? storyVideoMap[0]}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+          />
+        ) : phase === 'challenge' || phase === 'verifying' || phase === 'badge' || phase === 'error' ? (
+          <div className="w-full h-full bg-white" />
+        ) : (
+          <img
+            alt="Enchanted forest story background"
+            className="w-full h-full object-cover"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyAjFZaZMd-bwIyYoVJOuiadjJoJIZ-mgNwffUzk9wxMsOKrWN-NxwwjazdsJO8WcN1zU0KET-EKe-hs0H2L_a8nTksksxGGPHWqvEG2JkwaS7nxgRWhT9ZLkX9yFsV0XOZrzAq4R7kUbVOLIlkVlLWf76beC0BBruokwljxSf9DZeUo0RE1J3WGi0t81MQg2ms0pMkMc7nSgCemld2p3jE1TDNL0pcFL1xYSO6_jDn8IkT89igdUUl1yYywxdM3BpCddBYRQns4sa"
+          />
+        )}
         <div className="absolute inset-0 watercolor-overlay pointer-events-none" />
       </div>
 
