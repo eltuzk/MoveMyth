@@ -4,7 +4,7 @@ Lio — Root Agent (Live Mode)
 The main storytelling AI that orchestrates the entire play session.
 Uses Gemini Live API for realtime voice + vision.
 
-Model: gemini-2.5-flash (Live)
+Model: gemini-3.1-flash-lite-preview (Live)
 
 RULES (bất di bất dịch):
 - KHÔNG gọi award_badge khi pending_challenge chưa verified

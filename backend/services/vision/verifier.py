@@ -4,7 +4,7 @@ Vision Verifier Service
 Receives JPEG frame (base64) and verifies whether the child is
 performing the expected physical action.
 
-Model: gemini-2.5-flash (Vision)
+Model: gemini-3.1-flash-lite-preview (Vision)
 
 Supported actions: magic_sign, jump, raise_hand, spin
 

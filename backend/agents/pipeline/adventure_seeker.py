@@ -4,7 +4,7 @@ Adventure Seeker — Research Agent (Agent Mode)
 Researches lore, cultural context, and movement ideas
 suitable for the given theme and age group.
 
-Model: gemini-2.5-flash-lite + Google Search
+Model: gemini-3.1-flash-lite-preview + Google Search
 
 Input:  { theme, age_group }
 Output: { world_building, supporting_characters, movement_ideas, vocabulary }

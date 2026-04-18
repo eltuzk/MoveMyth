@@ -17,7 +17,7 @@ async def generate_speech(text: str) -> bytes:
         client = genai.Client()
 
         response = client.models.generate_content(
-            model="gemini-2.5-flash-preview-tts",
+            model="gemini-3.1-flash-tts-preview",
             contents=text,
             config=types.GenerateContentConfig(
                 response_modalities=["AUDIO"],
