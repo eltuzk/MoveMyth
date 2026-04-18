@@ -6,7 +6,6 @@ import { MagicSignActivation } from './screens/MagicSignActivation'
 import { ActiveStorytellingView } from './screens/ActiveStorytellingView'
 import { ActiveVerificationChallenge } from './screens/ActiveVerificationChallenge'
 import { AdventureCompleteSummary } from './screens/AdventureCompleteSummary'
-import { StoryLaunchWelcome } from './screens/StoryLaunchWelcome'
 import { VoiceChoiceChallenge } from './screens/VoiceChoiceChallenge'
 import { LioDemoChallenge } from './screens/LioDemoChallenge'
 import { ParentDashboard } from './screens/ParentDashboard'
@@ -24,8 +23,7 @@ function App() {
           <Route path="/" element={<BaseLayout screenKey="home"><HomeLandingScreen /></BaseLayout>} />
           <Route path="/onboarding" element={<GameLayout screenKey="onboarding"><CharacterSetupOnboarding /></GameLayout>} />
           <Route path="/magic-sign" element={<GameLayout screenKey="magic-sign"><MagicSignActivation /></GameLayout>} />
-          <Route path="/welcome" element={<GameLayout screenKey="story-launch"><StoryLaunchWelcome /></GameLayout>} />
-          <Route path="/story" element={<GameLayout screenKey="story"><ActiveStorytellingView /></GameLayout>} />
+          <Route path="/story" element={<GameLayout screenKey="story" showFooter={false}><ActiveStorytellingView /></GameLayout>} />
           <Route path="/challenge/voice" element={<GameLayout screenKey="challenge-voice"><VoiceChoiceChallenge /></GameLayout>} />
           <Route path="/challenge/demo" element={<StandaloneLayout screenKey="challenge-demo"><LioDemoChallenge /></StandaloneLayout>} />
           <Route 
