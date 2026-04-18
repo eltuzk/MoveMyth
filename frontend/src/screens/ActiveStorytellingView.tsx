@@ -41,6 +41,15 @@ export const ActiveStorytellingView: React.FC = () => {
   const navigate = useNavigate();
   const { state: realState, dispatch } = useSession();
   const { playBlob, isPlaying } = useAudio();
+  
+  const demoVideoMap: Record<string, string> = {
+    '0_jump':          '/jump.mp4',
+    '0_raise_hands':   '/raise_hands.mp4',
+    '1_spin':          '/spin.mp4',
+    '1_raise_hands':   '/raise_and_wave.mp4',
+    '2_jump':          '/jump_and_raise.mp4',
+    '2_raise_hands':   '/raise_hands.mp4',
+  };
 
   // QUICK PREVIEW BYPASS FOR DEV/TESTING
   const state = (!realState.sessionId && import.meta.env.DEV) 
@@ -649,46 +658,31 @@ export const ActiveStorytellingView: React.FC = () => {
 
                 {/* RIGHT: Challenge card */}
                 <section className="flex-1 relative overflow-hidden bg-[#3f0b73] rounded-[2rem] flex items-center justify-center shadow-2xl">
-                  <div className={`absolute inset-0 ${challengeVideo ? '' : 'opacity-60'}`}>
-                    {challengeVideo ? (
-                      <video
-                        key={challengeVideo}
-                        className="w-full h-full object-cover"
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        src={challengeVideo}
-                      />
-                    ) : (
-                      <img
-                        className="w-full h-full object-cover"
-                        alt="Story scene"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAu3Oubn12PnJUNbtqrxU5mQa4Yi9j29oAp2bpn4aSuutji2nSKm-V3W7ST6QEqhYZe-k6XQkROwuzdSD3UaGNTQlbRCkvyn4OlCxvuVxL0Bms2nNeARGKeAkH4DzRjSjdt5uwHN-mTiPxIMYG-XTzJ-UQke4BqgGaow75wsIF1glQYwo7rUZfIiUhEzBEZaILcKhfnejVAKIBok1sjP8REHITk6bwn5oW1Jdomq_dV-qo1P3C1u8NNhdx-C9_ETLHqs3XDjlyZmlMK"
-                      />
-                    )}
-                    {!challengeVideo && (
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#7a4eb0]/40 to-transparent" />
-                    )}
+                  <div className="absolute inset-0">
+                    {(() => {
+                      const videoKey = `${state.segmentIndex}_${activeChallenge?.action}`;
+                      const videoSrc = demoVideoMap[videoKey];
+                      return videoSrc ? (
+                        <video
+                          key={videoKey}
+                          src={videoSrc}
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <img
+                          className="w-full h-full object-cover"
+                          alt="Story scene"
+                          src="https://lh3.googleusercontent.com/aida-public/AB6AXuAu3Oubn12PnJUNbtqrxU5mQa4Yi9j29oAp2bpn4aSuutji2nSKm-V3W7ST6QEqhYZe-k6XQkROwuzdSD3UaGNTQlbRCkvyn4OlCxvuVxL0Bms2nNeARGKeAkH4DzRjSjdt5uwHN-mTiPxIMYG-XTzJ-UQke4BqgGaow75wsIF1glQYwo7rUZfIiUhEzBEZaILcKhfnejVAKIBok1sjP8REHITk6bwn5oW1Jdomq_dV-qo1P3C1u8NNhdx-C9_ETLHqs3XDjlyZmlMK"
+                        />
+                      );
+                    })()}
+
                   </div>
-                  
-                  {!challengeVideo && (
-                    <div className="relative z-10 text-center p-8">
-                      <div className="glass-panel p-6 rounded-[1.5rem] border border-white/20 shadow-2xl">
-                        {isPlaying && (
-                          <p className="text-[10px] text-[#7a4eb0] font-black uppercase tracking-widest mb-2">
-                            🦁 Lio đang nói...
-                          </p>
-                        )}
-                        <h3 className="text-2xl md:text-3xl font-black text-[#4e3000] drop-shadow-lg leading-tight mb-2">
-                          {activeChallenge?.display_text ?? '✦ Thế giới đang chờ đợi con!'}
-                        </h3>
-                        <p className="text-[#4e3000] font-bold opacity-60 uppercase text-[10px] tracking-widest">
-                          Thử thách của con
-                        </p>
-                      </div>
-                    </div>
-                  )}
+
                 </section>
               </div>
 
