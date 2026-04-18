@@ -37,7 +37,7 @@ function App() {
               </GameLayout>
             } 
           />
-          <Route path="/complete" element={<GameLayout screenKey="complete"><AdventureCompleteSummary /></GameLayout>} />
+          <Route path="/complete" element={<GameLayout screenKey="complete" showFooter={false}><AdventureCompleteSummary /></GameLayout>} />
           <Route path="/parent" element={<BaseLayout screenKey="parent"><ParentDashboard /></BaseLayout>} />
 
           {/* Catch-all redirect */}
