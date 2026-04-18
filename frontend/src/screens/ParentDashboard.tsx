@@ -39,7 +39,7 @@ export const ParentDashboard: React.FC = () => {
 
         {/* Hero Section */}
         <header className="mb-6 text-center md:text-left">
-          <h1 className="text-4xl md:text-[3.25rem] leading-tight font-extrabold tracking-tight text-[#383835] mb-1">Chào mừng trở lại, Sarah!</h1>
+          <h1 className="text-4xl md:text-[3.25rem] leading-tight font-extrabold tracking-tight text-[#383835] mb-1">Chào mừng trở lại, Paul!</h1>
           <p className="text-base md:text-lg text-[#656461] font-medium">Cùng xem các nhà thám hiểm nhỏ đang vận động thế nào nhé.</p>
         </header>
 
