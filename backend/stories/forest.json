@@ -12,8 +12,8 @@
       "challenge_options": [
         {
           "action": "jump",
-          "display_text": "Nhảy lên 3 lần để kích hoạt cây cầu phép thuật!",
-          "tts_text": "Để cây cầu mở ra, bạn phải nhảy lên 3 lần thật mạnh nhé!",
+          "display_text": "Nhảy lên 5 lần để kích hoạt cây cầu phép thuật!",
+          "tts_text": "Để cây cầu mở ra, bạn phải nhảy lên 5 lần thật mạnh nhé!",
           "difficulty": "normal",
           "fallback_action": "raise_hands"
         },
