@@ -74,14 +74,21 @@ export const ActiveStorytellingView: React.FC = () => {
   // -------------------------------------------------------------------------
   // Local state
   // -------------------------------------------------------------------------
-  const [phase, setPhase] = useState<LoopPhase>('narrating');
+  const [phase, setPhase] = useState<LoopPhase>(import.meta.env.DEV ? 'challenge' : 'narrating');
   const [errorMessage, setErrorMessage] = useState('');
   const [retryFn, setRetryFn] = useState<(() => void) | null>(null);
 
   // Current challenge (may be downgraded during a loop iteration)
-  const [activeChallenge, setActiveChallenge] = useState<Challenge | null>(
-    state.challenge,
-  );
+  const activeChallenge = phase === 'challenge' ? state.challenge : null;
+
+  // Video mapping for challenge actions
+  const CHALLENGE_VIDEOS: Record<string, string> = {
+    jump: '/Lio_Jump.mp4',
+    raise_hands: '/Lio_RaiseHand.mp4',
+    spin: '/Lio_Spin.mp4',
+  };
+
+  const challengeVideo = activeChallenge ? CHALLENGE_VIDEOS[activeChallenge.action] : null;
 
   // Badge shown in modal
   const [badgeData, setBadgeData] = useState<Badge | null>(null);
@@ -642,29 +649,46 @@ export const ActiveStorytellingView: React.FC = () => {
 
                 {/* RIGHT: Challenge card */}
                 <section className="flex-1 relative overflow-hidden bg-[#3f0b73] rounded-[2rem] flex items-center justify-center shadow-2xl">
-                  <div className="absolute inset-0 opacity-60">
-                    <img
-                      className="w-full h-full object-cover"
-                      alt="Story scene"
-                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuAu3Oubn12PnJUNbtqrxU5mQa4Yi9j29oAp2bpn4aSuutji2nSKm-V3W7ST6QEqhYZe-k6XQkROwuzdSD3UaGNTQlbRCkvyn4OlCxvuVxL0Bms2nNeARGKeAkH4DzRjSjdt5uwHN-mTiPxIMYG-XTzJ-UQke4BqgGaow75wsIF1glQYwo7rUZfIiUhEzBEZaILcKhfnejVAKIBok1sjP8REHITk6bwn5oW1Jdomq_dV-qo1P3C1u8NNhdx-C9_ETLHqs3XDjlyZmlMK"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#7a4eb0]/40 to-transparent" />
+                  <div className={`absolute inset-0 ${challengeVideo ? '' : 'opacity-60'}`}>
+                    {challengeVideo ? (
+                      <video
+                        key={challengeVideo}
+                        className="w-full h-full object-cover"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        src={challengeVideo}
+                      />
+                    ) : (
+                      <img
+                        className="w-full h-full object-cover"
+                        alt="Story scene"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAu3Oubn12PnJUNbtqrxU5mQa4Yi9j29oAp2bpn4aSuutji2nSKm-V3W7ST6QEqhYZe-k6XQkROwuzdSD3UaGNTQlbRCkvyn4OlCxvuVxL0Bms2nNeARGKeAkH4DzRjSjdt5uwHN-mTiPxIMYG-XTzJ-UQke4BqgGaow75wsIF1glQYwo7rUZfIiUhEzBEZaILcKhfnejVAKIBok1sjP8REHITk6bwn5oW1Jdomq_dV-qo1P3C1u8NNhdx-C9_ETLHqs3XDjlyZmlMK"
+                      />
+                    )}
+                    {!challengeVideo && (
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#7a4eb0]/40 to-transparent" />
+                    )}
                   </div>
-                  <div className="relative z-10 text-center p-8">
-                    <div className="glass-panel p-6 rounded-[1.5rem] border border-white/20 shadow-2xl">
-                      {isPlaying && (
-                        <p className="text-[10px] text-[#7a4eb0] font-black uppercase tracking-widest mb-2">
-                          🦁 Lio đang nói...
+                  
+                  {!challengeVideo && (
+                    <div className="relative z-10 text-center p-8">
+                      <div className="glass-panel p-6 rounded-[1.5rem] border border-white/20 shadow-2xl">
+                        {isPlaying && (
+                          <p className="text-[10px] text-[#7a4eb0] font-black uppercase tracking-widest mb-2">
+                            🦁 Lio đang nói...
+                          </p>
+                        )}
+                        <h3 className="text-2xl md:text-3xl font-black text-[#4e3000] drop-shadow-lg leading-tight mb-2">
+                          {activeChallenge?.display_text ?? '✦ Thế giới đang chờ đợi con!'}
+                        </h3>
+                        <p className="text-[#4e3000] font-bold opacity-60 uppercase text-[10px] tracking-widest">
+                          Thử thách của con
                         </p>
-                      )}
-                      <h3 className="text-2xl md:text-3xl font-black text-[#4e3000] drop-shadow-lg leading-tight mb-2">
-                        {activeChallenge?.display_text ?? '✦ Thế giới đang chờ đợi con!'}
-                      </h3>
-                      <p className="text-[#4e3000] font-bold opacity-60 uppercase text-[10px] tracking-widest">
-                        Thử thách của con
-                      </p>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </section>
               </div>
 
