@@ -62,8 +62,8 @@ export const CharacterSetupOnboarding: React.FC = () => {
             <div className="sparkle-border w-72 h-72 rounded-[1rem] overflow-hidden shadow-[0_20px_50px_rgba(73,25,125,0.1)] flex items-center justify-center bg-[#eae8e2]">
               <img
                 alt="Character Portrait"
-                className="w-full h-full object-cover"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqk87iv_jHCcfhzO3yhpkyBVQMbM1-B130-Oal62uY591tKWfHOLp00oddeKVKzSe_-39WSsZEVl14XhuoGgJ02QyTQYshnbjA2tbw5wvaRYBzJEA4zReTAehk2Ae8cIL8QpkGzd_yQR6xSlyh4RTq--Xlo8Dwqax5IPyGGoVQdOYKwhVtfaMJLPGc1bHQrsNjiZJ0q-_Jiu978kPnNYuC0F86Ml0U5zdPdtLiJ9i4Z4U98lmUKNXS3vpTBOFkVN8wJTZlBlUU_buN"
+                className="w-full h-full object-cover scale-150 relative -bottom-4"
+                src="/avt_kid.png"
               />
             </div>
             <div className="flex gap-4 w-full justify-center">
