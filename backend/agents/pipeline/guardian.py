@@ -3,7 +3,7 @@ Guardian of Balance — Safety Agent (Agent Mode)
 
 Reviews content for safety, movement density, and age appropriateness.
 
-Model: gemini-2.5-flash-lite
+Model: gemini-3.1-flash-lite-preview
 
 Output: {
     safety_check, movement_density_score, age_appropriate,

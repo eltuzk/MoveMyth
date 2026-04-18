@@ -127,7 +127,7 @@ async def verify_image(
     image_part = types.Part.from_bytes(data=image_bytes, mime_type="image/jpeg")
 
     response = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model="gemini-3.1-flash-lite-preview",
         contents=[image_part, prompt],
     )
 

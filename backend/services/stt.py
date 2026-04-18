@@ -4,7 +4,7 @@ from google import genai
 
 async def transcribe_audio(audio_bytes: bytes, mime_type: str) -> str:
     """
-    Transcribes audio using Gemini 2.5 Flash.
+    Transcribes audio using Gemini 3.1 Flash.
     Must use File API to upload the audio first.
     """
     client = genai.Client()
@@ -20,7 +20,7 @@ async def transcribe_audio(audio_bytes: bytes, mime_type: str) -> str:
         
         try:
             response = client.models.generate_content(
-                model='gemini-2.5-flash',
+                model='gemini-3.1-flash-lite-preview',
                 contents=[
                     uploaded_file,
                     "Transcribe the following audio. Return only the transcribed text, no other text or explanation. If it is a name, output the name clearly."

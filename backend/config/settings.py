@@ -21,10 +21,10 @@ GOOGLE_CLOUD_PROJECT: str = os.getenv("GOOGLE_CLOUD_PROJECT", "")
 REDIS_URL: str = os.getenv("REDIS_URL", "redis://localhost:6379")
 
 # --- Gemini Models ---
-MODEL_LIO = "gemini-2.5-flash"
-MODEL_VISION = "gemini-2.5-flash"
-MODEL_ADVENTURE_SEEKER = "gemini-2.5-flash-lite"
-MODEL_GUARDIAN = "gemini-2.5-flash-lite"
+MODEL_LIO = "gemini-3.1-flash-lite-preview"
+MODEL_VISION = "gemini-3.1-flash-lite-preview"
+MODEL_ADVENTURE_SEEKER = "gemini-3.1-flash-lite-preview"
+MODEL_GUARDIAN = "gemini-3.1-flash-lite-preview"
 MODEL_STORYSMITH = "gemini-2.5-pro"
 
 # --- App Constants ---
