@@ -17,7 +17,6 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSession } from '../contexts/SessionContext';
 import { useAudio } from '../hooks/useAudio';
-import { useCamera } from '../hooks/useCamera';
 import { DoneButton } from '../components/DoneButton';
 import { BadgeModal } from '../components/BadgeModal';
 import {
@@ -42,12 +41,12 @@ export const ActiveStorytellingView: React.FC = () => {
   const navigate = useNavigate();
   const { state, dispatch } = useSession();
   const { playBlob, isPlaying } = useAudio();
-  const {
-    videoRef,
-    isActive: cameraActive,
-    captureFrameDataUrl,
-    error: cameraError,
-  } = useCamera({ width: 640, height: 480, facingMode: 'user' });
+  // Camera: managed inline so we can start/stop based on phase.
+  // The <video> element is only in the DOM during challenge/verifying phases,
+  // so we can't rely on useCamera's mount-time [] effect.
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+  const [cameraError, setCameraError] = useState<string | null>(null);
 
   // -------------------------------------------------------------------------
   // Local state
@@ -80,6 +79,66 @@ export const ActiveStorytellingView: React.FC = () => {
     setErrorMessage(msg);
     setRetryFn(() => retry);
     setPhase('error');
+  }, []);
+
+  // -------------------------------------------------------------------------
+  // Camera: start when entering challenge/verifying, stop otherwise
+  // -------------------------------------------------------------------------
+
+  useEffect(() => {
+    const needsCamera = phase === 'challenge' || phase === 'verifying';
+
+    if (needsCamera) {
+      // Only start if not already streaming
+      if (!streamRef.current) {
+        navigator.mediaDevices
+          .getUserMedia({ video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } }, audio: false })
+          .then((stream) => {
+            streamRef.current = stream;
+            const videoEl = videoRef.current;
+            if (videoEl) {
+              videoEl.srcObject = stream;
+              videoEl.play().catch((e: unknown) => {
+                if (e instanceof Error && e.name !== 'AbortError') {
+                  console.error('[Story] camera play error:', e.message);
+                }
+              });
+            }
+          })
+          .catch((err: unknown) => {
+            const msg = err instanceof Error ? err.message : 'Camera access denied';
+            console.error('[Story] getUserMedia error:', msg);
+            setCameraError(msg);
+          });
+      }
+    } else {
+      // Stop camera during narrating / badge / error phases
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((t) => t.stop());
+        streamRef.current = null;
+      }
+    }
+
+    return () => {
+      // Cleanup on unmount
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((t) => t.stop());
+        streamRef.current = null;
+      }
+    };
+  }, [phase]);
+
+  // Capture a JPEG frame from the local videoRef
+  const captureFrameDataUrl = useCallback((): string | null => {
+    const videoEl = videoRef.current;
+    if (!videoEl || !streamRef.current) return null;
+    const canvas = document.createElement('canvas');
+    canvas.width = videoEl.videoWidth || 640;
+    canvas.height = videoEl.videoHeight || 480;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return null;
+    ctx.drawImage(videoEl, 0, 0);
+    return canvas.toDataURL('image/jpeg', 0.8);
   }, []);
 
   // -------------------------------------------------------------------------
@@ -431,9 +490,21 @@ export const ActiveStorytellingView: React.FC = () => {
                     boxShadow: `0 0 24px ${cameraBorder}44`,
                   }}
                 >
-                  {/* Live video */}
+                  {/* Live video — onLoadedMetadata handles the race where
+                      getUserMedia resolved before this element mounted */}
                   <video
-                    ref={videoRef}
+                    ref={(el) => {
+                      videoRef.current = el;
+                      // If stream is already ready, attach it now
+                      if (el && streamRef.current && !el.srcObject) {
+                        el.srcObject = streamRef.current;
+                        el.play().catch((e: unknown) => {
+                          if (e instanceof Error && e.name !== 'AbortError') {
+                            console.error('[Story] video.play() error:', e.message);
+                          }
+                        });
+                      }
+                    }}
                     autoPlay
                     playsInline
                     muted

@@ -187,6 +187,7 @@ async def story_stt(
         )
 
     session.child_name = transcribed_text.strip()
+    print(f"[STT] session={session_id} child_name={session.child_name!r}")
 
     return {
         "text": session.child_name,
