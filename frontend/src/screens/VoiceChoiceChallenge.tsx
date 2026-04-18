@@ -44,7 +44,7 @@ export const VoiceChoiceChallenge: React.FC = () => {
           <img
             className="w-48 h-48 object-contain drop-shadow-[0_20px_20px_rgba(73,25,125,0.3)] transform -rotate-6"
             alt="Friendly purple dragon mascot"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHhPSCiEwz79-HG3j-Wmi-f8ga-oqql6fCOH9oavrVagkSC-gWnR9F4VVdAxCwYJece1g_jxZGKiLXPD1VDESO7yd1q_x3sgNK50B6-KnR2lGIL2-Dqxff5sEKEeYfagONiMd3p58mZoewabF3SFE6rdXE1AX09dzbnePWvKzc3_TchfxoDh1lq_7cgS1ep32TQSvaBu_r0vAIX9_j--v7J15SRMg7GOHluVrSKQnfUekEjk1teDMvK_yAIAZ2AxFbwmr9dwiR0HqY"
+            src="/avt_Lio.png"
           />
         </motion.div>
 

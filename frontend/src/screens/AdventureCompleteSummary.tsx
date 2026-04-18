@@ -78,7 +78,7 @@ export const AdventureCompleteSummary: React.FC = () => {
                   <img
                     alt="Lio the mascot waving"
                     className="w-full h-full object-cover"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtlURl52xJn7paeRTmLNz-fb8qwMXNA7aNjDxtp8ZlTt78qKRE6SiI218TJGuQ4GdXsabPt3idVlsLjjZIzifwGl7cYfoBszPsFka58I85MGYCMu5eKKBlAm8rcUw9GyQw4QF3W1l4pzOPvg10fEisNWrJnVdxO-MMD4_35W5ImSSbXarKUhrPa33428PrAgETPR0vOHG6FuNhTtuBcKkECsathwv9PwN81KxVwqdRm42qJQpImGUSSE4TQoLNL02H6mdxUQbxzS3R"
+                    src="/avt_Lio.png"
                   />
                 </div>
                 
@@ -145,7 +145,7 @@ export const AdventureCompleteSummary: React.FC = () => {
             <div className="shrink-0">
               <div className="w-16 h-16 rounded-full border-[3px] border-white shadow-md overflow-hidden bg-white">
                 <img 
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuArQ6txpD8QdO7FWcqMH4N3U1IKbQaBGfK3cSz-i5sreNilnWiK32RtYGOGkJEewxsPkBEZrIoxETSczD2dfUm6touH8YqG9wtWwHbT9cRPdBrIEes_p-PFRUshR8-lgZw1poGaqe31Aqg9l875ogjnVUicoYKXADDNsjh4Ed3qAg8vunsy0Gn4LpVDewGfyhE8W6SjfPbrgjxfMn_GdyjorLhBu0Y5LlOC26gArwxLlP-nrlMzUSEtoYZE7h9GmqS_GP_EYb16EROR" 
+                  src="/avt_Lio.png" 
                   alt="Lio" 
                   className="w-full h-full object-cover"
                 />

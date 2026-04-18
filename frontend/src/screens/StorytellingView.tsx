@@ -102,7 +102,7 @@ export const StorytellingView: React.FC = () => {
               <img
                 alt="Lio the purple creature"
                 className="w-full h-full object-contain drop-shadow-2xl"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzl2feDINq5whrFl9pt08BK3oRyO6ZDoF90FYZ0TAEbPIDICb2KFIeC3COg0l33nhWMuNLDev6QP6REgeztrha_tRaAscPXJo-D0bPlXK-BeDJq2IAvXkVA3VdvOwFN9nVLLSH4fxdMB0FF9dhBUb9XtbfLhVsj8t2-ZxrhAW5HElTK6hO85qQb-BTnjoHoM-XcS1YV_LvGG0XVbQ6pPtxjmyAqZcdn13MhsZjcGg6Eveg5cnl2GJz7-UfGQT6j3_QinIeLG_LzLoN"
+                src="/avt_Lio.png"
               />
             </div>
             <div className="mb-12 md:mb-20 -ml-4 relative">

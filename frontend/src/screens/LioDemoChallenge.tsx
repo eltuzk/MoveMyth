@@ -56,7 +56,7 @@ export const LioDemoChallenge: React.FC = () => {
               <img
                 className="w-[260px] md:w-[400px] drop-shadow-[0_20px_50px_rgba(122,78,176,0.5)] transform hover:scale-105 transition-transform duration-500"
                 alt="Lio jumping high excitedly"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzHa3H4M0dyThB__NeJ4Neq9BUnLEMg9YjR1bGraLzgGMbRohmCnSBkg2qb79g4xc8mM_8CN8GY0dJhOjDRtJxWuZZDtIv0PAH8PHvHqFPFSZ9Owb0Cvt7E_z1b4Fzs92zd2sZktzVkJmOk2EPWwJ_wm1BIbh3fpz4fSZPoSviHtcenJk2FBt_TpMKpWGqPYjmfP1JJKKOOw5gBmOH5FTPx8ONSPXD-SiIVRzmUmiAuB0O80Mm5WNa3nUzM9cXTkSjiF-GtziFhygj"
+                src="/avt_Lio.png"
               />
             </div>
           </div>

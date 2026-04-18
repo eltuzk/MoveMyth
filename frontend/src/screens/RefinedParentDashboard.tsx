@@ -242,11 +242,13 @@ export const RefinedParentDashboard: React.FC = () => {
             </p>
             <div className="absolute -bottom-2 right-8 w-4 h-4 bg-white/90 rotate-45 border-r border-b border-white/40"></div>
           </div>
-          <img
-            alt="Lio Mascot"
-            className="w-24 h-24 drop-shadow-2xl hover:scale-110 transition-transform cursor-pointer"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlGf7os2CIrJXNVq3ZsIPyqiiApv3WmslmiMYqUHvS458PSFmkdWub6xCiQz9k9LMtSQmrv3fF4CYG5kSF3-vLDUQ0xAuwEPh2FBOCguTimlkTKcCXGZQprlMLT-P7QNyWLOyD9VBjQCwZVQdoe43qiw4GyHCv6B6JCZ753yXODKWwNpjSseHNFFwIMkjZ3VxwXONIh5nJg7lW369r8VMjNLqKMldTyVTT1Apv-nR52PIwcGp2F3eEtEZjUAp_Tsfne9VHl4slw-UO"
-          />
+          <div className="w-[110px] h-[110px] rounded-full bg-gradient-to-br from-white to-[#f5f3ef] border-4 border-white shadow-[0_15px_35px_rgba(122,78,176,0.2),inset_0_2px_4px_rgba(0,0,0,0.05)] p-0 flex items-center justify-center overflow-hidden">
+            <img
+              alt="Lio Mascot"
+              className="w-full h-full object-cover scale-125 hover:scale-140 transition-transform duration-300 pointer-events-auto cursor-pointer"
+              src="/avt_Lio.png"
+            />
+          </div>
         </div>
       </div>
     </>
