@@ -50,3 +50,7 @@ htmlcov/
 .coverage
 .pytest_cache/
 .mypy_cache/
+
+# Stitch AI Tools
+.stitch/
+stitch_assets/
